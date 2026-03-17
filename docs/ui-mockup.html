@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>盆栽管理 - UIサンプル</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .card-img { background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <!-- ナビゲーション -->
+  <nav class="bg-white border-b border-gray-200 px-6 py-4">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
+      <a href="#" class="text-xl font-semibold text-green-800">盆栽管理</a>
+      <div class="flex gap-6">
+        <a href="#" class="text-green-700 font-medium">盆栽一覧</a>
+        <a href="#" class="text-gray-500 hover:text-gray-700">スケジュール</a>
+        <a href="#" class="text-gray-500 hover:text-gray-700">お役立ち</a>
+      </div>
+      <div class="w-10 h-10 rounded-full bg-green-200 flex items-center justify-center text-green-800 font-medium">ユ</div>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto px-6 py-8">
+    <!-- ダッシュボード: 盆栽一覧 -->
+    <section class="mb-12">
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold text-gray-900">マイ盆栽</h1>
+        <button class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium">+ 新規登録</button>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <article class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition">
+          <div class="card-img h-40 flex items-center justify-center text-green-600 text-4xl">🌲</div>
+          <div class="p-4">
+            <h2 class="font-semibold text-lg">黒松 太郎</h2>
+            <p class="text-sm text-gray-500">黒松</p>
+            <div class="flex gap-2 mt-2">
+              <span class="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded">良好</span>
+              <span class="px-2 py-0.5 bg-amber-100 text-amber-700 text-xs rounded">展示会用</span>
+            </div>
+          </div>
+        </article>
+        <article class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition">
+          <div class="card-img h-40 flex items-center justify-center text-green-600 text-4xl">🌿</div>
+          <div class="p-4">
+            <h2 class="font-semibold text-lg">真柏 花子</h2>
+            <p class="text-sm text-gray-500">真柏</p>
+            <div class="flex gap-2 mt-2">
+              <span class="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded">良好</span>
+            </div>
+          </div>
+        </article>
+        <article class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition">
+          <div class="card-img h-40 flex items-center justify-center text-green-600 text-4xl">🪴</div>
+          <div class="p-4">
+            <h2 class="font-semibold text-lg">五葉松 三郎</h2>
+            <p class="text-sm text-gray-500">五葉松</p>
+            <div class="flex gap-2 mt-2">
+              <span class="px-2 py-0.5 bg-amber-100 text-amber-700 text-xs rounded">要注意</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- 今後の予定（スケジュール） -->
+    <section>
+      <h2 class="text-xl font-bold mb-4">今後の予定</h2>
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <ul class="space-y-3">
+          <li class="flex items-center gap-4 py-2 border-b border-gray-100 last:border-0">
+            <span class="text-gray-500 w-24">03/18</span>
+            <span class="font-medium">水やり</span>
+            <span class="text-gray-500 text-sm">黒松 太郎</span>
+          </li>
+          <li class="flex items-center gap-4 py-2 border-b border-gray-100 last:border-0">
+            <span class="text-gray-500 w-24">03/20</span>
+            <span class="font-medium">施肥</span>
+            <span class="text-gray-500 text-sm">真柏 花子</span>
+          </li>
+          <li class="flex items-center gap-4 py-2">
+            <span class="text-gray-500 w-24">03/25</span>
+            <span class="font-medium">剪定</span>
+            <span class="text-gray-500 text-sm">黒松 太郎</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
