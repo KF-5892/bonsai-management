@@ -159,10 +159,10 @@
       border-right: none;
     }
     .schedule-table tbody.schedule-common-rules td {
-      background: color-mix(in srgb, #e0f2fe 35%, var(--md-surface, #F7FBF7));
+      background: color-mix(in srgb, var(--gantt-common-bg) 35%, var(--md-surface, #F7FBF7));
     }
     .schedule-table tbody.schedule-common-rules .task-label {
-      background: color-mix(in srgb, #bae6fd 40%, var(--md-surface-container, #EBF2EB));
+      background: color-mix(in srgb, color-mix(in srgb, var(--gantt-common-bg) 70%, var(--md-surface)) 40%, var(--md-surface-container, #EBF2EB));
     }
     .schedule-table tbody.schedule-common-rules {
       border-bottom: 2px solid var(--md-outline, #727970);
@@ -171,14 +171,14 @@
       grid-column: 1 / -1;
       padding: 10px 12px;
       font-weight: 500;
-      background: color-mix(in srgb, #bae6fd 55%, var(--md-surface, #fff));
-      color: #0c4a6e;
+      background: color-mix(in srgb, color-mix(in srgb, var(--gantt-common-bg) 70%, var(--md-surface)) 55%, var(--md-surface, #fff));
+      color: var(--gantt-common-fg, #1A1C1A);
       border-bottom: 2px solid var(--md-outline-variant, #C1C9BF);
     }
     .gantt-plant--common {
-      background: color-mix(in srgb, #e0f2fe 50%, var(--md-surface, #F7FBF7)) !important;
+      background: color-mix(in srgb, var(--gantt-common-bg) 50%, var(--md-surface, #F7FBF7)) !important;
       font-weight: 600;
-      color: #0c4a6e;
+      color: var(--gantt-common-fg, #1A1C1A);
     }
 
     /* Backlog風・一覧テーブル */
@@ -207,7 +207,7 @@
       background: color-mix(in srgb, var(--md-primary-container, #B9F6CA) 22%, var(--md-surface, #fff));
     }
     .issue-table tbody tr.row-selected td {
-      background: color-mix(in srgb, #f9a825 18%, var(--md-surface, #fff));
+      background: color-mix(in srgb, var(--md-primary-container, #B9F6CA) 18%, var(--md-surface, #fff));
     }
     .issue-table tbody tr.row-member td {
       background: var(--md-surface-container, #EBF2EB);
@@ -404,7 +404,7 @@
     /* モバイルスケジュール月タブ */
     .month-tab-btn {
       min-width: 2.5rem;
-      height: 2rem;
+      height: 2.75rem;
       padding: 0 0.5rem;
       border-radius: 9999px;
       font-size: 0.75rem;
@@ -459,7 +459,31 @@
       cursor: pointer;
     }
     .star-rating span { color: var(--md-outline-variant, #C1C9BF); }
-    .star-rating span.filled { color: #f59e0b; }
+    .star-rating span.filled { color: var(--md-rating-star); }
+
+    .detail-tab:focus-visible,
+    .schedule-tab:focus-visible,
+    .month-tab-btn:focus-visible {
+      outline: 2px solid var(--md-primary, #2E7D32);
+      outline-offset: 2px;
+    }
+
+    .issue-table tbody tr { cursor: pointer; }
+
+    .scroll-hint-right {
+      position: relative;
+    }
+    .scroll-hint-right::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 32px;
+      background: linear-gradient(to right, transparent, var(--md-surface, #F7FBF7));
+      pointer-events: none;
+      z-index: 4;
+    }
 
     :root {
       --md-on-surface: #1A1C1A;
@@ -470,6 +494,9 @@
       --md-surface-container: #EBF2EB;
       --md-surface-container-high: #E3EBE3;
       --md-primary-container: #B9F6CA;
+      --md-rating-star: #b45309;
+      --gantt-common-bg: #DCE5DC;
+      --gantt-common-fg: #1A1C1A;
       --gantt-phenology-bg: #E8DEF8;
       --gantt-phenology-fg: #1D192B;
       --gantt-water-bg: #B9F6CA;
@@ -486,9 +513,9 @@
   <header
     class="sticky top-0 z-50 flex h-16 items-center px-4 md:px-6 bg-md-surface-container-high/95 backdrop-blur-sm border-b border-md-outline-variant shadow-md-elevation-1">
     <div class="max-w-7xl mx-auto w-full grid grid-cols-[1fr_auto] gap-x-4 gap-y-2 items-center md:flex md:flex-row md:items-center md:gap-6">
-      <a href="#" class="text-title-md font-medium text-md-on-surface tracking-tight md-state-layer rounded-md px-2 py-1 -ml-2 justify-self-start">盆栽管理</a>
+      <a href="#hub-table" class="text-title-md font-medium text-md-on-surface tracking-tight md-state-layer rounded-md px-2 py-1 -ml-2 justify-self-start">盆栽管理</a>
       <nav class="row-start-2 col-span-2 md:row-auto md:col-span-1 md:flex-1 flex flex-wrap items-center justify-start md:justify-center gap-1" aria-label="メイン">
-        <a href="#hub-table"
+        <a href="#hub-table" aria-current="page"
           class="md-state-layer text-label-lg font-medium text-md-primary px-3 py-2 rounded-full bg-md-primary-container/70">一覧（表）</a>
         <a href="#hub-cards"
           class="md-state-layer text-label-lg font-medium text-md-on-surface-variant px-3 py-2 rounded-full hover:text-md-on-surface">カード</a>
@@ -502,8 +529,6 @@
           class="md-state-layer text-label-lg font-medium text-md-on-surface-variant px-3 py-2 rounded-full hover:text-md-on-surface">初回</a>
         <a href="#review-notes"
           class="md-state-layer text-label-lg font-medium text-md-on-surface-variant px-3 py-2 rounded-full hover:text-md-on-surface">対応メモ</a>
-        <a href="#"
-          class="md-state-layer text-label-lg font-medium text-md-on-surface-variant px-3 py-2 rounded-full hover:text-md-on-surface">お役立ち</a>
       </nav>
       <button type="button"
         class="md-state-layer flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-md-primary-container text-md-on-primary-container text-label-lg font-medium shadow-md-elevation-1 justify-self-end row-start-1 col-start-2 md:row-auto md:col-auto"
@@ -512,374 +537,13 @@
   </header>
 
   <main class="max-w-7xl mx-auto px-4 md:px-6 py-6 md:py-8">
-    <header class="mb-8">
+    <div class="mb-8">
       <h1 class="text-headline-sm md:text-headline-md font-normal text-md-on-surface tracking-tight">マイ盆栽</h1>
       <p class="text-body-sm text-md-on-surface-variant mt-2 max-w-3xl">
         <strong class="font-medium text-md-on-surface">UI案</strong>：
         Backlog の課題一覧のように<strong class="font-medium text-md-on-surface">表で絞り込み・状態管理</strong>し、カードで眺め、年間スケジュールで月次作業を見る 3 層構成です。
       </p>
-    </header>
-
-    <!-- ============================================================ -->
-    <!-- 盆栽詳細ページ（改善 1.3 / 5.2 / 5.4） -->
-    <!-- ============================================================ -->
-    <section id="bonsai-detail" class="mb-12 scroll-mt-24" aria-labelledby="bonsai-detail-title">
-      <h2 id="bonsai-detail-title" class="text-title-lg font-medium text-md-on-surface mb-4">盆栽詳細（HTMLモック）</h2>
-
-      <!-- パンくず -->
-      <nav aria-label="パンくず" class="text-label-md text-md-on-surface-variant mb-4">
-        <ol class="flex flex-wrap items-center gap-1.5">
-          <li><a href="#hub-table" class="text-md-primary underline-offset-2 hover:underline">マイ盆栽</a></li>
-          <li aria-hidden="true" class="text-md-outline">/</li>
-          <li class="text-md-on-surface" aria-current="page">黒松 太郎</li>
-        </ol>
-      </nav>
-
-      <div class="rounded-md bg-md-surface-container-lowest shadow-md-elevation-2 outline outline-1 outline-md-outline-variant overflow-hidden">
-        <!-- ヒーローエリア -->
-        <div class="grid md:grid-cols-[minmax(0,320px)_1fr] gap-0 border-b border-md-outline-variant">
-          <div class="card-img aspect-[4/3] md:min-h-[240px] flex items-center justify-center text-md-on-primary-container text-label-md p-4 flex-col gap-2">
-            <span class="text-5xl opacity-80" aria-hidden="true">🌲</span>
-            <span>代表画像（main_image）</span>
-          </div>
-          <div class="p-4 md:p-6 space-y-4">
-            <div>
-              <h3 class="text-headline-sm font-medium text-md-on-surface">黒松 太郎</h3>
-              <p class="text-body-sm text-md-on-surface-variant mt-1">黒松（Pinus thunbergii）</p>
-            </div>
-
-            <!-- 体調バッジ -->
-            <div class="flex flex-wrap items-center gap-2">
-              <span class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-label-md font-medium bg-emerald-100 text-emerald-900 border border-emerald-700/30" title="良好">
-                <span aria-hidden="true">&#10003;</span><span>良好</span>
-              </span>
-              <span class="text-label-md text-md-on-surface-variant">（色＋アイコン＋ラベルで区別 / 改善 1.4）</span>
-            </div>
-
-            <!-- 基本情報グリッド -->
-            <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-2 text-body-sm border-t border-md-outline-variant pt-4">
-              <div><span class="text-label-md text-md-on-surface-variant block">入手日</span><span class="font-medium">2020/04/15</span></div>
-              <div><span class="text-label-md text-md-on-surface-variant block">推定樹齢</span><span class="font-medium">42年</span></div>
-              <div><span class="text-label-md text-md-on-surface-variant block">設置場所</span><span class="font-medium">ベランダ東側</span></div>
-              <div><span class="text-label-md text-md-on-surface-variant block">用土</span><span class="font-medium">赤玉土7:桐生砂3</span></div>
-              <div><span class="text-label-md text-md-on-surface-variant block">鉢</span><span class="font-medium">丸鉢 30cm</span></div>
-              <div>
-                <span class="text-label-md text-md-on-surface-variant block">体調</span>
-                <span class="inline-flex items-center gap-1 font-medium text-emerald-800"><span aria-hidden="true">&#10003;</span> 良好</span>
-              </div>
-            </div>
-
-            <!-- タグ -->
-            <div class="flex flex-wrap gap-2">
-              <span class="inline-flex items-center h-7 px-2.5 rounded-md bg-md-surface-container-highest text-md-on-surface-variant text-label-md font-medium outline outline-1 outline-md-outline-variant">展示会用</span>
-              <span class="inline-flex items-center gap-1 h-7 px-2.5 rounded-md bg-rose-100 text-rose-900 text-label-md font-medium outline outline-1 outline-rose-300" title="要注意"><span aria-hidden="true">&#9888;</span> 要注意</span>
-            </div>
-
-            <!-- タブ -->
-            <div class="flex flex-wrap gap-2 border-t border-md-outline-variant pt-4" role="tablist" aria-label="詳細セクション">
-              <button class="detail-tab active" id="tab-carelog">作業ログ</button>
-              <button class="detail-tab" id="tab-schedule">スケジュール</button>
-              <button class="detail-tab" id="tab-media">メディア</button>
-              <button class="detail-tab" id="tab-repotting">植え替え履歴</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- ===================== 作業ログ タブコンテンツ ===================== -->
-        <div class="p-4 md:p-6 space-y-6 bg-md-surface" id="tab-content-carelog">
-          <h3 class="text-title-md font-medium text-md-on-surface">作業を記録</h3>
-          <form class="grid sm:grid-cols-2 gap-4 max-w-2xl" action="#" onsubmit="return false;">
-            <!-- 作業種別 -->
-            <div class="sm:col-span-2">
-              <label for="mock-task" class="block text-label-md font-medium text-md-on-surface mb-1">作業種別</label>
-              <select id="mock-task" class="w-full h-11 px-3 rounded-lg border border-md-outline-variant bg-md-surface text-body-sm">
-                <option>潅水</option>
-                <option>施肥</option>
-                <option>剪定</option>
-                <option>植え替え</option>
-                <option>観察</option>
-                <option>芽摘み</option>
-                <option>葉刈り</option>
-                <option>葉水</option>
-                <option>針金かけ</option>
-                <option>針金外し</option>
-                <option>消毒</option>
-                <option>ジン・シャリ作り</option>
-                <option>取り木</option>
-                <option>挿し木</option>
-                <option>その他</option>
-              </select>
-            </div>
-            <!-- 実施日時 -->
-            <div>
-              <label for="mock-datetime" class="block text-label-md font-medium text-md-on-surface mb-1">実施日時</label>
-              <input id="mock-datetime" type="datetime-local" value="2026-03-22T10:00"
-                class="w-full h-11 px-3 rounded-lg border border-md-outline-variant bg-md-surface text-body-sm" />
-            </div>
-            <!-- 天候（改善 5.2） -->
-            <div>
-              <label for="mock-weather" class="block text-label-md font-medium text-md-on-surface mb-1">天候</label>
-              <select id="mock-weather" class="w-full h-11 px-3 rounded-lg border border-md-outline-variant bg-md-surface text-body-sm">
-                <option>晴れ</option>
-                <option>曇り</option>
-                <option>雨</option>
-                <option>雪</option>
-                <option>その他</option>
-              </select>
-            </div>
-            <!-- 気温（改善 5.2） -->
-            <div>
-              <label for="mock-temp" class="block text-label-md font-medium text-md-on-surface mb-1">気温（℃）</label>
-              <div class="relative">
-                <input id="mock-temp" type="number" placeholder="22" min="-20" max="50" step="0.5"
-                  class="w-full h-11 px-3 pr-10 rounded-lg border border-md-outline-variant bg-md-surface text-body-sm" />
-                <span class="absolute right-3 top-1/2 -translate-y-1/2 text-md-on-surface-variant text-body-sm pointer-events-none">&#8451;</span>
-              </div>
-            </div>
-            <!-- メモ -->
-            <div class="sm:col-span-2">
-              <label for="mock-note" class="block text-label-md font-medium text-md-on-surface mb-1">メモ</label>
-              <textarea id="mock-note" rows="3"
-                class="w-full px-3 py-2 rounded-lg border border-md-outline-variant bg-md-surface text-body-sm resize-y" placeholder="叶面の様子、鉢土の乾き具合など"></textarea>
-            </div>
-            <!-- 写真添付 -->
-            <div class="sm:col-span-2">
-              <label for="mock-photo" class="block text-label-md font-medium text-md-on-surface mb-1">写真添付</label>
-              <input id="mock-photo" type="file" accept="image/*" multiple
-                class="w-full h-11 px-3 py-2 rounded-lg border border-md-outline-variant bg-md-surface text-body-sm file:mr-3 file:rounded-md file:border-0 file:bg-md-primary-container file:px-3 file:py-1 file:text-label-md file:font-medium file:text-md-on-primary-container" />
-              <p class="text-label-md text-md-on-surface-variant mt-1">複数可（JPEG/PNG推奨）</p>
-            </div>
-            <!-- 評価 -->
-            <div>
-              <span class="block text-label-md font-medium text-md-on-surface mb-1">評価</span>
-              <div class="star-rating" aria-label="5段階評価">
-                <span class="filled">&#9733;</span>
-                <span class="filled">&#9733;</span>
-                <span class="filled">&#9733;</span>
-                <span class="filled">&#9733;</span>
-                <span>&#9733;</span>
-              </div>
-              <span class="text-label-md text-md-on-surface-variant ml-2">4 / 5</span>
-            </div>
-            <!-- 送信 -->
-            <div class="sm:col-span-2 flex flex-wrap gap-2">
-              <button type="button" class="md-state-layer h-10 px-5 rounded-full bg-md-primary text-md-on-primary text-label-lg font-medium shadow-md-elevation-1">登録する</button>
-              <a href="#hub-table" class="inline-flex items-center h-10 px-4 rounded-full text-label-lg font-medium text-md-primary outline outline-1 outline-md-outline-variant">一覧へ戻る</a>
-            </div>
-          </form>
-
-          <!-- 最近の作業ログ -->
-          <div class="border-t border-md-outline-variant pt-6">
-            <h4 class="text-title-md font-medium text-md-on-surface mb-3">最近の作業ログ</h4>
-            <ul class="space-y-3">
-              <li class="rounded-lg border border-md-outline-variant bg-md-surface-container-lowest p-3">
-                <div class="flex flex-wrap items-center gap-2 mb-1">
-                  <span class="task-chip bg-emerald-100 text-emerald-900">潅水</span>
-                  <span class="text-label-md text-md-on-surface-variant">2026/03/21 08:30</span>
-                  <span class="text-label-md text-md-on-surface-variant">晴れ / 18℃</span>
-                  <span class="text-label-md text-amber-600">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
-                </div>
-                <p class="text-body-sm text-md-on-surface">鉢土がやや乾燥気味。たっぷり灌水。新芽の伸びは順調。</p>
-              </li>
-              <li class="rounded-lg border border-md-outline-variant bg-md-surface-container-lowest p-3">
-                <div class="flex flex-wrap items-center gap-2 mb-1">
-                  <span class="task-chip" style="background:var(--gantt-care-bg);color:var(--gantt-care-fg);">芽摘み</span>
-                  <span class="text-label-md text-md-on-surface-variant">2026/03/18 14:00</span>
-                  <span class="text-label-md text-md-on-surface-variant">曇り / 14℃</span>
-                  <span class="text-label-md text-amber-600">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-                </div>
-                <p class="text-body-sm text-md-on-surface">強い芽を中心に摘む。全体のバランスは良好。写真3枚添付済み。</p>
-              </li>
-              <li class="rounded-lg border border-md-outline-variant bg-md-surface-container-lowest p-3">
-                <div class="flex flex-wrap items-center gap-2 mb-1">
-                  <span class="task-chip" style="background:var(--gantt-fertilizer-bg);color:var(--gantt-fertilizer-fg);">施肥</span>
-                  <span class="text-label-md text-md-on-surface-variant">2026/03/10 09:00</span>
-                  <span class="text-label-md text-md-on-surface-variant">晴れ / 12℃</span>
-                  <span class="text-label-md text-amber-600">&#9733;&#9733;&#9733;&#9734;&#9734;</span>
-                </div>
-                <p class="text-body-sm text-md-on-surface">春の追肥。有機固形肥料を鉢縁に3粒配置。</p>
-              </li>
-              <li class="rounded-lg border border-md-outline-variant bg-md-surface-container-lowest p-3">
-                <div class="flex flex-wrap items-center gap-2 mb-1">
-                  <span class="task-chip" style="background:var(--gantt-phenology-bg);color:var(--gantt-phenology-fg);">観察</span>
-                  <span class="text-label-md text-md-on-surface-variant">2026/03/05 16:30</span>
-                  <span class="text-label-md text-md-on-surface-variant">雨 / 9℃</span>
-                  <span class="text-label-md text-amber-600">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
-                </div>
-                <p class="text-body-sm text-md-on-surface">雨上がり後の葉色確認。病害虫の兆候なし。幹肌の苔もきれい。</p>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- ===================== 植え替え履歴 タブコンテンツ（改善 5.4） ===================== -->
-        <div class="p-4 md:p-6 space-y-5 bg-md-surface border-t border-md-outline-variant" id="tab-content-repotting">
-          <h3 class="text-title-md font-medium text-md-on-surface">植え替え履歴</h3>
-
-          <!-- サマリーカード -->
-          <div class="rounded-lg border border-md-outline-variant bg-md-surface-container-lowest p-4 flex flex-col sm:flex-row sm:items-center gap-4">
-            <div class="flex-1 grid grid-cols-2 sm:grid-cols-3 gap-3 text-body-sm">
-              <div>
-                <span class="text-label-md text-md-on-surface-variant block">最終植え替え</span>
-                <span class="font-medium">2023/03/15</span>
-              </div>
-              <div>
-                <span class="text-label-md text-md-on-surface-variant block">次回目安</span>
-                <span class="font-medium">2025年春</span>
-              </div>
-              <div>
-                <span class="text-label-md text-md-on-surface-variant block">用土配合</span>
-                <span class="font-medium">赤玉土7:桐生砂3</span>
-              </div>
-            </div>
-            <div class="shrink-0">
-              <span class="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-label-md font-medium bg-amber-100 text-amber-900 border border-amber-400/50">
-                <span aria-hidden="true">&#9888;</span> 次回植え替え時期です
-              </span>
-            </div>
-          </div>
-
-          <!-- 履歴テーブル -->
-          <div class="overflow-x-auto">
-            <table class="issue-table min-w-[600px]">
-              <thead>
-                <tr>
-                  <th>実施日</th>
-                  <th>用土配合</th>
-                  <th>鉢</th>
-                  <th>備考</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="whitespace-nowrap font-medium">2023/03/15</td>
-                  <td>赤玉土7:桐生砂3</td>
-                  <td>丸鉢 30cm（現行）</td>
-                  <td class="text-md-on-surface-variant">根の状態良好。古土をしっかり落として植え付け。</td>
-                </tr>
-                <tr>
-                  <td class="whitespace-nowrap font-medium">2021/03/20</td>
-                  <td>赤玉土6:桐生砂3:富士砂1</td>
-                  <td>丸鉢 28cm</td>
-                  <td class="text-md-on-surface-variant">鉢を一回り大きくした。根張りが強かったため剪定多め。</td>
-                </tr>
-                <tr>
-                  <td class="whitespace-nowrap font-medium">2019/03/10</td>
-                  <td>赤玉土8:桐生砂2</td>
-                  <td>角鉢 25cm</td>
-                  <td class="text-md-on-surface-variant">入手後初の植え替え。根腐れ箇所を除去。</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================================ -->
-    <!-- スケジュール（モバイル表示案）（改善 1.1） -->
-    <!-- ============================================================ -->
-    <section id="schedule-mobile" class="mb-12 scroll-mt-24" aria-labelledby="schedule-mobile-title">
-      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-4">
-        <h2 id="schedule-mobile-title" class="text-title-lg font-medium text-md-on-surface">スケジュール（モバイル表示案）</h2>
-        <p class="text-label-md text-md-on-surface-variant">改善 1.1 横スクロール代替 / 片手操作想定</p>
-      </div>
-
-      <div class="rounded-md border border-md-outline-variant bg-md-surface-container/40 px-4 py-3 text-body-sm text-md-on-surface-variant mb-4">
-        <p>デスクトップでは横長のセル表やガントで全月を一覧できますが、スマートフォンではスクロールが煩雑になります。以下は<strong class="font-medium text-md-on-surface">月を選んで縦リストで確認する</strong>モバイル向け代替案です。</p>
-      </div>
-
-      <div class="max-w-sm mx-auto rounded-2xl border-2 border-md-outline shadow-md-elevation-3 overflow-hidden bg-md-surface-container-lowest">
-        <!-- ヘッダ -->
-        <div class="px-4 py-3 bg-md-surface-container-high border-b border-md-outline-variant">
-          <span class="text-title-md font-medium text-md-on-surface block mb-2">2026年 月別スケジュール</span>
-          <!-- 月タブ -->
-          <div class="flex flex-wrap gap-1.5">
-            <button class="month-tab-btn" type="button">5月</button>
-            <button class="month-tab-btn" type="button">6月</button>
-            <button class="month-tab-btn" type="button">7月</button>
-            <button class="month-tab-btn" type="button">8月</button>
-            <button class="month-tab-btn" type="button">9月</button>
-            <button class="month-tab-btn" type="button">10月</button>
-            <button class="month-tab-btn" type="button">11月</button>
-            <button class="month-tab-btn" type="button">12月</button>
-            <button class="month-tab-btn" type="button">1月</button>
-            <button class="month-tab-btn" type="button">2月</button>
-            <button class="month-tab-btn active" type="button">3月</button>
-          </div>
-        </div>
-        <!-- 月の内容（3月のデモ） -->
-        <ul class="divide-y divide-md-outline-variant max-h-[min(480px,65vh)] overflow-y-auto" role="list">
-          <!-- 共通ルール（当月分）を最上段に表示 -->
-          <li class="px-4 py-3 bg-sky-50 border-l-4 border-l-sky-400">
-            <p class="text-label-md font-medium text-sky-900 mb-2">共通ルール（3月）</p>
-            <div class="flex flex-wrap gap-1.5 mb-1.5">
-              <span class="task-chip" style="background:var(--gantt-water-bg);color:var(--gantt-water-fg);">水やり</span>
-            </div>
-            <p class="text-body-sm text-md-on-surface">水やり：1日1回（春先の目安）</p>
-            <p class="text-body-sm text-md-on-surface-variant mt-1">※西日回避・軒下越冬は解除時期</p>
-          </li>
-          <!-- 以下、品種ごとのスケジュール -->
-          <li class="px-4 py-3">
-            <p class="text-label-md font-medium text-md-primary mb-2">五葉松（PLT-001）</p>
-            <div class="flex flex-wrap gap-1.5">
-              <span class="task-chip" style="background:var(--gantt-care-bg);color:var(--gantt-care-fg);">剪定</span>
-              <span class="task-chip" style="background:var(--gantt-fertilizer-bg);color:var(--gantt-fertilizer-fg);">施肥</span>
-              <span class="task-chip" style="background:var(--gantt-phenology-bg);color:var(--gantt-phenology-fg);">芽吹き</span>
-            </div>
-            <p class="text-body-sm text-md-on-surface-variant mt-1.5">剪定 3/10予定 / 施肥 3/15目安</p>
-          </li>
-          <li class="px-4 py-3 bg-md-surface-container/50">
-            <p class="text-label-md font-medium text-md-primary mb-2">モミジ（PLT-002）</p>
-            <div class="flex flex-wrap gap-1.5">
-              <span class="task-chip" style="background:var(--gantt-phenology-bg);color:var(--gantt-phenology-fg);">芽吹き</span>
-              <span class="task-chip" style="background:var(--gantt-care-bg);color:var(--gantt-care-fg);">剪定・植替</span>
-            </div>
-            <p class="text-body-sm text-md-on-surface-variant mt-1.5">芽吹き観察 3/1〜 / 剪定・再来年植え替え検討</p>
-          </li>
-          <li class="px-4 py-3">
-            <p class="text-label-md font-medium text-md-primary mb-2">姫フウロソウ</p>
-            <div class="flex flex-wrap gap-1.5">
-              <span class="task-chip" style="background:var(--gantt-care-bg);color:var(--gantt-care-fg);">植え替え</span>
-            </div>
-            <p class="text-body-sm text-md-on-surface-variant mt-1.5">再来年植え替え予定</p>
-          </li>
-          <li class="px-4 py-3 bg-md-surface-container/50">
-            <p class="text-label-md font-medium text-md-primary mb-2">ツクシカラマツ</p>
-            <div class="flex flex-wrap gap-1.5">
-              <span class="task-chip" style="background:var(--gantt-phenology-bg);color:var(--gantt-phenology-fg);">芽吹き</span>
-              <span class="task-chip" style="background:var(--gantt-care-bg);color:var(--gantt-care-fg);">植え替え</span>
-            </div>
-            <p class="text-body-sm text-md-on-surface-variant mt-1.5">芽吹き開始 / 再来年植え替え予定</p>
-          </li>
-        </ul>
-        <p class="px-4 py-3 text-label-md text-md-on-surface-variant border-t border-md-outline-variant bg-md-surface-container">
-          デスクトップの広幅表は <a href="#schedule-section" class="text-md-primary underline-offset-2 hover:underline">#schedule-section</a> を参照。
-        </p>
-      </div>
-    </section>
-
-    <!-- ============================================================ -->
-    <!-- 初回・盆栽0本の空状態（改善 1.5） -->
-    <!-- ============================================================ -->
-    <section id="empty-state" class="mb-12 scroll-mt-24" aria-labelledby="empty-state-title">
-      <h2 id="empty-state-title" class="text-title-lg font-medium text-md-on-surface mb-4">初回・盆栽0本の画面（案）</h2>
-      <div class="rounded-md border border-dashed border-md-outline bg-md-surface-container-lowest px-6 py-14 text-center shadow-md-elevation-1">
-        <div class="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-full bg-md-primary-container/60">
-          <span class="text-5xl leading-none" aria-hidden="true">&#127794;</span>
-        </div>
-        <p class="text-headline-sm text-md-on-surface font-normal mb-2">まだ盆栽が登録されていません</p>
-        <p class="text-body-sm text-md-on-surface-variant max-w-md mx-auto mb-6">
-          最初の盆栽を登録して、年間の手入れ予定を管理しましょう
-        </p>
-        <button type="button" class="md-state-layer inline-flex h-11 items-center justify-center rounded-full bg-md-primary px-6 text-label-lg font-medium text-md-on-primary shadow-md-elevation-1">
-          盆栽を登録する
-        </button>
-        <p class="text-body-sm text-md-on-surface-variant mt-6">
-          <a href="#" class="text-md-primary underline-offset-2 hover:underline font-medium">お役立ち記事を読む &rarr;</a>
-        </p>
-      </div>
-    </section>
+    </div>
 
     <!-- ============================================================ -->
     <!-- 案: Backlog風・一覧（表）＋フィルタ -->
@@ -936,28 +600,28 @@
           <table class="issue-table min-w-[920px]">
             <thead>
               <tr>
-                <th class="w-10" aria-label="選択"></th>
-                <th>種別</th>
-                <th>キー</th>
-                <th>件名</th>
-                <th>グループ</th>
-                <th>場所</th>
-                <th>状態</th>
-                <th>次の作業</th>
-                <th>植え付け</th>
-                <th>予定メモ</th>
-                <th>更新</th>
+                <th scope="col" class="w-10" aria-label="選択"></th>
+                <th scope="col">種別</th>
+                <th scope="col">キー</th>
+                <th scope="col">件名</th>
+                <th scope="col">グループ</th>
+                <th scope="col">場所</th>
+                <th scope="col">状態</th>
+                <th scope="col">次の作業</th>
+                <th scope="col">植え付け</th>
+                <th scope="col">予定メモ</th>
+                <th scope="col">更新</th>
               </tr>
             </thead>
             <tbody>
               <tr class="row-selected">
                 <td><span class="inline-block w-4 h-4 rounded border-2 border-md-primary bg-md-primary/20" aria-hidden="true"></span></td>
-                <td><span class="inline-flex h-6 px-2 rounded-md bg-sky-100 text-sky-900 text-label-md font-medium">寄せ植え</span></td>
-                <td class="col-key"><a href="#" class="underline-offset-2 hover:underline">YOSE-01</a></td>
+                <td><span class="inline-flex h-6 px-2 rounded-md bg-md-surface-container-highest text-md-on-surface text-label-md font-medium">寄せ植え</span></td>
+                <td class="col-key"><a href="#bonsai-detail" class="underline-offset-2 hover:underline">YOSE-01</a></td>
                 <td class="font-medium text-md-on-surface">軒下・夏越しセット（鉢）</td>
                 <td>—</td>
                 <td>南向き軒下</td>
-                <td><span class="inline-flex items-center gap-1 h-6 px-2 rounded-full bg-emerald-100 text-emerald-900 text-label-md font-medium" title="良好"><span aria-hidden="true">&#10003;</span> 良好</span></td>
+                <td><span class="inline-flex items-center gap-1 h-6 px-2.5 rounded-full bg-md-primary-container text-md-on-primary-container text-label-md font-medium" title="良好"><span aria-hidden="true">&#10003;</span> 良好</span></td>
                 <td class="text-md-on-surface-variant max-w-[14rem]">メンバー3種のスケジュールを参照</td>
                 <td>2023/5〜</td>
                 <td class="text-md-on-surface-variant max-w-[10rem]">—</td>
@@ -965,12 +629,12 @@
               </tr>
               <tr class="row-member">
                 <td></td>
-                <td><span class="inline-flex h-6 px-2 rounded-md bg-violet-100 text-violet-900 text-label-md font-medium">メンバー</span></td>
-                <td class="col-key"><a href="#" class="underline-offset-2 hover:underline">PLT-001</a></td>
+                <td><span class="inline-flex h-6 px-2 rounded-md bg-md-primary-container/50 text-md-on-primary-container text-label-md font-medium">メンバー</span></td>
+                <td class="col-key"><a href="#bonsai-detail" class="underline-offset-2 hover:underline">PLT-001</a></td>
                 <td class="pl-6 border-l-2 border-l-md-primary">姫フウロソウ</td>
                 <td>YOSE-01</td>
                 <td>南向き軒下</td>
-                <td><span class="inline-flex items-center gap-1 h-6 px-2 rounded-full bg-emerald-100 text-emerald-900 text-label-md font-medium" title="良好"><span aria-hidden="true">&#10003;</span> 良好</span></td>
+                <td><span class="inline-flex items-center gap-1 h-6 px-2.5 rounded-full bg-md-primary-container text-md-on-primary-container text-label-md font-medium" title="良好"><span aria-hidden="true">&#10003;</span> 良好</span></td>
                 <td class="text-md-on-surface-variant">夕方の葉水（夏季）</td>
                 <td>2023/5</td>
                 <td class="text-md-on-surface-variant">2026/3 植え替え</td>
@@ -978,12 +642,12 @@
               </tr>
               <tr class="row-member">
                 <td></td>
-                <td><span class="inline-flex h-6 px-2 rounded-md bg-violet-100 text-violet-900 text-label-md font-medium">メンバー</span></td>
-                <td class="col-key"><a href="#" class="underline-offset-2 hover:underline">PLT-002</a></td>
+                <td><span class="inline-flex h-6 px-2 rounded-md bg-md-primary-container/50 text-md-on-primary-container text-label-md font-medium">メンバー</span></td>
+                <td class="col-key"><a href="#bonsai-detail" class="underline-offset-2 hover:underline">PLT-002</a></td>
                 <td class="pl-6 border-l-2 border-l-md-primary">ツクシカラマツ</td>
                 <td>YOSE-01</td>
                 <td>南向き軒下</td>
-                <td><span class="inline-flex items-center gap-1 h-6 px-2 rounded-full bg-emerald-100 text-emerald-900 text-label-md font-medium" title="良好"><span aria-hidden="true">&#10003;</span> 良好</span></td>
+                <td><span class="inline-flex items-center gap-1 h-6 px-2.5 rounded-full bg-md-primary-container text-md-on-primary-container text-label-md font-medium" title="良好"><span aria-hidden="true">&#10003;</span> 良好</span></td>
                 <td class="text-md-on-surface-variant">花後剪定・夕方の葉水（推奨）</td>
                 <td>2023/5</td>
                 <td class="text-md-on-surface-variant">—</td>
@@ -991,12 +655,12 @@
               </tr>
               <tr class="row-member">
                 <td></td>
-                <td><span class="inline-flex h-6 px-2 rounded-md bg-violet-100 text-violet-900 text-label-md font-medium">メンバー</span></td>
-                <td class="col-key"><a href="#" class="underline-offset-2 hover:underline">PLT-003</a></td>
+                <td><span class="inline-flex h-6 px-2 rounded-md bg-md-primary-container/50 text-md-on-primary-container text-label-md font-medium">メンバー</span></td>
+                <td class="col-key"><a href="#bonsai-detail" class="underline-offset-2 hover:underline">PLT-003</a></td>
                 <td class="pl-6 border-l-2 border-l-md-primary">ハクリュウ</td>
                 <td>YOSE-01</td>
                 <td>南向き軒下</td>
-                <td><span class="inline-flex items-center gap-1 h-6 px-2 rounded-full bg-emerald-100 text-emerald-900 text-label-md font-medium" title="良好"><span aria-hidden="true">&#10003;</span> 良好</span></td>
+                <td><span class="inline-flex items-center gap-1 h-6 px-2.5 rounded-full bg-md-primary-container text-md-on-primary-container text-label-md font-medium" title="良好"><span aria-hidden="true">&#10003;</span> 良好</span></td>
                 <td class="text-md-on-surface-variant">西日回避・夕方の葉水（推奨）</td>
                 <td>2023/5</td>
                 <td class="text-md-on-surface-variant">—</td>
@@ -1004,25 +668,25 @@
               </tr>
               <tr>
                 <td><span class="inline-block w-4 h-4 rounded border-2 border-md-outline-variant" aria-hidden="true"></span></td>
-                <td><span class="inline-flex h-6 px-2 rounded-md bg-slate-200 text-slate-800 text-label-md font-medium">単独</span></td>
-                <td class="col-key"><a href="#" class="underline-offset-2 hover:underline">PLT-010</a></td>
+                <td><span class="inline-flex h-6 px-2 rounded-md bg-md-surface-container-highest text-md-on-surface-variant text-label-md font-medium">単独</span></td>
+                <td class="col-key"><a href="#bonsai-detail" class="underline-offset-2 hover:underline">PLT-010</a></td>
                 <td class="font-medium text-md-on-surface">モミジ（出猩々）</td>
                 <td>—</td>
                 <td>ベランダ東側</td>
-                <td><span class="inline-flex items-center gap-1 h-6 px-2 rounded-full bg-emerald-100 text-emerald-900 text-label-md font-medium" title="良好"><span aria-hidden="true">&#10003;</span> 良好</span></td>
+                <td><span class="inline-flex items-center gap-1 h-6 px-2.5 rounded-full bg-md-primary-container text-md-on-primary-container text-label-md font-medium" title="良好"><span aria-hidden="true">&#10003;</span> 良好</span></td>
                 <td class="text-md-on-surface-variant">剪定・紅葉観察（葉水不要想定）</td>
                 <td>2023/6</td>
-                <td class="text-md-on-surface-variant">再来年 植え替え</td>
+                <td class="text-md-on-surface-variant">2028年春 植え替え目安</td>
                 <td class="whitespace-nowrap text-md-on-surface-variant">03/10</td>
               </tr>
               <tr>
                 <td><span class="inline-block w-4 h-4 rounded border-2 border-md-outline-variant" aria-hidden="true"></span></td>
-                <td><span class="inline-flex h-6 px-2 rounded-md bg-slate-200 text-slate-800 text-label-md font-medium">単独</span></td>
-                <td class="col-key"><a href="#" class="underline-offset-2 hover:underline">PLT-021</a></td>
+                <td><span class="inline-flex h-6 px-2 rounded-md bg-md-surface-container-highest text-md-on-surface-variant text-label-md font-medium">単独</span></td>
+                <td class="col-key"><a href="#bonsai-detail" class="underline-offset-2 hover:underline">PLT-021</a></td>
                 <td class="font-medium text-md-on-surface">スイレンボク</td>
                 <td>—</td>
                 <td>室内（冬季）</td>
-                <td><span class="inline-flex items-center gap-1 h-6 px-2 rounded-full bg-rose-100 text-rose-900 text-label-md font-medium" title="要注意"><span aria-hidden="true">&#9888;</span> 要注意</span></td>
+                <td><span class="inline-flex items-center gap-1 h-6 px-2.5 rounded-full bg-md-error-container text-md-on-error-container text-label-md font-medium" title="要注意"><span aria-hidden="true">&#9888;</span> 要注意</span></td>
                 <td class="text-md-on-surface-variant">防寒・乾燥チェック</td>
                 <td>2023/8</td>
                 <td class="text-md-on-surface-variant">—</td>
@@ -1129,13 +793,13 @@
           class="group rounded-md bg-md-surface-container-lowest shadow-md-elevation-1 hover:shadow-md-elevation-2 transition-shadow duration-200 overflow-hidden outline outline-1 outline-md-outline-variant/0 hover:outline-md-outline-variant/50">
           <div class="card-img h-40 flex items-center justify-center text-5xl opacity-90">&#127794;</div>
           <div class="p-4">
-            <h2 class="text-title-md font-medium text-md-on-surface">黒松 太郎</h2>
+            <h3 class="text-title-md font-medium text-md-on-surface">黒松 太郎</h3>
             <p class="text-body-sm text-md-on-surface-variant mt-1">黒松</p>
             <div class="flex flex-wrap gap-2 mt-3">
               <span
-                class="inline-flex items-center gap-1 h-8 px-3 rounded-lg bg-md-primary-container text-md-on-primary-container text-label-md font-medium" title="良好"><span aria-hidden="true">&#10003;</span> 良好</span>
+                class="inline-flex items-center gap-1 h-7 px-3 rounded-lg bg-md-primary-container text-md-on-primary-container text-label-md font-medium" title="良好"><span aria-hidden="true">&#10003;</span> 良好</span>
               <span
-                class="inline-flex items-center h-8 px-3 rounded-lg bg-md-surface-container-highest text-md-on-surface-variant text-label-md font-medium outline outline-1 outline-md-outline-variant">展示会用</span>
+                class="inline-flex items-center h-7 px-3 rounded-lg bg-md-surface-container-highest text-md-on-surface-variant text-label-md font-medium outline outline-1 outline-md-outline-variant">展示会用</span>
             </div>
           </div>
         </article>
@@ -1143,11 +807,11 @@
           class="rounded-md bg-md-surface shadow-md-elevation-1 hover:shadow-md-elevation-2 transition-shadow duration-200 overflow-hidden outline outline-1 outline-md-outline-variant/0 hover:outline-md-outline-variant/50">
           <div class="card-img h-40 flex items-center justify-center text-5xl opacity-90">&#127807;</div>
           <div class="p-4">
-            <h2 class="text-title-md font-medium text-md-on-surface">真柏 花子</h2>
+            <h3 class="text-title-md font-medium text-md-on-surface">真柏 花子</h3>
             <p class="text-body-sm text-md-on-surface-variant mt-1">真柏</p>
             <div class="flex flex-wrap gap-2 mt-3">
               <span
-                class="inline-flex items-center gap-1 h-8 px-3 rounded-lg bg-md-primary-container text-md-on-primary-container text-label-md font-medium" title="良好"><span aria-hidden="true">&#10003;</span> 良好</span>
+                class="inline-flex items-center gap-1 h-7 px-3 rounded-lg bg-md-primary-container text-md-on-primary-container text-label-md font-medium" title="良好"><span aria-hidden="true">&#10003;</span> 良好</span>
             </div>
           </div>
         </article>
@@ -1155,11 +819,11 @@
           class="rounded-md bg-md-surface shadow-md-elevation-1 hover:shadow-md-elevation-2 transition-shadow duration-200 overflow-hidden outline outline-1 outline-md-outline-variant/0 hover:outline-md-outline-variant/50">
           <div class="card-img h-40 flex items-center justify-center text-5xl opacity-90">&#127796;</div>
           <div class="p-4">
-            <h2 class="text-title-md font-medium text-md-on-surface">五葉松 三郎</h2>
+            <h3 class="text-title-md font-medium text-md-on-surface">五葉松 三郎</h3>
             <p class="text-body-sm text-md-on-surface-variant mt-1">五葉松</p>
             <div class="flex flex-wrap gap-2 mt-3">
               <span
-                class="inline-flex items-center gap-1 h-8 px-3 rounded-lg bg-md-error-container text-md-on-error-container text-label-md font-medium" title="要注意"><span aria-hidden="true">&#9888;</span> 要注意</span>
+                class="inline-flex items-center gap-1 h-7 px-3 rounded-lg bg-md-error-container text-md-on-error-container text-label-md font-medium" title="要注意"><span aria-hidden="true">&#9888;</span> 要注意</span>
             </div>
           </div>
         </article>
@@ -1169,10 +833,10 @@
     <!-- ============================================================ -->
     <!-- 年間スケジュール -->
     <!-- ============================================================ -->
-    <section id="schedule-section" class="scroll-mt-24">
+    <section id="schedule-section" class="mb-12 scroll-mt-24" aria-labelledby="schedule-section-title">
       <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-5">
         <div>
-          <h2 class="text-title-lg md:text-headline-sm font-normal text-md-on-surface">年間スケジュール</h2>
+          <h2 id="schedule-section-title" class="text-title-lg md:text-headline-sm font-normal text-md-on-surface">年間スケジュール</h2>
           <p class="text-body-sm text-md-on-surface-variant mt-2 max-w-2xl">植え付け時期・植物ごとに、変化・手入れ（品種差分）・肥料を月次で表示（5月〜翌3月）。<strong class="font-medium text-md-on-surface">水やり</strong>と<strong class="font-medium text-md-on-surface">西日回避・軒下越冬</strong>は共通ルール帯に1回だけ。<strong class="font-medium text-md-on-surface">夕方の葉水</strong>は品種により要否が異なるため<strong class="font-medium text-md-on-surface">品種行の手入れ</strong>に記載します。剪定・植え替え・耐寒なども品種ごとです。寄せ植えメンバーは<strong class="font-medium text-md-on-surface">グループ見出しの下に連続表示</strong>します。</p>
           <p class="text-body-sm text-md-on-surface-variant mt-2 max-w-2xl"><strong class="font-medium text-md-on-surface">セル表</strong>は細かい文言の入力・確認向け、<strong class="font-medium text-md-on-surface">ガント（案）</strong>は期間の把握・レビュー向けです。下の切替で表示を切り替えられます。</p>
         </div>
@@ -1186,32 +850,32 @@
           <label for="schedule-sv-table" class="schedule-tab">セル表</label>
           <label for="schedule-sv-gantt" class="schedule-tab">ガント（案）</label>
         </div>
-        <div class="schedule-panel-table overflow-x-auto">
+        <div class="schedule-panel-table overflow-x-auto scroll-hint-right">
           <table class="schedule-table min-w-[1100px] w-full">
             <thead>
               <tr>
-                <th class="sticky-col left-0 min-w-[4.75rem]">植え付け時期</th>
-                <th class="sticky-col left-[4.75rem] min-w-[7.5rem] shadow-[2px_0_0_var(--md-outline-variant)]">植物</th>
-                <th class="task-label min-w-[3.5rem]">作業</th>
-                <th>5月</th><th>6月</th><th>7月</th><th>8月</th><th>9月</th><th>10月</th><th>11月</th><th>12月</th><th>1月</th><th>2月</th><th>3月</th>
+                <th scope="col" class="sticky-col left-0 min-w-[4.75rem]">植え付け時期</th>
+                <th scope="col" class="sticky-col left-[4.75rem] min-w-[7.5rem] shadow-[2px_0_0_var(--md-outline-variant)]">植物</th>
+                <th scope="col" class="task-label min-w-[3.5rem]">作業</th>
+                <th scope="col">5月</th><th scope="col">6月</th><th scope="col">7月</th><th scope="col">8月</th><th scope="col">9月</th><th scope="col">10月</th><th scope="col">11月</th><th scope="col">12月</th><th scope="col">1月</th><th scope="col">2月</th><th scope="col">3月</th>
               </tr>
             </thead>
 
             <!-- 共通ルール：水やり・西日・軒下のみ。夕方の葉水は品種差のため品種行へ -->
             <tbody class="schedule-common-rules">
               <tr>
-                <td colspan="14" class="!bg-sky-100/95 text-sky-950 font-medium text-label-lg py-2.5 px-3 border-b border-sky-200">
+                <td colspan="14" class="!bg-md-surface-container-highest text-md-on-surface font-medium text-label-lg py-2.5 px-3 border-b border-md-outline-variant">
                   共通ルール（全品種・同一管理条件）
                 </td>
               </tr>
               <tr>
                 <td rowspan="3" class="sticky-col left-0 text-center align-middle text-md-on-surface-variant">—</td>
-                <td rowspan="3" class="sticky-col left-[4.75rem] font-medium shadow-[2px_0_0_var(--md-outline-variant)] text-sky-950">共通</td>
+                <td rowspan="3" class="sticky-col left-[4.75rem] font-medium shadow-[2px_0_0_var(--md-outline-variant)] text-md-on-surface">共通</td>
                 <td class="task-label">水やり</td>
                 <td>1日1〜2回</td>
                 <td colspan="4">1日2回</td>
                 <td>1日1〜2回</td>
-                <td colspan="4">2〜3日1回</td>
+                <td colspan="4">乾いたら（晴天は毎日確認）</td>
                 <td>1日1回</td>
               </tr>
               <tr>
@@ -1258,7 +922,7 @@
                 <td></td>
                 <td colspan="4">夕方の葉水（本品種は推奨）</td>
                 <td></td><td></td><td></td><td></td><td></td>
-                <td>再来年植え替え</td>
+                <td>2028年春 植え替え目安</td>
               </tr>
               <tr>
                 <td class="task-label">肥料</td>
@@ -1286,7 +950,7 @@
                 <td></td>
                 <td colspan="4">夕方の葉水（本品種は推奨）</td>
                 <td></td><td></td><td></td><td></td><td></td>
-                <td>再来年植え替え</td>
+                <td>2028年春 植え替え目安</td>
               </tr>
               <tr>
                 <td class="task-label">肥料</td>
@@ -1310,7 +974,7 @@
                 <td></td>
                 <td colspan="4">夕方の葉水（本品種は推奨）</td>
                 <td></td><td></td><td></td><td></td><td></td>
-                <td>再来年植え替え</td>
+                <td>2028年春 植え替え目安</td>
               </tr>
               <tr>
                 <td class="task-label">肥料</td>
@@ -1338,7 +1002,7 @@
                 <td colspan="4">剪定（夏期）<br><span class="text-label-md text-md-on-surface-variant">※夕方の葉水は本品種では不要想定</span></td>
                 <td></td><td></td>
                 <td colspan="3"></td>
-                <td>剪定／再来年植え替え</td>
+                <td>剪定／2028年春 植え替え目安</td>
               </tr>
               <tr>
                 <td class="task-label">肥料</td>
@@ -1365,7 +1029,7 @@
                 <td></td>
                 <td colspan="4">夕方の葉水（本品種は推奨）</td>
                 <td></td><td></td><td></td><td></td><td></td>
-                <td>再来年植え替え</td>
+                <td>2028年春 植え替え目安</td>
               </tr>
               <tr>
                 <td class="task-label">肥料</td>
@@ -1393,7 +1057,7 @@
                 <td></td>
                 <td colspan="4">夕方の葉水（本品種は推奨）</td>
                 <td></td><td></td><td></td><td></td><td></td>
-                <td>再来年植え替え</td>
+                <td>2028年春 植え替え目安</td>
               </tr>
               <tr>
                 <td class="task-label">肥料</td>
@@ -1422,7 +1086,7 @@
               </tr>
               <tr>
                 <td class="task-label">肥料</td>
-                <td></td><td class="schedule-fert-cell"><span class="schedule-fert-bar" title="6月：施肥の目安">施肥</span></td><td></td><td></td><td class="schedule-fert-cell"><span class="schedule-fert-bar" title="9月：施肥の目安">施肥</span></td><td class="schedule-fert-cell"><span class="schedule-fert-bar" title="10月：施肥の目安">施肥</span></td><td class="schedule-fert-cell"><span class="schedule-fert-bar" title="11月：施肥の目安">施肥</span></td><td></td><td></td><td></td><td></td>
+                <td></td><td class="schedule-fert-cell"><span class="schedule-fert-bar" title="6月：施肥の目安">施肥</span></td><td class="schedule-fert-cell"><span class="schedule-fert-bar" title="7月：施肥の目安">施肥</span></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
               </tr>
             </tbody>
 
@@ -1444,11 +1108,11 @@
                 <td colspan="3">7月〜夏期管理（西日は共通ルール）</td>
                 <td></td>
                 <td colspan="4">11〜12月は実を残して管理（軒下は共通ルール）。2月は長い枝の剪定可</td>
-                <td>再来年植え替え</td>
+                <td>2028年春 植え替え目安</td>
               </tr>
               <tr>
                 <td class="task-label">肥料</td>
-                <td></td><td class="schedule-fert-cell"><span class="schedule-fert-bar" title="6月：施肥の目安">施肥</span></td><td></td><td></td><td class="schedule-fert-cell"><span class="schedule-fert-bar" title="9月：施肥の目安">施肥</span></td><td class="schedule-fert-cell"><span class="schedule-fert-bar" title="10月：施肥の目安">施肥</span></td><td class="schedule-fert-cell"><span class="schedule-fert-bar" title="11月：施肥の目安">施肥</span></td><td></td><td></td><td></td><td></td>
+                <td class="schedule-fert-cell"><span class="schedule-fert-bar" title="5月：施肥の目安">施肥</span></td><td class="schedule-fert-cell"><span class="schedule-fert-bar" title="6月：施肥の目安">施肥</span></td><td></td><td></td><td class="schedule-fert-cell"><span class="schedule-fert-bar" title="9月：施肥の目安">施肥</span></td><td></td><td></td><td></td><td></td><td></td><td></td>
               </tr>
             </tbody>
 
@@ -1470,11 +1134,11 @@
                 <td colspan="3">7月〜夏期管理（西日は共通ルール）</td>
                 <td></td>
                 <td colspan="4">11〜12月は実を残して管理（軒下は共通ルール）。2月は長い枝の剪定可</td>
-                <td>再来年植え替え</td>
+                <td>2028年春 植え替え目安</td>
               </tr>
               <tr>
                 <td class="task-label">肥料</td>
-                <td></td><td class="schedule-fert-cell"><span class="schedule-fert-bar" title="6月：施肥の目安">施肥</span></td><td></td><td></td><td class="schedule-fert-cell"><span class="schedule-fert-bar" title="9月：施肥の目安">施肥</span></td><td class="schedule-fert-cell"><span class="schedule-fert-bar" title="10月：施肥の目安">施肥</span></td><td class="schedule-fert-cell"><span class="schedule-fert-bar" title="11月：施肥の目安">施肥</span></td><td></td><td></td><td></td><td></td>
+                <td></td><td></td><td></td><td></td><td class="schedule-fert-cell"><span class="schedule-fert-bar" title="9月：施肥の目安">施肥</span></td><td class="schedule-fert-cell"><span class="schedule-fert-bar" title="10月：施肥の目安">施肥</span></td><td></td><td></td><td></td><td></td><td></td>
               </tr>
             </tbody>
           </table>
@@ -1482,7 +1146,7 @@
 
         <div class="schedule-panel-gantt">
           <!-- 実装時は表と同一データソースからレンダリングすると二重メンテを避けられます -->
-          <div class="overflow-x-auto">
+          <div class="overflow-x-auto scroll-hint-right">
             <div class="gantt-root" role="region" aria-label="年間スケジュール・ガントチャート案">
               <div class="gantt-head gantt-head-plant">植物</div>
               <div class="gantt-head gantt-head-task">作業</div>
@@ -1509,7 +1173,7 @@
                 <div class="gantt-bar gantt-bar--water" style="grid-column: 1 / 2;" title="5月：1日1〜2回">1〜2回/日</div>
                 <div class="gantt-bar gantt-bar--water" style="grid-column: 2 / 6;" title="6〜9月：1日2回">2回/日</div>
                 <div class="gantt-bar gantt-bar--water" style="grid-column: 6 / 7;" title="10月：1日1〜2回">1〜2回</div>
-                <div class="gantt-bar gantt-bar--water" style="grid-column: 7 / 11;" title="11月〜2月：2〜3日に1回">2〜3日/回</div>
+                <div class="gantt-bar gantt-bar--water" style="grid-column: 7 / 11;" title="11月〜2月：乾いたら（晴天は毎日確認）">乾いたら</div>
                 <div class="gantt-bar gantt-bar--water" style="grid-column: 11 / 12;" title="3月：1日1回">1回/日</div>
               </div>
               <div class="gantt-tasklabel" style="grid-row: 4; grid-column: 2;">手入れ</div>
@@ -1538,7 +1202,7 @@
               <div class="gantt-track" style="grid-row: 8; grid-column: 3 / -1;">
                 <span class="gantt-grid-cell"></span><span class="gantt-grid-cell"></span><span class="gantt-grid-cell"></span><span class="gantt-grid-cell"></span><span class="gantt-grid-cell"></span><span class="gantt-grid-cell"></span><span class="gantt-grid-cell"></span><span class="gantt-grid-cell"></span><span class="gantt-grid-cell"></span><span class="gantt-grid-cell"></span><span class="gantt-grid-cell gantt-col-current-bg"></span>
                 <div class="gantt-bar gantt-bar--care" style="grid-column: 2 / 6;" title="6〜9月：夕方の葉水（本品種は推奨）">夕方の葉水</div>
-                <div class="gantt-bar gantt-bar--care" style="grid-column: 11 / 12;" title="3月：再来年植え替え（品種固有）">植え替え予定</div>
+                <div class="gantt-bar gantt-bar--care" style="grid-column: 11 / 12;" title="3月：2028年春 植え替え目安（品種固有）">植え替え予定</div>
               </div>
               <div class="gantt-tasklabel gantt-block-end" style="grid-row: 9; grid-column: 2;">肥料</div>
               <div class="gantt-track gantt-block-end" style="grid-row: 9; grid-column: 3 / -1;">
@@ -1563,7 +1227,7 @@
                 <span class="gantt-grid-cell"></span><span class="gantt-grid-cell"></span><span class="gantt-grid-cell"></span><span class="gantt-grid-cell"></span><span class="gantt-grid-cell"></span><span class="gantt-grid-cell"></span><span class="gantt-grid-cell"></span><span class="gantt-grid-cell"></span><span class="gantt-grid-cell"></span><span class="gantt-grid-cell"></span><span class="gantt-grid-cell gantt-col-current-bg"></span>
                 <div class="gantt-bar gantt-bar--care" style="grid-column: 1 / 2;" title="5月：剪定（品種固有）">剪定</div>
                 <div class="gantt-bar gantt-bar--care" style="grid-column: 2 / 6;" title="6〜9月：夏期の剪定（西日は上の共通ルール）。夕方の葉水は不要想定">夏期剪定</div>
-                <div class="gantt-bar gantt-bar--care" style="grid-column: 11 / 12;" title="3月：剪定・再来年植え替え">剪定・植替</div>
+                <div class="gantt-bar gantt-bar--care" style="grid-column: 11 / 12;" title="3月：剪定・2028年春 植え替え目安">剪定・植替</div>
               </div>
               <div class="gantt-tasklabel gantt-block-end" style="grid-row: 12; grid-column: 2;">肥料</div>
               <div class="gantt-track gantt-block-end" style="grid-row: 12; grid-column: 3 / -1;">
@@ -1587,6 +1251,375 @@
             <p class="mt-3 mb-0 text-label-md">実装時は植物単位で行をまとめて折りたたみ可能にすると一覧が短くなります。3月列の強調は「今月」デモ用です。</p>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 盆栽詳細ページ（改善 1.3 / 5.2 / 5.4） -->
+    <!-- ============================================================ -->
+    <section id="bonsai-detail" class="mb-12 scroll-mt-24" aria-labelledby="bonsai-detail-title">
+      <h2 id="bonsai-detail-title" class="text-title-lg font-medium text-md-on-surface mb-4">盆栽詳細（HTMLモック）</h2>
+
+      <!-- パンくず -->
+      <nav aria-label="パンくず" class="text-label-md text-md-on-surface-variant mb-4">
+        <ol class="flex flex-wrap items-center gap-1.5">
+          <li><a href="#hub-table" class="text-md-primary underline-offset-2 hover:underline">マイ盆栽</a></li>
+          <li aria-hidden="true" class="text-md-outline">/</li>
+          <li class="text-md-on-surface" aria-current="page">黒松 太郎</li>
+        </ol>
+      </nav>
+
+      <div class="rounded-md bg-md-surface-container-lowest shadow-md-elevation-2 outline outline-1 outline-md-outline-variant overflow-hidden">
+        <!-- ヒーローエリア -->
+        <div class="grid md:grid-cols-[minmax(0,320px)_1fr] gap-0 border-b border-md-outline-variant">
+          <div class="card-img aspect-[4/3] md:min-h-[240px] flex items-center justify-center text-md-on-primary-container text-label-md p-4 flex-col gap-2">
+            <span class="text-5xl opacity-80" aria-hidden="true">🌲</span>
+            <span>代表画像（main_image）</span>
+          </div>
+          <div class="p-4 md:p-6 space-y-4">
+            <div>
+              <h3 class="text-headline-sm font-medium text-md-on-surface">黒松 太郎</h3>
+              <p class="text-body-sm text-md-on-surface-variant mt-1">黒松（Pinus thunbergii）</p>
+            </div>
+
+            <!-- 体調バッジ -->
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="inline-flex items-center gap-1 h-7 px-2.5 rounded-full text-label-md font-medium bg-md-primary-container text-md-on-primary-container border border-md-primary/30" title="良好">
+                <span aria-hidden="true">&#10003;</span><span>良好</span>
+              </span>
+              <span class="text-label-md text-md-on-surface-variant">（色＋アイコン＋ラベルで区別 / 改善 1.4）</span>
+            </div>
+
+            <!-- 基本情報グリッド -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-2 text-body-sm border-t border-md-outline-variant pt-4">
+              <div><span class="text-label-md text-md-on-surface-variant block">入手日</span><span class="font-medium">2020/04/15</span></div>
+              <div><span class="text-label-md text-md-on-surface-variant block">推定樹齢</span><span class="font-medium">42年</span></div>
+              <div><span class="text-label-md text-md-on-surface-variant block">設置場所</span><span class="font-medium">ベランダ東側</span></div>
+              <div><span class="text-label-md text-md-on-surface-variant block">用土</span><span class="font-medium">赤玉土7:桐生砂3</span></div>
+              <div><span class="text-label-md text-md-on-surface-variant block">鉢</span><span class="font-medium">丸鉢 30cm</span></div>
+              <div>
+                <span class="text-label-md text-md-on-surface-variant block">体調</span>
+                <span class="inline-flex items-center gap-1 font-medium text-md-on-primary-container"><span aria-hidden="true">&#10003;</span> 良好</span>
+              </div>
+            </div>
+
+            <!-- タグ -->
+            <div class="flex flex-wrap gap-2">
+              <span class="inline-flex items-center h-7 px-2.5 rounded-md bg-md-surface-container-highest text-md-on-surface-variant text-label-md font-medium outline outline-1 outline-md-outline-variant">展示会用</span>
+              <span class="inline-flex items-center gap-1 h-7 px-2.5 rounded-full bg-md-error-container text-md-on-error-container text-label-md font-medium outline outline-1 outline-md-error/30" title="要注意"><span aria-hidden="true">&#9888;</span> 要注意</span>
+            </div>
+
+            <!-- タブ -->
+            <div class="flex flex-wrap gap-2 border-t border-md-outline-variant pt-4" role="tablist" aria-label="詳細セクション">
+              <button class="detail-tab active" id="tab-carelog" role="tab" aria-selected="true" aria-controls="tab-content-carelog">作業ログ</button>
+              <button class="detail-tab" id="tab-schedule" role="tab" aria-selected="false" aria-controls="tab-content-schedule">スケジュール</button>
+              <button class="detail-tab" id="tab-media" role="tab" aria-selected="false" aria-controls="tab-content-media">メディア</button>
+              <button class="detail-tab" id="tab-repotting" role="tab" aria-selected="false" aria-controls="tab-content-repotting">植え替え履歴</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===================== 作業ログ タブコンテンツ ===================== -->
+        <div class="p-4 md:p-6 space-y-6 bg-md-surface" id="tab-content-carelog" role="tabpanel" aria-labelledby="tab-carelog" tabindex="0">
+          <h3 class="text-title-md font-medium text-md-on-surface">作業を記録</h3>
+          <form class="grid sm:grid-cols-2 gap-4 max-w-2xl" action="#" onsubmit="return false;">
+            <!-- 作業種別 -->
+            <div class="sm:col-span-2">
+              <label for="mock-task" class="block text-label-md font-medium text-md-on-surface mb-1">作業種別<span class="text-md-error text-label-md ml-1">*</span></label>
+              <select id="mock-task" required class="w-full h-11 px-3 rounded-lg border border-md-outline-variant bg-md-surface text-body-sm">
+                <option>水やり（灌水）</option>
+                <option>施肥</option>
+                <option>剪定</option>
+                <option>植え替え</option>
+                <option>観察</option>
+                <option>芽摘み</option>
+                <option>葉刈り</option>
+                <option>葉水</option>
+                <option>針金かけ</option>
+                <option>針金外し</option>
+                <option>消毒</option>
+                <option>ジン・シャリ作り</option>
+                <option>取り木</option>
+                <option>挿し木</option>
+                <option>その他</option>
+              </select>
+            </div>
+            <!-- 実施日時 -->
+            <div>
+              <label for="mock-datetime" class="block text-label-md font-medium text-md-on-surface mb-1">実施日時<span class="text-md-error text-label-md ml-1">*</span></label>
+              <input id="mock-datetime" type="datetime-local" value="2026-03-22T10:00" required
+                class="w-full h-11 px-3 rounded-lg border border-md-outline-variant bg-md-surface text-body-sm" />
+            </div>
+            <!-- 天候（改善 5.2） -->
+            <div>
+              <label for="mock-weather" class="block text-label-md font-medium text-md-on-surface mb-1">天候</label>
+              <select id="mock-weather" class="w-full h-11 px-3 rounded-lg border border-md-outline-variant bg-md-surface text-body-sm">
+                <option>晴れ</option>
+                <option>曇り</option>
+                <option>雨</option>
+                <option>雪</option>
+                <option>その他</option>
+              </select>
+            </div>
+            <!-- 気温（改善 5.2） -->
+            <div>
+              <label for="mock-temp" class="block text-label-md font-medium text-md-on-surface mb-1">気温（℃）</label>
+              <div class="relative">
+                <input id="mock-temp" type="number" placeholder="22" min="-20" max="50" step="0.5"
+                  class="w-full h-11 px-3 pr-10 rounded-lg border border-md-outline-variant bg-md-surface text-body-sm" />
+                <span class="absolute right-3 top-1/2 -translate-y-1/2 text-md-on-surface-variant text-body-sm pointer-events-none">&#8451;</span>
+              </div>
+            </div>
+            <!-- メモ -->
+            <div class="sm:col-span-2">
+              <label for="mock-note" class="block text-label-md font-medium text-md-on-surface mb-1">メモ</label>
+              <textarea id="mock-note" rows="3"
+                class="w-full px-3 py-2 rounded-lg border border-md-outline-variant bg-md-surface text-body-sm resize-y" placeholder="葉面の様子、鉢土の乾き具合など"></textarea>
+            </div>
+            <!-- 写真添付 -->
+            <div class="sm:col-span-2">
+              <label for="mock-photo" class="block text-label-md font-medium text-md-on-surface mb-1">写真添付</label>
+              <input id="mock-photo" type="file" accept="image/*" multiple
+                class="w-full h-11 px-3 py-2 rounded-lg border border-md-outline-variant bg-md-surface text-body-sm file:mr-3 file:rounded-md file:border-0 file:bg-md-primary-container file:px-3 file:py-1 file:text-label-md file:font-medium file:text-md-on-primary-container" />
+              <p class="text-label-md text-md-on-surface-variant mt-1">複数可（JPEG/PNG推奨）</p>
+            </div>
+            <!-- 評価 -->
+            <div>
+              <span class="block text-label-md font-medium text-md-on-surface mb-1">評価</span>
+              <div class="star-rating" aria-label="5段階評価">
+                <span class="filled">&#9733;</span>
+                <span class="filled">&#9733;</span>
+                <span class="filled">&#9733;</span>
+                <span class="filled">&#9733;</span>
+                <span>&#9733;</span>
+              </div>
+              <span class="text-label-md text-md-on-surface-variant ml-2">4 / 5</span>
+            </div>
+            <!-- 送信 -->
+            <div class="sm:col-span-2 flex flex-wrap gap-2">
+              <button type="button" class="md-state-layer h-10 px-5 rounded-full bg-md-primary text-md-on-primary text-label-lg font-medium shadow-md-elevation-1">登録する</button>
+              <a href="#hub-table" class="inline-flex items-center h-10 px-4 rounded-full text-label-lg font-medium text-md-primary outline outline-1 outline-md-outline-variant">一覧へ戻る</a>
+            </div>
+          </form>
+
+          <!-- 最近の作業ログ -->
+          <div class="border-t border-md-outline-variant pt-6">
+            <h4 class="text-title-md font-medium text-md-on-surface mb-3">最近の作業ログ</h4>
+            <ul class="space-y-3">
+              <li class="rounded-lg border border-md-outline-variant bg-md-surface-container-lowest p-3">
+                <div class="flex flex-wrap items-center gap-2 mb-1">
+                  <span class="task-chip bg-md-primary-container text-md-on-primary-container">水やり</span>
+                  <span class="text-label-md text-md-on-surface-variant">2026/03/21 08:30</span>
+                  <span class="text-label-md text-md-on-surface-variant">晴れ / 18℃</span>
+                  <span class="text-label-md text-amber-700">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+                </div>
+                <p class="text-body-sm text-md-on-surface">鉢土がやや乾燥気味。たっぷり灌水。新芽の伸びは順調。</p>
+              </li>
+              <li class="rounded-lg border border-md-outline-variant bg-md-surface-container-lowest p-3">
+                <div class="flex flex-wrap items-center gap-2 mb-1">
+                  <span class="task-chip" style="background:var(--gantt-phenology-bg);color:var(--gantt-phenology-fg);">観察</span>
+                  <span class="text-label-md text-md-on-surface-variant">2026/03/18 14:00</span>
+                  <span class="text-label-md text-md-on-surface-variant">曇り / 14℃</span>
+                  <span class="text-label-md text-amber-700">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                </div>
+                <p class="text-body-sm text-md-on-surface">新芽が動き始めた。芽の勢いを確認。本格的な芽摘みは4〜5月予定。</p>
+              </li>
+              <li class="rounded-lg border border-md-outline-variant bg-md-surface-container-lowest p-3">
+                <div class="flex flex-wrap items-center gap-2 mb-1">
+                  <span class="task-chip" style="background:var(--gantt-fertilizer-bg);color:var(--gantt-fertilizer-fg);">施肥</span>
+                  <span class="text-label-md text-md-on-surface-variant">2026/04/15 09:00</span>
+                  <span class="text-label-md text-md-on-surface-variant">晴れ / 12℃</span>
+                  <span class="text-label-md text-amber-700">&#9733;&#9733;&#9733;&#9734;&#9734;</span>
+                </div>
+                <p class="text-body-sm text-md-on-surface">春の追肥。有機固形肥料を鉢縁に3粒配置。</p>
+              </li>
+              <li class="rounded-lg border border-md-outline-variant bg-md-surface-container-lowest p-3">
+                <div class="flex flex-wrap items-center gap-2 mb-1">
+                  <span class="task-chip" style="background:var(--gantt-phenology-bg);color:var(--gantt-phenology-fg);">観察</span>
+                  <span class="text-label-md text-md-on-surface-variant">2026/03/05 16:30</span>
+                  <span class="text-label-md text-md-on-surface-variant">雨 / 9℃</span>
+                  <span class="text-label-md text-amber-700">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+                </div>
+                <p class="text-body-sm text-md-on-surface">雨上がり後の葉色確認。病害虫の兆候なし。幹肌の苔もきれい。</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- ===================== 植え替え履歴 タブコンテンツ（改善 5.4） ===================== -->
+        <div class="p-4 md:p-6 space-y-5 bg-md-surface border-t border-md-outline-variant" id="tab-content-repotting" role="tabpanel" aria-labelledby="tab-repotting" tabindex="0">
+          <h3 class="text-title-md font-medium text-md-on-surface">植え替え履歴</h3>
+
+          <!-- サマリーカード -->
+          <div class="rounded-lg border border-md-outline-variant bg-md-surface-container-lowest p-4 flex flex-col sm:flex-row sm:items-center gap-4">
+            <div class="flex-1 grid grid-cols-2 sm:grid-cols-3 gap-3 text-body-sm">
+              <div>
+                <span class="text-label-md text-md-on-surface-variant block">最終植え替え</span>
+                <span class="font-medium">2023/03/15</span>
+              </div>
+              <div>
+                <span class="text-label-md text-md-on-surface-variant block">次回目安</span>
+                <span class="font-medium">2026年春（要対応）</span>
+              </div>
+              <div>
+                <span class="text-label-md text-md-on-surface-variant block">用土配合</span>
+                <span class="font-medium">赤玉土7:桐生砂3</span>
+              </div>
+            </div>
+            <div class="shrink-0">
+              <span class="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-label-md font-medium bg-md-error-container text-md-on-error-container border border-md-error/30">
+                <span aria-hidden="true">&#9888;</span> 次回植え替え時期です
+              </span>
+            </div>
+          </div>
+
+          <!-- 履歴テーブル -->
+          <div class="overflow-x-auto">
+            <table class="issue-table min-w-[600px]">
+              <thead>
+                <tr>
+                  <th scope="col">実施日</th>
+                  <th scope="col">用土配合</th>
+                  <th scope="col">鉢</th>
+                  <th scope="col">備考</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="whitespace-nowrap font-medium">2023/03/15</td>
+                  <td>赤玉土7:桐生砂3</td>
+                  <td>丸鉢 30cm（現行）</td>
+                  <td class="text-md-on-surface-variant">根の状態良好。古土をしっかり落として植え付け。</td>
+                </tr>
+                <tr>
+                  <td class="whitespace-nowrap font-medium">2021/03/20</td>
+                  <td>赤玉土6:桐生砂3:富士砂1</td>
+                  <td>丸鉢 28cm</td>
+                  <td class="text-md-on-surface-variant">鉢を一回り大きくした。根張りが強かったため剪定多め。</td>
+                </tr>
+                <tr>
+                  <td class="whitespace-nowrap font-medium">2019/03/10</td>
+                  <td>赤玉土8:桐生砂2</td>
+                  <td>角鉢 25cm</td>
+                  <td class="text-md-on-surface-variant">入手後初の植え替え。根腐れ箇所を除去。</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- スケジュールタブ（準備中） -->
+        <div id="tab-content-schedule" role="tabpanel" aria-labelledby="tab-schedule" tabindex="0" hidden class="p-4 md:p-6">
+          <p class="text-body-sm text-md-on-surface-variant">この個体の年間スケジュールを表示予定（実装時）</p>
+        </div>
+        <!-- メディアタブ（準備中） -->
+        <div id="tab-content-media" role="tabpanel" aria-labelledby="tab-media" tabindex="0" hidden class="p-4 md:p-6">
+          <p class="text-body-sm text-md-on-surface-variant">写真タイムライン・前年同月比較を表示予定（実装時）</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- スケジュール（モバイル表示案）（改善 1.1） -->
+    <!-- ============================================================ -->
+    <section id="schedule-mobile" class="mb-12 scroll-mt-24" aria-labelledby="schedule-mobile-title">
+      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-4">
+        <h2 id="schedule-mobile-title" class="text-title-lg font-medium text-md-on-surface">スケジュール（モバイル表示案）</h2>
+        <p class="text-label-md text-md-on-surface-variant">改善 1.1 横スクロール代替 / 片手操作想定</p>
+      </div>
+
+      <div class="rounded-md border border-md-outline-variant bg-md-surface-container/40 px-4 py-3 text-body-sm text-md-on-surface-variant mb-4">
+        <p>デスクトップでは横長のセル表やガントで全月を一覧できますが、スマートフォンではスクロールが煩雑になります。以下は<strong class="font-medium text-md-on-surface">月を選んで縦リストで確認する</strong>モバイル向け代替案です。</p>
+      </div>
+
+      <div class="max-w-sm mx-auto rounded-2xl border-2 border-md-outline shadow-md-elevation-3 overflow-hidden bg-md-surface-container-lowest">
+        <!-- ヘッダ -->
+        <div class="px-4 py-3 bg-md-surface-container-high border-b border-md-outline-variant">
+          <span class="text-title-md font-medium text-md-on-surface block mb-2">2026年 月別スケジュール</span>
+          <!-- 月タブ -->
+          <div class="flex flex-wrap gap-1.5">
+            <button class="month-tab-btn" type="button">5月</button>
+            <button class="month-tab-btn" type="button">6月</button>
+            <button class="month-tab-btn" type="button">7月</button>
+            <button class="month-tab-btn" type="button">8月</button>
+            <button class="month-tab-btn" type="button">9月</button>
+            <button class="month-tab-btn" type="button">10月</button>
+            <button class="month-tab-btn" type="button">11月</button>
+            <button class="month-tab-btn" type="button">12月</button>
+            <button class="month-tab-btn" type="button">1月</button>
+            <button class="month-tab-btn" type="button">2月</button>
+            <button class="month-tab-btn active" type="button">3月</button>
+          </div>
+        </div>
+        <!-- 月の内容（3月のデモ） -->
+        <ul class="divide-y divide-md-outline-variant max-h-[min(480px,65vh)] overflow-y-auto" role="list">
+          <!-- 共通ルール（当月分）を最上段に表示 -->
+          <li class="px-4 py-3 bg-md-surface-container border-l-4 border-l-md-primary">
+            <p class="text-label-md font-medium text-md-on-surface mb-2">共通ルール（3月）</p>
+            <div class="flex flex-wrap gap-1.5 mb-1.5">
+              <span class="task-chip" style="background:var(--gantt-water-bg);color:var(--gantt-water-fg);">水やり</span>
+            </div>
+            <p class="text-body-sm text-md-on-surface">水やり：1日1回（春先の目安）</p>
+            <p class="text-body-sm text-md-on-surface-variant mt-1">※西日回避・軒下越冬は解除時期</p>
+          </li>
+          <!-- 以下、品種ごとのスケジュール -->
+          <li class="px-4 py-3">
+            <p class="text-label-md font-medium text-md-primary mb-2">五葉松（PLT-001）</p>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="task-chip" style="background:var(--gantt-care-bg);color:var(--gantt-care-fg);">剪定</span>
+              <span class="task-chip" style="background:var(--gantt-fertilizer-bg);color:var(--gantt-fertilizer-fg);">施肥</span>
+              <span class="task-chip" style="background:var(--gantt-phenology-bg);color:var(--gantt-phenology-fg);">芽吹き</span>
+            </div>
+            <p class="text-body-sm text-md-on-surface-variant mt-1.5">剪定 3/10予定 / 施肥 3/15目安</p>
+          </li>
+          <li class="px-4 py-3 bg-md-surface-container/50">
+            <p class="text-label-md font-medium text-md-primary mb-2">モミジ（PLT-002）</p>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="task-chip" style="background:var(--gantt-phenology-bg);color:var(--gantt-phenology-fg);">芽吹き</span>
+              <span class="task-chip" style="background:var(--gantt-care-bg);color:var(--gantt-care-fg);">剪定・植替</span>
+            </div>
+            <p class="text-body-sm text-md-on-surface-variant mt-1.5">芽吹き観察 3/1〜 / 剪定・2028年春 植え替え目安検討</p>
+          </li>
+          <li class="px-4 py-3">
+            <p class="text-label-md font-medium text-md-primary mb-2">姫フウロソウ</p>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="task-chip" style="background:var(--gantt-care-bg);color:var(--gantt-care-fg);">植え替え</span>
+            </div>
+            <p class="text-body-sm text-md-on-surface-variant mt-1.5">2028年春 植え替え目安予定</p>
+          </li>
+          <li class="px-4 py-3 bg-md-surface-container/50">
+            <p class="text-label-md font-medium text-md-primary mb-2">ツクシカラマツ</p>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="task-chip" style="background:var(--gantt-phenology-bg);color:var(--gantt-phenology-fg);">芽吹き</span>
+              <span class="task-chip" style="background:var(--gantt-care-bg);color:var(--gantt-care-fg);">植え替え</span>
+            </div>
+            <p class="text-body-sm text-md-on-surface-variant mt-1.5">芽吹き開始 / 2028年春 植え替え目安予定</p>
+          </li>
+        </ul>
+        <p class="px-4 py-3 text-label-md text-md-on-surface-variant border-t border-md-outline-variant bg-md-surface-container">
+          デスクトップの広幅表は <a href="#schedule-section" class="text-md-primary underline-offset-2 hover:underline">#schedule-section</a> を参照。
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 初回・盆栽0本の空状態（改善 1.5） -->
+    <!-- ============================================================ -->
+    <section id="empty-state" class="mb-12 scroll-mt-24" aria-labelledby="empty-state-title">
+      <h2 id="empty-state-title" class="text-title-lg font-medium text-md-on-surface mb-4">初回・盆栽0本の画面（案）</h2>
+      <div class="rounded-md border border-dashed border-md-outline bg-md-surface-container-lowest px-6 py-14 text-center shadow-md-elevation-1">
+        <div class="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-full bg-md-primary-container/60">
+          <span class="text-5xl leading-none" aria-hidden="true">&#127794;</span>
+        </div>
+        <p class="text-headline-sm text-md-on-surface font-normal mb-2">まだ盆栽が登録されていません</p>
+        <p class="text-body-sm text-md-on-surface-variant max-w-md mx-auto mb-6">
+          最初の盆栽を登録して、年間の手入れ予定を管理しましょう
+        </p>
+        <button type="button" class="md-state-layer inline-flex h-11 items-center justify-center rounded-full bg-md-primary px-6 text-label-lg font-medium text-md-on-primary shadow-md-elevation-1">
+          盆栽を登録する
+        </button>
+        <p class="text-body-sm text-md-on-surface-variant mt-6">
+          <a href="#review-notes" class="text-md-primary underline-offset-2 hover:underline font-medium">お役立ち記事を読む &rarr;</a>
+        </p>
       </div>
     </section>
 
