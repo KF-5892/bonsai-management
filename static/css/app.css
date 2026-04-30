@@ -1,0 +1,14 @@
+/* Tailwind で補えないわずかなカスタム CSS をここに記述 */
+
+/* iOS Safari の bottom safe-area 対応 */
+@supports (padding: env(safe-area-inset-bottom)) {
+  nav[aria-label="メインナビゲーション"] {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Material Symbols のベースライン微調整 */
+.material-symbols-outlined {
+  font-size: 22px;
+  line-height: 1;
+}

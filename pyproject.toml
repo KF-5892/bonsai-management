@@ -1,0 +1,101 @@
+[project]
+name = "bonsai-management"
+version = "0.1.0"
+description = "盆栽管理アプリ MVP（Phase 1）"
+requires-python = ">=3.12"
+dependencies = [
+    "django>=5.1,<5.2",
+    "django-allauth[socialaccount]>=65.0",
+    "django-environ>=0.11",
+    "django-storages>=1.14",
+    "psycopg[binary]>=3.2",
+    "pillow>=11.0",
+    "uuid7>=0.1.0",
+    "markdown>=3.7",
+    "boto3>=1.35",
+    "sentry-sdk[django]>=2.18",
+    "gunicorn>=23.0",
+    "whitenoise>=6.8",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.8",
+    "mypy>=1.13",
+    "django-stubs[compatible-mypy]>=5.1",
+    "pytest>=8.3",
+    "pytest-django>=4.9",
+    "pytest-cov>=6.0",
+    "factory-boy>=3.3",
+    "pre-commit>=4.0",
+]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = ["migrations", "stitch_20260402"]
+
+[tool.ruff.lint]
+select = [
+    "E",      # pycodestyle errors
+    "W",      # pycodestyle warnings
+    "F",      # pyflakes
+    "I",      # isort
+    "B",      # flake8-bugbear
+    "UP",     # pyupgrade
+    "DJ",     # flake8-django
+    "S",      # flake8-bandit
+    "SIM",    # flake8-simplify
+    "C4",     # flake8-comprehensions
+    "RUF",    # ruff-specific
+]
+ignore = [
+    "S101",   # assert OK in tests
+    "E501",   # line too long handled by formatter
+    "RUF001", # 全角括弧・記号（日本語コメント・verbose_name で多用）
+    "RUF002", # 同上（docstring）
+    "RUF003", # 同上（コメント）
+    "RUF012", # mutable class attributes — Django の Meta / fieldsets で常用
+]
+
+[tool.ruff.lint.per-file-ignores]
+"**/tests/**" = ["S", "DJ"]
+"**/test_*.py" = ["S", "DJ"]
+"**/conftest.py" = ["S"]
+"**/settings/*.py" = ["S105", "S106"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.mypy]
+python_version = "3.12"
+strict_optional = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+plugins = ["mypy_django_plugin.main"]
+exclude = ["migrations/", "stitch_20260402/"]
+
+[[tool.mypy.overrides]]
+module = "*.migrations.*"
+ignore_errors = true
+
+[tool.django-stubs]
+django_settings_module = "config.settings.dev"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings.dev"
+python_files = ["test_*.py", "*_test.py", "tests.py"]
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--reuse-db",
+]
+testpaths = ["apps"]
+
+[tool.coverage.run]
+source = ["apps"]
+omit = ["*/migrations/*", "*/tests/*", "*/test_*.py"]

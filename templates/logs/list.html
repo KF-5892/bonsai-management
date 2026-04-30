@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}作業ログ | 盆栽管理{% endblock %}
+
+{% block content %}
+  <div class="space-y-4">
+    <header class="flex items-center justify-between">
+      <h1 class="text-xl font-bold text-emerald-900">作業ログ</h1>
+      <a href="{% url 'logs:create' %}"
+         class="rounded-md bg-emerald-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-emerald-700">
+        + 記録
+      </a>
+    </header>
+
+    <form method="get" class="flex gap-2">
+      <input type="search" name="q" value="{{ q }}" placeholder="盆栽名・メモで検索"
+             class="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500">
+      <button type="submit"
+              class="rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white hover:bg-emerald-700">
+        検索
+      </button>
+    </form>
+
+    {% if logs %}
+      <ul class="space-y-2">
+        {% for log in logs %}
+          <li class="rounded-lg border border-emerald-100 bg-white p-3 shadow-sm">
+            <a href="{% url 'logs:detail' pk=log.pk %}" class="block">
+              <p class="text-xs text-emerald-700">{{ log.bonsai.name }}・{{ log.performed_at|date:"Y/m/d H:i" }}</p>
+              <p class="font-semibold text-emerald-900">{{ log.get_task_type_display }}</p>
+              {% if log.notes %}
+                <p class="mt-1 text-sm text-gray-700 line-clamp-2">{{ log.notes }}</p>
+              {% endif %}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+
+      {% if is_paginated %}
+        <nav class="flex justify-between text-sm">
+          {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}{% if q %}&amp;q={{ q }}{% endif %}"
+               class="text-emerald-700 hover:underline">← 前のページ</a>
+          {% else %}<span></span>{% endif %}
+          {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}{% if q %}&amp;q={{ q }}{% endif %}"
+               class="text-emerald-700 hover:underline">次のページ →</a>
+          {% endif %}
+        </nav>
+      {% endif %}
+    {% else %}
+      <p class="rounded-lg border border-dashed border-emerald-200 bg-white p-4 text-center text-sm text-gray-500">
+        まだログがありません。
+      </p>
+    {% endif %}
+  </div>
+{% endblock %}

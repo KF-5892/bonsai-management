@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <title>{% block title %}盆栽管理{% endblock %}</title>
+
+    {# TODO: 本番では @tailwindcss/cli でビルドする（CDN は MVP 専用） #}
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined">
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+
+    {% block extra_head %}{% endblock %}
+  </head>
+  <body
+    class="min-h-screen bg-emerald-50 text-gray-900 antialiased"
+    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+  >
+    {% include "_partials/header.html" %}
+
+    {# pt-16: 固定ヘッダー（h-14）の高さ + 余白。pb-24: 固定ボトムナビ高さ + iOS safe-area の余裕 #}
+    <main class="mx-auto w-full max-w-screen-md px-4 pt-16 pb-24">
+      {% include "_partials/messages.html" %}
+      {% block content %}{% endblock %}
+    </main>
+
+    {% include "_partials/bottom_nav.html" %}
+
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>

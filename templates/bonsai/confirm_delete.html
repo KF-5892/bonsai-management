@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}削除確認 | 盆栽管理{% endblock %}
+
+{% block content %}
+  <div class="mx-auto max-w-md space-y-4">
+    <h1 class="text-xl font-bold text-red-900">盆栽を削除しますか？</h1>
+    <p class="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+      「{{ object.name }}」を削除します。関連する作業ログ・スケジュール・画像も削除されます。
+    </p>
+    <form method="post" class="flex items-center justify-between">
+      {% csrf_token %}
+      <a href="{% url 'bonsai:detail' pk=object.pk %}" class="text-sm text-gray-600 hover:underline">キャンセル</a>
+      <button type="submit"
+              class="rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-red-700">
+        削除する
+      </button>
+    </form>
+  </div>
+{% endblock %}

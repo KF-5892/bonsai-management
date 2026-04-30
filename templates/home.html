@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}ホーム | 盆栽管理{% endblock %}
+
+{% block content %}
+  <div class="space-y-6">
+    {# ----- 今月のやること ----- #}
+    <section>
+      <header class="mb-3 flex items-end justify-between">
+        <h1 class="text-xl font-bold text-emerald-900">
+          {{ year_month|date:"Y年n月" }}のやること
+        </h1>
+        <a href="{% url 'schedules:list' %}" class="text-sm text-emerald-700 hover:underline">
+          すべて見る
+        </a>
+      </header>
+
+      {% if todos %}
+        <ul class="space-y-2">
+          {% for todo in todos %}
+            <li class="rounded-lg border border-emerald-100 bg-white p-3 shadow-sm">
+              <div class="flex items-start justify-between gap-3">
+                <div class="min-w-0 flex-1">
+                  <p class="text-xs text-emerald-700">
+                    {% if todo.bonsai_name %}{{ todo.bonsai_name }}{% else %}全体{% endif %}
+                    {% if todo.species_name %}・{{ todo.species_name }}{% endif %}
+                    {% if todo.period %}・{{ todo.period }}{% endif %}
+                  </p>
+                  <p class="font-semibold text-emerald-900">{{ todo.title }}</p>
+                  {% if todo.description %}
+                    <p class="mt-1 text-sm text-gray-700 line-clamp-2">{{ todo.description }}</p>
+                  {% endif %}
+                </div>
+                <div class="shrink-0 text-right">
+                  {% if todo.completion and todo.completion.status == "done" %}
+                    <span class="inline-block rounded bg-emerald-100 px-2 py-1 text-xs text-emerald-800">完了</span>
+                  {% else %}
+                    <form method="post"
+                          action="{% url 'schedules:todo_complete' source_type=todo.source_type source_ref=todo.source_ref %}">
+                      {% csrf_token %}
+                      <input type="hidden" name="year" value="{{ year_month|date:'Y' }}">
+                      <input type="hidden" name="month" value="{{ year_month|date:'n' }}">
+                      {% if todo.bonsai_id %}
+                        <input type="hidden" name="bonsai" value="{{ todo.bonsai_id }}">
+                      {% endif %}
+                      <input type="hidden" name="task_type" value="{{ todo.task_type }}">
+                      <button type="submit"
+                              class="rounded-md bg-emerald-600 px-3 py-1 text-xs font-semibold text-white hover:bg-emerald-700">
+                        記録する
+                      </button>
+                    </form>
+                  {% endif %}
+                </div>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="rounded-lg border border-dashed border-emerald-200 bg-white p-4 text-center text-sm text-gray-500">
+          今月のやることはまだありません。
+        </p>
+      {% endif %}
+    </section>
+
+    {# ----- マイ盆栽 ----- #}
+    <section>
+      <header class="mb-3 flex items-end justify-between">
+        <h2 class="text-sm font-semibold text-emerald-800">マイ盆栽</h2>
+        <a href="{% url 'bonsai:create' %}" class="text-sm text-emerald-700 hover:underline">
+          + 追加
+        </a>
+      </header>
+      {% if plants %}
+        <div class="grid grid-cols-2 gap-3 sm:grid-cols-3">
+          {% for plant in plants %}
+            <a href="{% url 'bonsai:detail' pk=plant.pk %}"
+               class="overflow-hidden rounded-lg border border-emerald-100 bg-white shadow-sm hover:shadow">
+              <div class="aspect-square w-full bg-emerald-50">
+                {% if plant.cover_media and plant.cover_media.image_thumbnail %}
+                  <img src="{{ plant.cover_media.image_thumbnail.url }}"
+                       alt="{{ plant.name }}"
+                       class="h-full w-full object-cover">
+                {% endif %}
+              </div>
+              <div class="space-y-0.5 p-2">
+                <p class="truncate text-sm font-semibold text-emerald-900">{{ plant.name }}</p>
+                <p class="truncate text-xs text-gray-500">
+                  {% if plant.species %}{{ plant.species.name }}{% else %}品種未設定{% endif %}
+                </p>
+              </div>
+            </a>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="rounded-lg border border-dashed border-emerald-200 bg-white p-6 text-center">
+          <p class="mb-3 text-sm text-gray-600">まだ盆栽が登録されていません。</p>
+          <a href="{% url 'bonsai:create' %}"
+             class="inline-block rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700">
+            盆栽を登録
+          </a>
+        </div>
+      {% endif %}
+    </section>
+  </div>
+{% endblock %}

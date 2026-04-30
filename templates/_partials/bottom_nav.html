@@ -1,0 +1,22 @@
+{# 下部固定ボトムナビ（モバイル想定） #}
+<nav
+  class="fixed inset-x-0 bottom-0 z-40 grid grid-cols-4 border-t border-emerald-100 bg-white/95 shadow-[0_-2px_8px_rgba(0,0,0,0.04)] backdrop-blur"
+  aria-label="メインナビゲーション"
+>
+  <a href="{% url 'bonsai:home' %}" class="flex min-h-[56px] flex-col items-center justify-center gap-0.5 py-2 text-xs text-emerald-700 hover:bg-emerald-50 active:bg-emerald-100">
+    <span class="text-lg" aria-hidden="true">🏠</span>
+    <span>ホーム</span>
+  </a>
+  <a href="{% url 'schedules:list' %}" class="flex min-h-[56px] flex-col items-center justify-center gap-0.5 py-2 text-xs text-emerald-700 hover:bg-emerald-50 active:bg-emerald-100">
+    <span class="text-lg" aria-hidden="true">📅</span>
+    <span>スケジュール</span>
+  </a>
+  <a href="{% url 'logs:list' %}" class="flex min-h-[56px] flex-col items-center justify-center gap-0.5 py-2 text-xs text-emerald-700 hover:bg-emerald-50 active:bg-emerald-100">
+    <span class="text-lg" aria-hidden="true">📝</span>
+    <span>ログ</span>
+  </a>
+  <a href="{% url 'articles:list' %}" class="flex min-h-[56px] flex-col items-center justify-center gap-0.5 py-2 text-xs text-emerald-700 hover:bg-emerald-50 active:bg-emerald-100">
+    <span class="text-lg" aria-hidden="true">📚</span>
+    <span>お役立ち</span>
+  </a>
+</nav>

@@ -1,0 +1,79 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "0.8.13"
+      - name: Set up Python
+        run: uv python install 3.13
+      - name: Install dependencies
+        run: uv sync --frozen
+      - name: Run ruff (lint)
+        run: uv run ruff check .
+      - name: Run ruff (format check)
+        run: uv run ruff format --check .
+
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: bonsai
+          POSTGRES_PASSWORD: bonsai
+          POSTGRES_DB: bonsai_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U bonsai -d bonsai_test"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+    env:
+      DJANGO_SETTINGS_MODULE: config.settings.dev
+      DJANGO_SECRET_KEY: ci-test-secret
+      DJANGO_DEBUG: "True"
+      DATABASE_URL: postgres://bonsai:bonsai@localhost:5432/bonsai_test
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "0.8.13"
+      - name: Set up Python
+        run: uv python install 3.13
+      - name: Install dependencies
+        run: uv sync --frozen
+      - name: Django check
+        run: uv run python manage.py check
+      - name: Apply migrations
+        run: uv run python manage.py migrate --noinput
+      - name: Run pytest
+        run: uv run pytest --cov=apps --cov-report=term-missing
+
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "0.8.13"
+      - name: Set up Python
+        run: uv python install 3.13
+      - name: Install dependencies
+        run: uv sync --frozen
+      - name: Run mypy (services layer only — Phase 1)
+        run: uv run mypy apps --exclude 'migrations|tests'
+        continue-on-error: true

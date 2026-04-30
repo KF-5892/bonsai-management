@@ -1,0 +1,55 @@
+{# 上部固定ヘッダー #}
+<header class="fixed inset-x-0 top-0 z-40 flex h-14 items-center justify-between border-b border-emerald-100 bg-white/95 px-3 shadow-sm backdrop-blur">
+  <div class="flex items-center gap-2">
+    <button
+      type="button"
+      class="flex h-10 w-10 items-center justify-center rounded-full text-emerald-700 hover:bg-emerald-50 md:hidden"
+      aria-label="メニューを開く"
+    >
+      <span class="material-symbols-outlined">menu</span>
+    </button>
+  </div>
+
+  <a href="{% url 'bonsai:home' %}" class="flex items-center gap-1 text-lg font-semibold text-emerald-800">
+    <span aria-hidden="true">🌳</span>
+    <span>盆栽管理</span>
+  </a>
+
+  <div class="flex items-center gap-1">
+    <button
+      type="button"
+      class="flex h-10 w-10 items-center justify-center rounded-full text-emerald-700 hover:bg-emerald-50"
+      aria-label="検索"
+    >
+      <span class="material-symbols-outlined">search</span>
+    </button>
+
+    {# Phase 3: 通知機能を実装予定 #}
+    <button
+      type="button"
+      class="flex h-10 w-10 items-center justify-center rounded-full text-emerald-700 hover:bg-emerald-50"
+      aria-label="通知"
+      title="通知（Phase 3 で実装予定）"
+    >
+      <span class="material-symbols-outlined">notifications</span>
+    </button>
+
+    {% if user.is_authenticated %}
+      {# Phase 2 でアカウント設定画面へリンク予定。現状はログアウトへ暫定リンク #}
+      <a
+        href="{% url 'account_logout' %}"
+        class="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-600 text-sm font-semibold text-white"
+        aria-label="アカウント"
+      >
+        {{ user.email|slice:":1"|upper }}
+      </a>
+    {% else %}
+      <a
+        href="{% url 'account_login' %}"
+        class="rounded-md px-3 py-1.5 text-sm font-medium text-emerald-700 hover:bg-emerald-50"
+      >
+        ログイン
+      </a>
+    {% endif %}
+  </div>
+</header>

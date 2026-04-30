@@ -1,0 +1,163 @@
+[
+  {
+    "model": "bonsai.bonsaispecies",
+    "pk": "01900000-0000-7000-8000-000000000001",
+    "fields": {
+      "slug": "kuromatsu",
+      "name": "黒松",
+      "scientific_name": "Pinus thunbergii",
+      "category": "conifer",
+      "description": "日本を代表する松柏盆栽。荒々しい樹皮と力強い枝振りが特徴。日当たりと風通しを好み、芽摘み・葉抜きで樹勢をコントロールする。",
+      "monthly_tasks": [
+        {"month": 3, "period": "中旬", "task_type": "repotting", "description": "新芽が動き出す前に植え替え。2〜4年に一度が目安。"},
+        {"month": 4, "period": "上旬", "task_type": "fertilizing", "description": "玉肥を置き肥。新芽が伸びる前の元肥として施す。"},
+        {"month": 5, "period": "中旬", "task_type": "bud_pinching", "description": "新芽（みどり）の長さが揃ったら、強い芽は元から、弱い芽は半分残してつまむ。"},
+        {"month": 6, "period": "下旬", "task_type": "fertilizing", "description": "肥料止め。梅雨明けまでに施肥を控え、徒長を抑える。"},
+        {"month": 11, "period": "中旬", "task_type": "defoliation", "description": "古葉抜き。前年の古い葉を手で引き抜き、内部の日当たりと風通しを確保する。"},
+        {"month": 12, "period": "上旬", "task_type": "wiring", "description": "休眠期に入ったら針金かけ。樹液の動きが少なく形が決まりやすい。"}
+      ],
+      "created_at": "2026-04-30T00:00:00+09:00",
+      "updated_at": "2026-04-30T00:00:00+09:00"
+    }
+  },
+  {
+    "model": "bonsai.bonsaispecies",
+    "pk": "01900000-0000-7000-8000-000000000002",
+    "fields": {
+      "slug": "goyomatsu",
+      "name": "五葉松",
+      "scientific_name": "Pinus parviflora",
+      "category": "conifer",
+      "description": "短く繊細な葉束が美しい松柏盆栽。比較的成長が遅く、優美な姿を長く楽しめる。乾燥気味の管理を好む。",
+      "monthly_tasks": [
+        {"month": 3, "period": "下旬", "task_type": "repotting", "description": "芽出し前に植え替え。3〜5年に一度を目安に、水はけのよい用土を使う。"},
+        {"month": 4, "period": "中旬", "task_type": "fertilizing", "description": "薄めの油かす肥を置き肥。黒松ほど多くは施さない。"},
+        {"month": 6, "period": "上旬", "task_type": "pruning", "description": "新芽が固まったら芽切り・芽数調整。バランスをとり古枝を整理。"},
+        {"month": 10, "period": "中旬", "task_type": "fertilizing", "description": "秋肥を施し冬越しの体力を養う。"},
+        {"month": 11, "period": "下旬", "task_type": "defoliation", "description": "古葉抜きで樹冠内部の通風と採光を確保する。"}
+      ],
+      "created_at": "2026-04-30T00:00:00+09:00",
+      "updated_at": "2026-04-30T00:00:00+09:00"
+    }
+  },
+  {
+    "model": "bonsai.bonsaispecies",
+    "pk": "01900000-0000-7000-8000-000000000003",
+    "fields": {
+      "slug": "shinpaku",
+      "name": "真柏",
+      "scientific_name": "Juniperus chinensis",
+      "category": "conifer",
+      "description": "ジン・シャリの白骨美が魅力のヒノキ科。丈夫で初心者にも扱いやすい。乾燥に強く、葉水を好む。",
+      "monthly_tasks": [
+        {"month": 3, "period": "中旬", "task_type": "repotting", "description": "芽動き前に植え替え。2〜3年に一度が目安。"},
+        {"month": 5, "period": "上旬", "task_type": "pruning", "description": "伸びた新芽を指で摘み取る。鋏は葉先が褐色になるため避ける。"},
+        {"month": 7, "period": "中旬", "task_type": "leaf_misting", "description": "高温期は朝夕の葉水で葉色を保つ。"},
+        {"month": 9, "period": "上旬", "task_type": "wiring", "description": "枝の動きをつける針金かけの適期。古枝は折れやすいので注意。"},
+        {"month": 10, "period": "下旬", "task_type": "jin_shari", "description": "ジン・シャリの彫刻作業。樹液の動きが穏やかになる時期に行う。"}
+      ],
+      "created_at": "2026-04-30T00:00:00+09:00",
+      "updated_at": "2026-04-30T00:00:00+09:00"
+    }
+  },
+  {
+    "model": "bonsai.bonsaispecies",
+    "pk": "01900000-0000-7000-8000-000000000004",
+    "fields": {
+      "slug": "kaede",
+      "name": "楓",
+      "scientific_name": "Acer palmatum",
+      "category": "broadleaf",
+      "description": "新緑・紅葉・寒樹姿と四季を通じて楽しめる雑木盆栽の代表格。水切れに弱く、夏は葉焼け対策が必要。",
+      "monthly_tasks": [
+        {"month": 2, "period": "下旬", "task_type": "repotting", "description": "芽出し直前に植え替え。毎年〜2年に一度が目安。"},
+        {"month": 4, "period": "上旬", "task_type": "pruning", "description": "新芽が開いたら芽摘み。2葉を残して先を摘む。"},
+        {"month": 6, "period": "中旬", "task_type": "defoliation", "description": "葉刈りで二番芽を出し、葉を小型化する。樹勢のあるものに限る。"},
+        {"month": 7, "period": "上旬", "task_type": "leaf_misting", "description": "真夏は半日陰に移動。朝夕の葉水で葉焼けを防ぐ。"},
+        {"month": 11, "period": "中旬", "task_type": "observation", "description": "紅葉の鑑賞期。落葉したら寒樹姿を楽しむ。"}
+      ],
+      "created_at": "2026-04-30T00:00:00+09:00",
+      "updated_at": "2026-04-30T00:00:00+09:00"
+    }
+  },
+  {
+    "model": "bonsai.bonsaispecies",
+    "pk": "01900000-0000-7000-8000-000000000005",
+    "fields": {
+      "slug": "keyaki",
+      "name": "ケヤキ",
+      "scientific_name": "Zelkova serrata",
+      "category": "broadleaf",
+      "description": "ほうき作りで知られる雑木盆栽。細かい枝分かれの繊細な樹形が美しい。水を好み夏場の灌水は十分に。",
+      "monthly_tasks": [
+        {"month": 3, "period": "上旬", "task_type": "repotting", "description": "芽出し前に植え替え。根の伸長が早いので毎年植え替えが望ましい。"},
+        {"month": 4, "period": "中旬", "task_type": "pruning", "description": "新芽が伸びたら2〜3節で摘み、Y字の枝分かれを作る。"},
+        {"month": 6, "period": "上旬", "task_type": "defoliation", "description": "全葉刈りで二番芽を促し、枝先を細かく分岐させる。"},
+        {"month": 7, "period": "中旬", "task_type": "watering", "description": "高温期は朝夕の灌水を欠かさない。水切れで枝枯れする。"},
+        {"month": 12, "period": "上旬", "task_type": "pruning", "description": "落葉後の透かし剪定。寒樹姿を整え、不要枝を整理する。"}
+      ],
+      "created_at": "2026-04-30T00:00:00+09:00",
+      "updated_at": "2026-04-30T00:00:00+09:00"
+    }
+  },
+  {
+    "model": "bonsai.bonsaispecies",
+    "pk": "01900000-0000-7000-8000-000000000006",
+    "fields": {
+      "slug": "sakura",
+      "name": "桜",
+      "scientific_name": "Cerasus",
+      "category": "flowering",
+      "description": "春の花を楽しむ花物盆栽の代表。剪定口から枯れ込みやすいため切口の保護が必要。",
+      "monthly_tasks": [
+        {"month": 2, "period": "下旬", "task_type": "repotting", "description": "開花前の植え替え適期。根を傷めると花付きに影響するため最小限に。"},
+        {"month": 4, "period": "上旬", "task_type": "observation", "description": "開花期。花後すぐに花柄を摘み取り、樹勢の消耗を防ぐ。"},
+        {"month": 5, "period": "中旬", "task_type": "fertilizing", "description": "花後のお礼肥。来年の花芽形成のため油かすを置き肥。"},
+        {"month": 6, "period": "下旬", "task_type": "pest_control", "description": "アブラムシ・毛虫の防除。定期的に消毒する。"},
+        {"month": 9, "period": "中旬", "task_type": "pruning", "description": "込み合った枝を整理。切口には癒合剤を必ず塗る。"}
+      ],
+      "created_at": "2026-04-30T00:00:00+09:00",
+      "updated_at": "2026-04-30T00:00:00+09:00"
+    }
+  },
+  {
+    "model": "bonsai.bonsaispecies",
+    "pk": "01900000-0000-7000-8000-000000000007",
+    "fields": {
+      "slug": "ume",
+      "name": "梅",
+      "scientific_name": "Prunus mume",
+      "category": "flowering",
+      "description": "早春に芳香のある花を咲かせる花物盆栽。古木感のある幹肌が魅力。強剪定にも耐える。",
+      "monthly_tasks": [
+        {"month": 2, "period": "中旬", "task_type": "observation", "description": "開花期。花を楽しんだあとは花柄を摘む。"},
+        {"month": 3, "period": "中旬", "task_type": "repotting", "description": "花後すぐに植え替え。根詰まりしやすいので毎年〜2年に一度。"},
+        {"month": 4, "period": "上旬", "task_type": "pruning", "description": "新芽が伸びたら2芽残して切り戻し。短枝に花芽がつく。"},
+        {"month": 6, "period": "中旬", "task_type": "fertilizing", "description": "花芽分化前の追肥。リン酸分の多い肥料を施す。"},
+        {"month": 11, "period": "下旬", "task_type": "wiring", "description": "落葉後の針金かけ。枝が硬く折れやすいので慎重に。"}
+      ],
+      "created_at": "2026-04-30T00:00:00+09:00",
+      "updated_at": "2026-04-30T00:00:00+09:00"
+    }
+  },
+  {
+    "model": "bonsai.bonsaispecies",
+    "pk": "01900000-0000-7000-8000-000000000008",
+    "fields": {
+      "slug": "himeringo",
+      "name": "姫りんご",
+      "scientific_name": "Malus prunifolia",
+      "category": "fruiting",
+      "description": "春の白い花と秋の小さな赤い実を楽しめる実物盆栽。乾燥と過湿の両方に注意が必要。",
+      "monthly_tasks": [
+        {"month": 3, "period": "上旬", "task_type": "repotting", "description": "芽出し前に植え替え。2年に一度が目安。"},
+        {"month": 4, "period": "中旬", "task_type": "observation", "description": "開花期。受粉のため複数株を近くに置くと結実しやすい。"},
+        {"month": 5, "period": "下旬", "task_type": "pruning", "description": "結実を確認したら摘果。1枝1〜2果に絞り、樹勢を保つ。"},
+        {"month": 7, "period": "上旬", "task_type": "pest_control", "description": "黒星病・うどんこ病の防除。葉の裏まで丁寧に消毒する。"},
+        {"month": 10, "period": "中旬", "task_type": "observation", "description": "実の色付き観賞期。落果や鳥害に注意する。"}
+      ],
+      "created_at": "2026-04-30T00:00:00+09:00",
+      "updated_at": "2026-04-30T00:00:00+09:00"
+    }
+  }
+]

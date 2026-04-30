@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}ログアウト | 盆栽管理{% endblock %}
+
+{% block content %}
+  <div class="mx-auto max-w-sm space-y-5 rounded-lg border border-emerald-100 bg-white p-6 text-center shadow-sm">
+    <h1 class="text-xl font-bold text-emerald-900">ログアウトしますか？</h1>
+    <p class="text-sm text-gray-600">本当にログアウトしてよろしいですか？</p>
+
+    <form method="post" action="{% url 'account_logout' %}" class="space-y-3">
+      {% csrf_token %}
+      {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
+      {% endif %}
+      <button
+        type="submit"
+        class="w-full rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-emerald-700"
+      >
+        ログアウト
+      </button>
+      <a
+        href="/"
+        class="block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+      >
+        キャンセル
+      </a>
+    </form>
+  </div>
+{% endblock %}
