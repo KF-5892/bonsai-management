@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>盆栽管理 - The Curated Grove (Mobile UI)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', '"Noto Sans JP"', 'system-ui', 'sans-serif'],
+            jp: ['"Noto Sans JP"', 'Inter', 'system-ui', 'sans-serif'],
+            inter: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            grove: {
+              'surface': '#f6faf6',
+              'surface-low': '#f1f5f1',
+              'surface-lowest': '#ffffff',
+              'surface-high': '#e5e9e5',
+              'surface-container': '#ebefeb',
+              'on-surface': '#181d1a',
+              'on-surface-variant': '#40493d',
+              'outline-variant': '#bfcaba',
+              'primary': '#0d631b',
+              'primary-container': '#2e7d32',
+              'on-primary': '#ffffff',
+              'primary-fixed': '#a3f69c',
+              'primary-fixed-dim': '#88d982',
+              'tertiary': '#923357',
+              'on-tertiary': '#ffffff',
+              'secondary': '#526350',
+              'secondary-fixed': '#d5e8d0',
+            },
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    :root {
+      --grove-surface: #f6faf6;
+      --grove-surface-low: #f1f5f1;
+      --grove-surface-lowest: #ffffff;
+      --grove-surface-high: #e5e9e5;
+      --grove-surface-container: #ebefeb;
+      --grove-on-surface: #181d1a;
+      --grove-on-surface-variant: #40493d;
+      --grove-primary: #0d631b;
+      --grove-primary-container: #2e7d32;
+      --grove-primary-fixed: #a3f69c;
+      --grove-primary-fixed-dim: #88d982;
+      --grove-tertiary: #923357;
+      --grove-outline-variant: #bfcaba;
+    }
+
+    body {
+      font-family: 'Inter', 'Noto Sans JP', system-ui, sans-serif;
+      background: #eef2ed;
+      color: var(--grove-on-surface);
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+    .grove-jp { font-family: 'Noto Sans JP', 'Inter', sans-serif; }
+
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      line-height: 1;
+      text-transform: none;
+      letter-spacing: normal;
+      white-space: nowrap;
+      direction: ltr;
+    }
+    .material-symbols-outlined.filled {
+      font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+    }
+
+    /* ============================================================
+       The Curated Grove (Mobile design system) — stitch_20260402
+       ============================================================ */
+
+    /* モバイル端末枠（プレビュー） */
+    .grove-phone {
+      width: 100%;
+      max-width: 22rem;
+      margin-inline: auto;
+      border-radius: 2.25rem;
+      background: var(--grove-surface);
+      box-shadow:
+        0 0 0 10px #1f231f,
+        0 0 0 11px #2d322d,
+        0 24px 48px -12px rgba(24,29,26,0.35);
+      overflow: hidden;
+      position: relative;
+    }
+    .grove-phone-inner {
+      position: relative;
+      min-height: 760px;
+      padding-bottom: 7rem;
+    }
+    .grove-phone-notch {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 7rem;
+      height: 1.5rem;
+      background: #1f231f;
+      border-bottom-left-radius: 1.25rem;
+      border-bottom-right-radius: 1.25rem;
+      z-index: 60;
+    }
+
+    /* Top app bar (glass) */
+    .grove-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.875rem 1rem;
+      background: rgba(246,250,246,0.82);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    /* Botanical gradient (135deg) */
+    .grove-gradient {
+      background: linear-gradient(135deg, var(--grove-primary) 0%, var(--grove-primary-container) 100%);
+      color: #fff;
+    }
+
+    /* Glassmorphism (Bottom nav / FAB layer) */
+    .grove-glass {
+      background: rgba(246,250,246,0.78);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 -4px 16px rgba(24,29,26,0.08);
+    }
+
+    /* Bonsai info card (asymmetric, accent bar) */
+    .grove-card {
+      position: relative;
+      display: flex;
+      gap: 1rem;
+      padding: 0.875rem;
+      padding-left: 1rem;
+      background: var(--grove-surface-lowest);
+      border-radius: 1.25rem;
+      overflow: hidden;
+    }
+    .grove-card::before {
+      content: '';
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 4px;
+      background: var(--accent, var(--grove-primary));
+    }
+    .grove-card__media {
+      flex: 0 0 5.5rem;
+      width: 5.5rem;
+      height: 5.5rem;
+      border-radius: 0.875rem;
+      background: linear-gradient(145deg, #d2e5cd, #88d982);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #2e4d2e;
+      font-size: 2.25rem;
+    }
+
+    /* Status badge */
+    .grove-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.125rem 0.5rem;
+      border-radius: 0.5rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .grove-badge--healthy { background: #E8F5E9; color: #2E7D32; }
+    .grove-badge--warning { background: #FCE4EC; color: #BA1A1A; }
+    .grove-badge--task    { background: #FFEFE0; color: #B45309; }
+
+    /* Filter chip */
+    .grove-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      flex: 0 0 auto;
+      height: 2.25rem;
+      padding: 0 1rem;
+      border-radius: 9999px;
+      background: var(--grove-surface-high);
+      color: var(--grove-on-surface-variant);
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 0.8125rem;
+      cursor: pointer;
+      border: 0;
+      transition: background 0.15s, color 0.15s;
+    }
+    .grove-chip.is-active {
+      background: var(--grove-primary);
+      color: #fff;
+      box-shadow: 0 0 0 2px rgba(163,246,156,0.35);
+    }
+
+    /* FAB */
+    .grove-fab {
+      position: absolute;
+      right: 1.25rem;
+      bottom: 6rem;
+      width: 3.75rem;
+      height: 3.75rem;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 12px 24px -8px rgba(13,99,27,0.55), 0 2px 4px rgba(24,29,26,0.12);
+      z-index: 45;
+    }
+
+    /* Bottom navigation */
+    .grove-bottomnav {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 4.75rem;
+      border-top-left-radius: 1.5rem;
+      border-top-right-radius: 1.5rem;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 40;
+    }
+    .grove-bottomnav a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.125rem;
+      color: #6b7570;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+    }
+    .grove-bottomnav a.is-active {
+      color: #0d3a14;
+      background: var(--grove-primary-fixed);
+    }
+
+    /* Section heading */
+    .grove-eyebrow {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--grove-on-surface-variant);
+    }
+
+    /* Editorial display */
+    .grove-display {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+    }
+
+    /* Soft data pill */
+    .grove-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      background: var(--grove-surface-lowest);
+      padding: 0.625rem 0.875rem;
+      border-radius: 0.875rem;
+      font-size: 0.8125rem;
+      color: var(--grove-on-surface);
+    }
+
+    /* Timeline stem */
+    .grove-stem {
+      position: relative;
+      padding-left: 1.25rem;
+    }
+    .grove-stem::before {
+      content: '';
+      position: absolute;
+      left: 0.4rem;
+      top: 0.5rem;
+      bottom: 0.5rem;
+      width: 2px;
+      background: var(--grove-primary-fixed-dim);
+      border-radius: 2px;
+    }
+    .grove-stem-node { position: relative; }
+    .grove-stem-node::before {
+      content: '';
+      position: absolute;
+      left: -1.05rem;
+      top: 0.4rem;
+      width: 0.7rem;
+      height: 0.7rem;
+      border-radius: 9999px;
+      background: var(--grove-surface-lowest);
+      box-shadow: 0 0 0 2px var(--grove-primary);
+    }
+
+    /* Work-type selector tile */
+    .grove-tile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.375rem;
+      padding: 1rem 0.5rem;
+      background: var(--grove-surface-lowest);
+      border-radius: 1rem;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 0.8125rem;
+      color: var(--grove-on-surface);
+      cursor: pointer;
+      border: 0;
+    }
+    .grove-tile.is-active {
+      background: linear-gradient(135deg, var(--grove-primary) 0%, var(--grove-primary-container) 100%);
+      color: #fff;
+    }
+    .grove-tile.is-soft-active {
+      background: var(--grove-primary-fixed);
+      color: #0d3a14;
+    }
+
+    /* Hero card (advice / featured) */
+    .grove-hero {
+      position: relative;
+      border-radius: 1.25rem;
+      padding: 1.25rem;
+      color: #fff;
+      overflow: hidden;
+      background: linear-gradient(135deg, #0d631b 0%, #2e7d32 100%);
+    }
+    .grove-hero::after {
+      content: '';
+      position: absolute;
+      inset: auto -2rem -2rem auto;
+      width: 9rem;
+      height: 9rem;
+      background: radial-gradient(circle at center, rgba(163,246,156,0.45), transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Condition emoji rating */
+    .grove-rating {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: space-between;
+    }
+    .grove-rating button {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.5rem 0;
+      border-radius: 9999px;
+      background: var(--grove-surface-lowest);
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 0.6875rem;
+      color: var(--grove-on-surface-variant);
+      border: 0;
+      cursor: pointer;
+    }
+    .grove-rating .face {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      background: #d2e5cd;
+      color: #2e4d2e;
+    }
+    .grove-rating button.is-best  .face { background: #a3f69c; color: #0d3a14; }
+    .grove-rating button.is-warn  { box-shadow: 0 0 0 2px #f4a261; }
+    .grove-rating button.is-warn  .face { background: #ffd9b5; color: #b45309; }
+    .grove-rating button.is-bad   { box-shadow: 0 0 0 2px #ba1a1a; }
+    .grove-rating button.is-bad   .face { background: #ffd0d0; color: #ba1a1a; }
+
+    /* スクロールヒント抑制 */
+    .no-scrollbar { scrollbar-width: none; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+
+    /* インデックスのキャプション */
+    .frame-caption {
+      text-align: center;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #5a665a;
+      margin-bottom: 0.75rem;
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <!-- Page header -->
+  <header class="bg-white/70 backdrop-blur-md sticky top-0 z-30 border-b border-grove-outline-variant/40">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-grove-primary" aria-hidden="true">park</span>
+        <h1 class="font-inter font-bold text-grove-primary text-lg leading-tight">The Digital Arboretum</h1>
+        <span class="hidden sm:inline grove-jp text-xs text-grove-on-surface-variant ml-2">— Curated Grove モバイルモック</span>
+      </div>
+      <nav class="hidden md:flex items-center gap-1 text-sm font-medium text-grove-on-surface-variant" aria-label="セクション">
+        <a href="#grove-home"     class="px-3 py-1.5 rounded-full hover:bg-grove-primary-fixed/40 hover:text-grove-primary">ホーム</a>
+        <a href="#grove-schedule" class="px-3 py-1.5 rounded-full hover:bg-grove-primary-fixed/40 hover:text-grove-primary">スケジュール</a>
+        <a href="#grove-log"      class="px-3 py-1.5 rounded-full hover:bg-grove-primary-fixed/40 hover:text-grove-primary">作業を記録</a>
+        <a href="#grove-tips"     class="px-3 py-1.5 rounded-full hover:bg-grove-primary-fixed/40 hover:text-grove-primary">お役立ち</a>
+        <a href="#grove-empty"    class="px-3 py-1.5 rounded-full hover:bg-grove-primary-fixed/40 hover:text-grove-primary">初回</a>
+        <a href="./ui-mockup.html" class="px-3 py-1.5 rounded-full text-grove-primary underline-offset-2 hover:underline">既存モックへ</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 md:px-6 py-8 md:py-10 space-y-12">
+
+    <!-- イントロ -->
+    <section aria-labelledby="intro-title" class="max-w-3xl">
+      <h2 id="intro-title" class="grove-display text-2xl md:text-3xl text-grove-on-surface mb-3">The Curated Grove<span class="grove-jp text-base text-grove-on-surface-variant ml-2">モバイルUIモック</span></h2>
+      <p class="grove-jp text-sm md:text-base leading-relaxed text-grove-on-surface-variant">
+        <code class="text-xs px-1.5 py-0.5 rounded bg-grove-surface-high">stitch_20260402/evergreen_moss/DESIGN.md</code>
+        ベースのモバイル特化デザイン。Chlorophyll Spectrum、Tonal Layering、ボタニカルグラデーション、ガラスモーフィズム、左端アクセントバーカードの方針で構成しています。
+      </p>
+      <p class="grove-jp text-xs text-grove-on-surface-variant mt-2">
+        既存のWeb／デスクトップ寄りモックは <a class="text-grove-primary underline-offset-2 hover:underline" href="./ui-mockup.html">ui-mockup.html</a> を参照。
+      </p>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 1. ホーム（盆栽一覧） — stitch _2 -->
+    <!-- ============================================================ -->
+    <section id="grove-home" class="scroll-mt-20" aria-labelledby="grove-home-title">
+      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-4">
+        <h2 id="grove-home-title" class="text-xl font-bold text-grove-on-surface">1. ホーム（盆栽一覧）</h2>
+        <p class="text-xs text-grove-on-surface-variant">非対称カード／寄せ植えグループ／ガラスFAB＋ナビ</p>
+      </div>
+
+      <p class="frame-caption">stitch _2</p>
+      <div class="grove-phone">
+        <div class="grove-phone-notch" aria-hidden="true"></div>
+        <div class="grove-phone-inner">
+          <header class="grove-topbar">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-grove-secondary-fixed flex items-center justify-center text-grove-primary grove-jp font-bold">福</div>
+              <h1 class="font-inter font-bold text-xl text-grove-primary">盆栽管理</h1>
+            </div>
+            <button aria-label="通知" class="p-2 rounded-full hover:bg-black/5">
+              <span class="material-symbols-outlined text-grove-primary" aria-hidden="true">notifications</span>
+            </button>
+          </header>
+
+          <main class="px-4 pt-3 pb-4 space-y-5">
+            <label class="relative block">
+              <span class="sr-only">盆栽を検索</span>
+              <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-grove-on-surface-variant" aria-hidden="true">search</span>
+              <input type="search" placeholder="盆栽を検索..."
+                class="w-full h-12 pl-12 pr-4 rounded-2xl bg-[#f1f5f1] grove-jp text-sm placeholder:text-[#7d877c] focus:outline-none focus:ring-2 focus:ring-grove-primary border-0">
+            </label>
+
+            <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+              <button class="grove-chip is-active grove-jp">全て</button>
+              <button class="grove-chip grove-jp">
+                <span class="material-symbols-outlined" style="font-size:1rem;" aria-hidden="true">check_circle</span>
+                良好
+              </button>
+              <button class="grove-chip grove-jp">
+                <span class="material-symbols-outlined" style="font-size:1rem;" aria-hidden="true">warning</span>
+                要注意
+              </button>
+              <button class="grove-chip grove-jp">
+                <span class="material-symbols-outlined" style="font-size:1rem;" aria-hidden="true">cancel</span>
+                不調
+              </button>
+            </div>
+
+            <div class="space-y-4">
+              <article class="grove-card" style="--accent:#0d631b;">
+                <div class="grove-card__media" aria-hidden="true">
+                  <span class="material-symbols-outlined" style="font-size:2.75rem;">park</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-start justify-between gap-2">
+                    <div>
+                      <h3 class="grove-jp font-bold text-grove-on-surface text-base leading-tight">黒松 太郎</h3>
+                      <p class="grove-jp text-xs text-grove-on-surface-variant mt-0.5">品種：黒松</p>
+                    </div>
+                    <span class="grove-badge grove-badge--healthy grove-jp">
+                      <span class="material-symbols-outlined" style="font-size:0.875rem;" aria-hidden="true">check</span>
+                      良好
+                    </span>
+                  </div>
+                  <p class="mt-3 flex items-center gap-1 text-grove-primary">
+                    <span class="material-symbols-outlined" style="font-size:1rem;" aria-hidden="true">water_drop</span>
+                    <span class="grove-jp text-xs font-bold tracking-wider">次の作業：水やり 今日</span>
+                  </p>
+                </div>
+              </article>
+
+              <article class="grove-card" style="--accent:#923357;">
+                <div class="grove-card__media" aria-hidden="true">
+                  <span class="material-symbols-outlined" style="font-size:2.75rem;">eco</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-start justify-between gap-2">
+                    <div>
+                      <h3 class="grove-jp font-bold text-grove-on-surface text-base leading-tight">真柏 雲海</h3>
+                      <p class="grove-jp text-xs text-grove-on-surface-variant mt-0.5">品種：真柏</p>
+                    </div>
+                    <span class="grove-badge grove-badge--warning grove-jp">
+                      <span class="material-symbols-outlined" style="font-size:0.875rem;" aria-hidden="true">warning</span>
+                      要注意
+                    </span>
+                  </div>
+                  <p class="mt-3 flex items-center gap-1 text-grove-tertiary">
+                    <span class="material-symbols-outlined" style="font-size:1rem;" aria-hidden="true">content_cut</span>
+                    <span class="grove-jp text-xs font-bold tracking-wider">次の作業：剪定 3/25</span>
+                  </p>
+                </div>
+              </article>
+
+              <div class="rounded-2xl bg-[#f1f5f1] p-4">
+                <div class="flex items-center gap-2 mb-3">
+                  <span class="material-symbols-outlined text-grove-secondary" aria-hidden="true">potted_plant</span>
+                  <h3 class="grove-jp font-bold text-grove-on-surface">寄せ植え A</h3>
+                </div>
+                <div class="grove-stem space-y-2.5 pt-1">
+                  <div class="grove-stem-node flex justify-between items-center bg-grove-surface-lowest rounded-xl px-3 py-2.5">
+                    <span class="grove-jp text-sm font-medium">楓 (カエデ)</span>
+                    <span class="grove-jp text-[10px] font-bold text-grove-on-surface-variant bg-grove-surface-container px-2 py-0.5 rounded-full">管理中</span>
+                  </div>
+                  <div class="grove-stem-node flex justify-between items-center bg-grove-surface-lowest rounded-xl px-3 py-2.5">
+                    <span class="grove-jp text-sm font-medium">欅 (ケヤキ)</span>
+                    <span class="grove-jp text-[10px] font-bold text-grove-on-surface-variant bg-grove-surface-container px-2 py-0.5 rounded-full">管理中</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </main>
+
+          <button class="grove-fab grove-gradient" aria-label="盆栽を追加">
+            <span class="material-symbols-outlined" style="font-size:1.75rem;" aria-hidden="true">add</span>
+          </button>
+
+          <nav class="grove-glass grove-bottomnav" aria-label="メインナビ">
+            <a href="#grove-home" class="is-active" aria-current="page">
+              <span class="material-symbols-outlined filled" aria-hidden="true">home</span>
+              <span>ホーム</span>
+            </a>
+            <a href="#grove-schedule">
+              <span class="material-symbols-outlined" aria-hidden="true">calendar_month</span>
+              <span>スケジュール</span>
+            </a>
+            <a href="#grove-log">
+              <span class="material-symbols-outlined" aria-hidden="true">edit_note</span>
+              <span>ログ記録</span>
+            </a>
+            <a href="#grove-tips">
+              <span class="material-symbols-outlined" aria-hidden="true">auto_stories</span>
+              <span>お役立ち</span>
+            </a>
+          </nav>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 2. スケジュール — stitch _1 / _10 -->
+    <!-- ============================================================ -->
+    <section id="grove-schedule" class="scroll-mt-20" aria-labelledby="grove-schedule-title">
+      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-4">
+        <h2 id="grove-schedule-title" class="text-xl font-bold text-grove-on-surface">2. スケジュール（月別）</h2>
+        <p class="text-xs text-grove-on-surface-variant">月ナビ／種別カード／月の栽培アドバイス</p>
+      </div>
+
+      <p class="frame-caption">stitch _1 / _10</p>
+      <div class="grove-phone">
+        <div class="grove-phone-notch" aria-hidden="true"></div>
+        <div class="grove-phone-inner">
+          <header class="grove-topbar">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-full bg-grove-secondary-fixed flex items-center justify-center text-grove-on-surface-variant grove-jp font-bold">ユ</div>
+              <h1 class="font-inter font-bold text-lg text-grove-primary grove-jp">スケジュール</h1>
+            </div>
+            <div class="flex items-center gap-1">
+              <button aria-label="カレンダー" class="p-2 rounded-full hover:bg-black/5">
+                <span class="material-symbols-outlined text-grove-primary" aria-hidden="true">calendar_month</span>
+              </button>
+              <button aria-label="通知" class="p-2 rounded-full hover:bg-black/5">
+                <span class="material-symbols-outlined text-grove-primary" aria-hidden="true">notifications</span>
+              </button>
+            </div>
+          </header>
+
+          <main class="px-4 pt-2 pb-4 space-y-5">
+            <div class="text-center">
+              <p class="grove-eyebrow text-grove-primary">MARCH</p>
+              <div class="flex items-center justify-center gap-3 mt-1">
+                <button aria-label="前月" class="p-1 rounded-full hover:bg-black/5">
+                  <span class="material-symbols-outlined text-grove-on-surface-variant" aria-hidden="true">chevron_left</span>
+                </button>
+                <h2 class="grove-display text-3xl text-grove-on-surface">2026年3月</h2>
+                <button aria-label="次月" class="p-1 rounded-full hover:bg-black/5">
+                  <span class="material-symbols-outlined text-grove-on-surface-variant" aria-hidden="true">chevron_right</span>
+                </button>
+              </div>
+            </div>
+
+            <p class="grove-eyebrow">SPECIES SPECIFIC</p>
+
+            <div class="space-y-3">
+              <article class="grove-card" style="--accent:#0d631b;">
+                <div class="grove-card__media" aria-hidden="true">
+                  <span class="material-symbols-outlined" style="font-size:2.5rem;">park</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-start justify-between gap-2">
+                    <h3 class="grove-jp font-bold text-grove-on-surface text-base leading-tight">黒松</h3>
+                    <span class="grove-badge grove-badge--task grove-jp">手入れ</span>
+                  </div>
+                  <p class="grove-jp text-sm text-grove-on-surface-variant leading-snug mt-1">古い葉を抜き、新芽の勢いを整えます</p>
+                </div>
+              </article>
+
+              <article class="grove-card" style="--accent:#88d982;">
+                <div class="grove-card__media" aria-hidden="true">
+                  <span class="material-symbols-outlined" style="font-size:2.5rem;">eco</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-start justify-between gap-2">
+                    <h3 class="grove-jp font-bold text-grove-on-surface text-base leading-tight">楓（モミジ）</h3>
+                    <span class="grove-badge grove-badge--healthy grove-jp">水やり</span>
+                  </div>
+                  <p class="grove-jp text-sm text-grove-on-surface-variant leading-snug mt-1">芽出し時期につき、水切れに注意してください</p>
+                </div>
+              </article>
+
+              <article class="grove-card" style="--accent:#b45309;">
+                <div class="grove-card__media" aria-hidden="true">
+                  <span class="material-symbols-outlined" style="font-size:2.5rem;">grass</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-start justify-between gap-2">
+                    <h3 class="grove-jp font-bold text-grove-on-surface text-base leading-tight">真柏</h3>
+                    <span class="grove-badge grove-jp" style="background:#FFF7D6;color:#7C5400;">肥料</span>
+                  </div>
+                  <p class="grove-jp text-sm text-grove-on-surface-variant leading-snug mt-1">春の施肥を開始します</p>
+                </div>
+              </article>
+            </div>
+
+            <div class="rounded-2xl bg-[#f1f5f1] p-4 space-y-3">
+              <h3 class="grove-jp font-bold text-grove-on-surface">3月の栽培アドバイス</h3>
+              <p class="grove-jp text-sm text-grove-on-surface leading-relaxed">
+                三月は「啓蟄（けいちつ）」を迎え、多くの盆栽が冬の眠りから覚める大切な時期です。植え替えの適期でもあり、根の整理を行うことで一年の健康を左右します。
+              </p>
+              <div class="space-y-2.5">
+                <div class="flex gap-2 items-start">
+                  <span class="material-symbols-outlined text-[#1976d2] mt-0.5" style="font-size:1.125rem;" aria-hidden="true">water_drop</span>
+                  <div>
+                    <p class="grove-jp text-sm font-bold text-grove-on-surface">共通ルール：水やり</p>
+                    <p class="grove-jp text-xs text-grove-on-surface-variant leading-relaxed mt-0.5">1日1回（午前中）を基本とし、土の乾き具合を確認してください。芽吹き始めたら吸水が活発になります。</p>
+                  </div>
+                </div>
+                <div class="flex gap-2 items-start">
+                  <span class="material-symbols-outlined text-grove-primary mt-0.5" style="font-size:1.125rem;" aria-hidden="true">wb_sunny</span>
+                  <div>
+                    <p class="grove-jp text-sm font-bold text-grove-on-surface">共通ルール：置き場所</p>
+                    <p class="grove-jp text-xs text-grove-on-surface-variant leading-relaxed mt-0.5">冬の西日回避を徐々に解除し、春の柔らかな日差しに当てて活性化を促します。</p>
+                  </div>
+                </div>
+              </div>
+              <div class="grid grid-cols-2 gap-2 pt-1">
+                <span class="grove-pill grove-jp"><span class="material-symbols-outlined text-grove-primary" style="font-size:1rem;" aria-hidden="true">thermostat</span>平均 12.5℃</span>
+                <span class="grove-pill grove-jp"><span class="material-symbols-outlined text-[#1976d2]" style="font-size:1rem;" aria-hidden="true">rainy</span>降水 多め</span>
+              </div>
+            </div>
+
+            <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+              <button class="grove-chip is-active grove-jp">すべて</button>
+              <button class="grove-chip grove-jp" style="background:#FFEFE0;color:#B45309;">手入れ</button>
+              <button class="grove-chip grove-jp" style="background:#E8F5E9;color:#2E7D32;">水やり</button>
+              <button class="grove-chip grove-jp" style="background:#FFF7D6;color:#7C5400;">肥料</button>
+              <button class="grove-chip grove-jp">
+                <span class="material-symbols-outlined" style="font-size:1rem;" aria-hidden="true">tune</span>
+                品種
+              </button>
+            </div>
+          </main>
+
+          <nav class="grove-glass grove-bottomnav" aria-label="メインナビ">
+            <a href="#grove-home">
+              <span class="material-symbols-outlined" aria-hidden="true">home</span>
+              <span>ホーム</span>
+            </a>
+            <a href="#grove-schedule" class="is-active" aria-current="page">
+              <span class="material-symbols-outlined filled" aria-hidden="true">calendar_month</span>
+              <span>スケジュール</span>
+            </a>
+            <a href="#grove-log">
+              <span class="material-symbols-outlined" aria-hidden="true">edit_note</span>
+              <span>ログ記録</span>
+            </a>
+            <a href="#grove-tips">
+              <span class="material-symbols-outlined" aria-hidden="true">auto_stories</span>
+              <span>お役立ち</span>
+            </a>
+          </nav>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 3. 作業を記録 — stitch _9 / 5_* -->
+    <!-- ============================================================ -->
+    <section id="grove-log" class="scroll-mt-20" aria-labelledby="grove-log-title">
+      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-4">
+        <h2 id="grove-log-title" class="text-xl font-bold text-grove-on-surface">3. 作業を記録</h2>
+        <p class="text-xs text-grove-on-surface-variant">フォーム／天候・作業種別タイル／状態評価</p>
+      </div>
+
+      <p class="frame-caption">stitch _9 / 5_1〜5_5</p>
+      <div class="grove-phone">
+        <div class="grove-phone-notch" aria-hidden="true"></div>
+        <div class="grove-phone-inner">
+          <header class="grove-topbar">
+            <div class="flex items-center gap-3">
+              <button aria-label="閉じる" class="p-1 rounded-full hover:bg-black/5">
+                <span class="material-symbols-outlined text-grove-primary" aria-hidden="true">close</span>
+              </button>
+              <h1 class="font-inter font-bold text-lg text-grove-primary grove-jp">作業を記録</h1>
+            </div>
+            <button class="grove-gradient grove-jp font-bold text-sm px-4 h-9 rounded-full">保存する</button>
+          </header>
+
+          <main class="px-4 pt-2 pb-4 space-y-5">
+            <article class="grove-card" style="--accent:#0d631b;">
+              <div class="grove-card__media" aria-hidden="true">
+                <span class="material-symbols-outlined" style="font-size:2.5rem;">park</span>
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="grove-eyebrow">TARGET BONSAI</p>
+                <h3 class="grove-jp font-bold text-grove-on-surface text-base mt-1">真柏 (Shimpaku Juniper)</h3>
+                <p class="grove-jp text-xs text-grove-on-surface-variant mt-1 italic">樹齢: 12年 ・ 管理番号: #082</p>
+              </div>
+            </article>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div class="rounded-2xl bg-[#f1f5f1] p-3">
+                <p class="grove-eyebrow">DATE &amp; TIME</p>
+                <p class="grove-jp font-bold mt-1 flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-grove-on-surface-variant" style="font-size:1.125rem;" aria-hidden="true">calendar_today</span>
+                  2026/03/15
+                </p>
+              </div>
+              <div class="rounded-2xl bg-[#f1f5f1] p-3">
+                <p class="grove-eyebrow">TEMPERATURE</p>
+                <p class="grove-jp font-bold mt-1 flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-grove-on-surface-variant" style="font-size:1.125rem;" aria-hidden="true">thermostat</span>
+                  18 ℃
+                </p>
+              </div>
+            </div>
+
+            <div>
+              <p class="grove-eyebrow mb-2">WEATHER</p>
+              <div class="grid grid-cols-4 gap-2">
+                <button class="grove-tile is-soft-active">
+                  <span class="material-symbols-outlined" aria-hidden="true">wb_sunny</span>
+                  <span class="grove-jp">晴れ</span>
+                </button>
+                <button class="grove-tile">
+                  <span class="material-symbols-outlined text-grove-on-surface-variant" aria-hidden="true">cloud</span>
+                  <span class="grove-jp">曇り</span>
+                </button>
+                <button class="grove-tile">
+                  <span class="material-symbols-outlined text-grove-on-surface-variant" aria-hidden="true">rainy</span>
+                  <span class="grove-jp">雨</span>
+                </button>
+                <button class="grove-tile">
+                  <span class="material-symbols-outlined text-grove-on-surface-variant" aria-hidden="true">air</span>
+                  <span class="grove-jp">強風</span>
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <p class="grove-eyebrow mb-2">作業種別 (WORK TYPE)</p>
+              <div class="grid grid-cols-2 gap-2">
+                <button class="grove-tile">
+                  <span class="material-symbols-outlined text-grove-on-surface-variant" aria-hidden="true">water_drop</span>
+                  <span class="grove-jp">灌水</span>
+                </button>
+                <button class="grove-tile is-active">
+                  <span class="material-symbols-outlined filled" aria-hidden="true">science</span>
+                  <span class="grove-jp">施肥 (Fertilizer)</span>
+                </button>
+                <button class="grove-tile">
+                  <span class="material-symbols-outlined text-grove-on-surface-variant" aria-hidden="true">content_cut</span>
+                  <span class="grove-jp">剪定</span>
+                </button>
+                <button class="grove-tile">
+                  <span class="material-symbols-outlined text-grove-on-surface-variant" aria-hidden="true">architecture</span>
+                  <span class="grove-jp">針金かけ</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="rounded-2xl bg-[#ebefeb] p-3 space-y-3">
+              <div class="flex items-center justify-between">
+                <p class="grove-eyebrow grove-jp">肥料を選択 (SELECT FERTILIZER)</p>
+                <span class="grove-badge grove-jp" style="background:#0d631b;color:#fff;">REQUIRED</span>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <button class="grove-chip is-active grove-jp">
+                  <span class="material-symbols-outlined" style="font-size:0.95rem;" aria-hidden="true">eco</span>
+                  油かす (Aburakasu)
+                </button>
+                <button class="grove-chip grove-jp">液体肥料 A (Liquid A)</button>
+                <button class="grove-chip grove-jp">骨粉 (Bone Meal)</button>
+                <button class="grove-chip grove-jp" style="background:transparent;color:#0d631b;box-shadow:inset 0 0 0 1px #88d982;">
+                  <span class="material-symbols-outlined" style="font-size:0.95rem;" aria-hidden="true">add</span>
+                  肥料を追加 (New)
+                </button>
+              </div>
+              <div class="rounded-xl bg-grove-surface-lowest p-3 flex items-center gap-3">
+                <span class="material-symbols-outlined text-grove-on-surface-variant" aria-hidden="true">analytics</span>
+                <div class="flex-1">
+                  <p class="grove-eyebrow">COMPONENT RATIO</p>
+                  <p class="grove-jp text-sm font-bold mt-0.5">N: 5　P: 2　K: 1</p>
+                </div>
+                <span class="grove-badge grove-jp" style="background:#E8F5E9;color:#2E7D32;">ORGANIC</span>
+              </div>
+            </div>
+
+            <div>
+              <p class="grove-eyebrow mb-2">CONDITION RATING</p>
+              <div class="grove-rating">
+                <button>
+                  <span class="face">😄</span>
+                  <span class="grove-jp">最高</span>
+                </button>
+                <button class="is-best">
+                  <span class="face">😊</span>
+                  <span class="grove-jp">良好</span>
+                </button>
+                <button>
+                  <span class="face">😐</span>
+                  <span class="grove-jp">普通</span>
+                </button>
+                <button class="is-warn">
+                  <span class="face">😟</span>
+                  <span class="grove-jp">要注意</span>
+                </button>
+                <button class="is-bad">
+                  <span class="face">😣</span>
+                  <span class="grove-jp">不調</span>
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <p class="grove-eyebrow mb-2">メモ (LOGS &amp; MEMO)</p>
+              <textarea rows="3" placeholder="作業のポイントや気づいた点などを入力..."
+                class="w-full rounded-2xl bg-[#f1f5f1] p-3 grove-jp text-sm placeholder:text-[#7d877c] focus:outline-none focus:ring-2 focus:ring-grove-primary border-0"></textarea>
+            </div>
+
+            <div>
+              <p class="grove-eyebrow mb-2">PHOTO DOCUMENTATION</p>
+              <button class="w-full rounded-2xl py-8 flex flex-col items-center gap-2 grove-jp text-sm text-grove-on-surface-variant" style="background:#f1f5f1;border:2px dashed #bfcaba;">
+                <span class="w-11 h-11 rounded-full bg-grove-surface-lowest flex items-center justify-center shadow">
+                  <span class="material-symbols-outlined text-grove-primary" aria-hidden="true">photo_camera</span>
+                </span>
+                写真を撮る・アップロード
+              </button>
+            </div>
+          </main>
+
+          <nav class="grove-glass grove-bottomnav" aria-label="メインナビ">
+            <a href="#grove-home">
+              <span class="material-symbols-outlined" aria-hidden="true">home</span>
+              <span>ホーム</span>
+            </a>
+            <a href="#grove-schedule">
+              <span class="material-symbols-outlined" aria-hidden="true">calendar_month</span>
+              <span>スケジュール</span>
+            </a>
+            <a href="#grove-log" class="is-active" aria-current="page">
+              <span class="material-symbols-outlined filled" aria-hidden="true">edit_note</span>
+              <span>ログ記録</span>
+            </a>
+            <a href="#grove-tips">
+              <span class="material-symbols-outlined" aria-hidden="true">auto_stories</span>
+              <span>お役立ち</span>
+            </a>
+          </nav>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 4. お役立ち — stitch _4 / _6 -->
+    <!-- ============================================================ -->
+    <section id="grove-tips" class="scroll-mt-20" aria-labelledby="grove-tips-title">
+      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-4">
+        <h2 id="grove-tips-title" class="text-xl font-bold text-grove-on-surface">4. お役立ち</h2>
+        <p class="text-xs text-grove-on-surface-variant">注意点ヒーロー／カテゴリーグリッド／最新記事</p>
+      </div>
+
+      <p class="frame-caption">stitch _4 / _6</p>
+      <div class="grove-phone">
+        <div class="grove-phone-notch" aria-hidden="true"></div>
+        <div class="grove-phone-inner">
+          <header class="grove-topbar">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-grove-primary" aria-hidden="true">park</span>
+              <h1 class="font-inter font-bold text-lg text-grove-primary grove-jp">お役立ち</h1>
+            </div>
+            <div class="w-9 h-9 rounded-full bg-grove-secondary-fixed flex items-center justify-center text-grove-primary grove-jp font-bold">福</div>
+          </header>
+
+          <main class="px-4 pt-2 pb-4 space-y-5">
+            <label class="relative block">
+              <span class="sr-only">Tipsを検索</span>
+              <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-grove-on-surface-variant" aria-hidden="true">search</span>
+              <input type="search" placeholder="Tipsを検索する..."
+                class="w-full h-12 pl-12 pr-4 rounded-2xl bg-[#f1f5f1] grove-jp text-sm placeholder:text-[#7d877c] focus:outline-none focus:ring-2 focus:ring-grove-primary border-0">
+            </label>
+
+            <div class="grove-hero space-y-3">
+              <div class="flex items-center justify-between">
+                <p class="grove-eyebrow text-white/85">今月の注意点</p>
+                <span class="grove-badge grove-jp" style="background:rgba(255,255,255,0.2);color:#fff;">3月 MARCH</span>
+              </div>
+              <h3 class="grove-jp font-bold text-xl leading-tight">西日避けの撤去と芽出しの準備</h3>
+              <p class="grove-jp text-sm leading-relaxed text-white/90">
+                春の訪れとともに、冬の養生風除けや西日避けを段階的に外していきます。新芽が動き出すこの時期は、水切れに注意しましょう。
+              </p>
+              <button class="inline-flex items-center gap-1 mt-1 px-4 h-9 rounded-full bg-white/15 backdrop-blur-sm grove-jp font-bold text-sm">
+                詳しく見る
+                <span class="material-symbols-outlined" style="font-size:1rem;" aria-hidden="true">arrow_forward</span>
+              </button>
+            </div>
+
+            <div>
+              <h3 class="grove-jp font-bold text-grove-on-surface mb-2">カテゴリー</h3>
+              <div class="grid grid-cols-2 gap-3">
+                <button class="rounded-2xl bg-grove-surface-lowest p-3 text-left">
+                  <span class="material-symbols-outlined text-grove-primary" aria-hidden="true">content_cut</span>
+                  <p class="grove-jp font-bold mt-1">作業TIPS</p>
+                  <p class="grove-jp text-xs text-grove-on-surface-variant mt-0.5">剪定・水やり・植替え</p>
+                </button>
+                <button class="rounded-2xl bg-grove-surface-lowest p-3 text-left">
+                  <span class="material-symbols-outlined text-grove-primary" aria-hidden="true">menu_book</span>
+                  <p class="grove-jp font-bold mt-1">品種別ガイド</p>
+                  <p class="grove-jp text-xs text-grove-on-surface-variant mt-0.5">松・楓・真柏など</p>
+                </button>
+                <button class="rounded-2xl bg-grove-surface-lowest p-3 text-left">
+                  <span class="material-symbols-outlined text-grove-tertiary" aria-hidden="true">bug_report</span>
+                  <p class="grove-jp font-bold mt-1">病害虫対策</p>
+                  <p class="grove-jp text-xs text-grove-on-surface-variant mt-0.5">早期発見と治療法</p>
+                </button>
+                <button class="rounded-2xl bg-grove-surface-lowest p-3 text-left">
+                  <span class="material-symbols-outlined text-grove-primary" aria-hidden="true">photo_library</span>
+                  <p class="grove-jp font-bold mt-1">ギャラリー</p>
+                  <p class="grove-jp text-xs text-grove-on-surface-variant mt-0.5">愛好家の作品</p>
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="grove-jp font-bold text-grove-on-surface">最新の記事</h3>
+                <a href="#" class="grove-jp text-sm text-grove-primary font-bold">すべて見る</a>
+              </div>
+              <ul class="space-y-3">
+                <li class="rounded-2xl bg-grove-surface-lowest p-3 flex gap-3">
+                  <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-[#d2e5cd] to-[#88d982] flex items-center justify-center text-[#2e4d2e] flex-shrink-0">
+                    <span class="material-symbols-outlined" aria-hidden="true">cut</span>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <span class="grove-badge grove-jp" style="background:#E8F5E9;color:#2E7D32;">WORK TIPS</span>
+                    <p class="grove-jp font-bold text-sm mt-1 leading-tight">真柏の芽摘み：バランスを整えるコツ</p>
+                    <p class="grove-jp text-[11px] text-grove-on-surface-variant mt-1">2日前 ・ 5分で読める</p>
+                  </div>
+                </li>
+                <li class="rounded-2xl bg-grove-surface-lowest p-3 flex gap-3">
+                  <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-[#bfcaba] to-[#526350] flex items-center justify-center text-white flex-shrink-0">
+                    <span class="material-symbols-outlined" aria-hidden="true">park</span>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <span class="grove-badge grove-jp" style="background:#FFEFE0;color:#B45309;">SPECIES GUIDE</span>
+                    <p class="grove-jp font-bold text-sm mt-1 leading-tight">初心者のための黒松の育て方完全ガイド</p>
+                    <p class="grove-jp text-[11px] text-grove-on-surface-variant mt-1">5日前 ・ 10分で読める</p>
+                  </div>
+                </li>
+                <li class="rounded-2xl bg-grove-surface-lowest p-3 flex gap-3">
+                  <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-[#923357] to-[#3f001c] flex items-center justify-center text-white flex-shrink-0">
+                    <span class="material-symbols-outlined" aria-hidden="true">photo</span>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <span class="grove-badge grove-jp" style="background:#FCE4EC;color:#923357;">GALLERY</span>
+                    <p class="grove-jp font-bold text-sm mt-1 leading-tight">初夏の盆栽展：光と影の芸術</p>
+                    <p class="grove-jp text-[11px] text-grove-on-surface-variant mt-1">1週間前 ・ 6分で読める</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </main>
+
+          <nav class="grove-glass grove-bottomnav" aria-label="メインナビ">
+            <a href="#grove-home">
+              <span class="material-symbols-outlined" aria-hidden="true">home</span>
+              <span>ホーム</span>
+            </a>
+            <a href="#grove-schedule">
+              <span class="material-symbols-outlined" aria-hidden="true">calendar_month</span>
+              <span>スケジュール</span>
+            </a>
+            <a href="#grove-log">
+              <span class="material-symbols-outlined" aria-hidden="true">edit_note</span>
+              <span>ログ記録</span>
+            </a>
+            <a href="#grove-tips" class="is-active" aria-current="page">
+              <span class="material-symbols-outlined filled" aria-hidden="true">auto_stories</span>
+              <span>お役立ち</span>
+            </a>
+          </nav>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 5. 初回（盆栽0本） — stitch _7 -->
+    <!-- ============================================================ -->
+    <section id="grove-empty" class="scroll-mt-20" aria-labelledby="grove-empty-title">
+      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-4">
+        <h2 id="grove-empty-title" class="text-xl font-bold text-grove-on-surface">5. 初回（盆栽0本）</h2>
+        <p class="text-xs text-grove-on-surface-variant">グラデーションCTA／円形イラストエリア</p>
+      </div>
+
+      <p class="frame-caption">stitch _7</p>
+      <div class="grove-phone">
+        <div class="grove-phone-notch" aria-hidden="true"></div>
+        <div class="grove-phone-inner">
+          <header class="grove-topbar">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-grove-primary" aria-hidden="true">park</span>
+              <h1 class="font-inter font-bold text-lg text-grove-primary grove-jp">盆栽管理</h1>
+            </div>
+            <span class="material-symbols-outlined text-grove-primary" aria-hidden="true">forest</span>
+          </header>
+
+          <main class="px-6 pt-8 pb-6 flex flex-col items-center text-center space-y-5">
+            <div class="w-44 h-44 rounded-full bg-gradient-to-br from-[#f1f5f1] to-[#d2e5cd] flex items-center justify-center relative overflow-hidden">
+              <span class="material-symbols-outlined text-grove-primary" style="font-size:6rem;" aria-hidden="true">park</span>
+              <span class="absolute -top-1 right-3 material-symbols-outlined text-grove-primary-fixed-dim" style="font-size:1.25rem;" aria-hidden="true">eco</span>
+              <span class="absolute bottom-4 left-3 material-symbols-outlined text-grove-primary-fixed-dim" style="font-size:1rem;" aria-hidden="true">grass</span>
+            </div>
+
+            <h2 class="grove-jp font-bold text-xl text-grove-on-surface leading-tight">まだ盆栽が登録されていません</h2>
+            <p class="grove-jp text-sm text-grove-on-surface-variant leading-relaxed max-w-xs">
+              最初の盆栽を登録して、年間の手入れ予定を管理しましょう
+            </p>
+
+            <button class="grove-gradient w-full max-w-xs h-13 py-3 rounded-full grove-jp font-bold text-base flex items-center justify-center gap-2" style="box-shadow:0 12px 24px -8px rgba(13,99,27,0.45);">
+              <span class="material-symbols-outlined" aria-hidden="true">add</span>
+              盆栽を登録する
+            </button>
+
+            <a href="#grove-tips" class="w-full max-w-xs grove-jp text-sm font-bold text-grove-primary py-3 rounded-full bg-grove-primary-fixed/30 flex items-center justify-center gap-1">
+              お役立ち記事を読む
+              <span class="material-symbols-outlined" style="font-size:1rem;" aria-hidden="true">arrow_forward</span>
+            </a>
+          </main>
+
+          <nav class="grove-glass grove-bottomnav" aria-label="メインナビ">
+            <a href="#grove-home" class="is-active" aria-current="page">
+              <span class="material-symbols-outlined filled" aria-hidden="true">home</span>
+              <span>ホーム</span>
+            </a>
+            <a href="#grove-schedule">
+              <span class="material-symbols-outlined" aria-hidden="true">calendar_month</span>
+              <span>スケジュール</span>
+            </a>
+            <a href="#grove-log">
+              <span class="material-symbols-outlined" aria-hidden="true">edit_note</span>
+              <span>ログ記録</span>
+            </a>
+            <a href="#grove-tips">
+              <span class="material-symbols-outlined" aria-hidden="true">auto_stories</span>
+              <span>お役立ち</span>
+            </a>
+          </nav>
+        </div>
+      </div>
+    </section>
+
+    <!-- 設計メモ -->
+    <section aria-labelledby="design-notes-title" class="rounded-2xl bg-white/80 backdrop-blur p-5 md:p-6">
+      <h2 id="design-notes-title" class="text-lg font-bold text-grove-on-surface mb-3">設計メモ</h2>
+      <ul class="grove-jp text-sm text-grove-on-surface space-y-2 list-disc pl-5">
+        <li><strong class="font-bold">No-Lineルール</strong>：1px borderの代わりに、surface tier の重なり（surface-low #f1f5f1 / lowest #ffffff）で領域を区切る。</li>
+        <li><strong class="font-bold">Tonal Layering</strong>：濃いベース（#f6faf6）の上に薄いコンテナ（#f1f5f1）を敷き、その上に白のカード（#ffffff）を配置して立体感を演出。</li>
+        <li><strong class="font-bold">ボタニカルグラデーション</strong>：FAB / 主要CTA / Heroで <code class="text-xs px-1.5 py-0.5 rounded bg-grove-surface-high">linear-gradient(135deg, #0d631b, #2e7d32)</code>。</li>
+        <li><strong class="font-bold">ガラスモーフィズム</strong>：トップバー / ボトムナビは <code class="text-xs px-1.5 py-0.5 rounded bg-grove-surface-high">rgba(246,250,246,0.78) + blur(20px)</code>。</li>
+        <li><strong class="font-bold">アクセントバー</strong>：盆栽カード左端 4px。状態色（健康=緑 / 要注意=tertiary / 注意=オレンジ）で識別。</li>
+        <li><strong class="font-bold">タイポ</strong>：英字 Inter / 日本語 Noto Sans JP。Display は -0.02em のトラッキングで編集的に。</li>
+      </ul>
+      <p class="text-xs text-grove-on-surface-variant mt-3">
+        参考: <code class="text-xs px-1.5 py-0.5 rounded bg-grove-surface-high">stitch_20260402/evergreen_moss/DESIGN.md</code>
+      </p>
+    </section>
+
+  </main>
+
+  <footer class="max-w-7xl mx-auto px-4 md:px-6 py-8 text-xs text-grove-on-surface-variant text-center">
+    The Curated Grove · Mobile UI Mockups · 盆栽管理
+  </footer>
+</body>
+</html>
