@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="z7cFXRTd2cvjNcajfravYIVodDvk74SRLa9IaS6vq1f4UF1uXJNNOQqs5qh9fBOS">
+    <title>ケヤキ | 品種マスタ</title>
+
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined">
+    <link rel="stylesheet" href="app.css">
+
+    
+  </head>
+  <body
+    class="min-h-screen bg-emerald-50 text-gray-900 antialiased"
+    hx-headers='{"X-CSRFToken": "z7cFXRTd2cvjNcajfravYIVodDvk74SRLa9IaS6vq1f4UF1uXJNNOQqs5qh9fBOS"}'
+  >
+    
+<header class="fixed inset-x-0 top-0 z-40 flex h-14 items-center justify-between border-b border-emerald-100 bg-white/95 px-3 shadow-sm backdrop-blur">
+  <div class="flex items-center gap-2">
+    <button
+      type="button"
+      class="flex h-10 w-10 items-center justify-center rounded-full text-emerald-700 hover:bg-emerald-50 md:hidden"
+      aria-label="メニューを開く"
+    >
+      <span class="material-symbols-outlined">menu</span>
+    </button>
+  </div>
+
+  <a href="home.html" class="flex items-center gap-1 text-lg font-semibold text-emerald-800">
+    <span aria-hidden="true">🌳</span>
+    <span>盆栽管理</span>
+  </a>
+
+  <div class="flex items-center gap-1">
+    <button
+      type="button"
+      class="flex h-10 w-10 items-center justify-center rounded-full text-emerald-700 hover:bg-emerald-50"
+      aria-label="検索"
+    >
+      <span class="material-symbols-outlined">search</span>
+    </button>
+
+    
+    <button
+      type="button"
+      class="flex h-10 w-10 items-center justify-center rounded-full text-emerald-700 hover:bg-emerald-50"
+      aria-label="通知"
+      title="通知（Phase 3 で実装予定）"
+    >
+      <span class="material-symbols-outlined">notifications</span>
+    </button>
+
+    
+      
+      <a
+        href="#"
+        class="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-600 text-sm font-semibold text-white"
+        aria-label="アカウント"
+      >
+        D
+      </a>
+    
+  </div>
+</header>
+
+
+    
+    <main class="mx-auto w-full max-w-screen-md px-4 pt-16 pb-24">
+      
+
+      
+  <div class="space-y-4">
+    <header>
+      <h1 class="text-xl font-bold text-emerald-900">ケヤキ</h1>
+      <p class="text-sm text-gray-600">
+        広葉樹
+        ・<i>Zelkova serrata</i>
+      </p>
+    </header>
+
+    
+      <section class="rounded-lg border border-emerald-100 bg-white p-4 shadow-sm">
+        <p class="whitespace-pre-line text-sm text-gray-800">ほうき作りで知られる雑木盆栽。細かい枝分かれの繊細な樹形が美しい。水を好み夏場の灌水は十分に。</p>
+      </section>
+    
+
+    <section class="rounded-lg border border-emerald-100 bg-white p-4 shadow-sm">
+      <h2 class="mb-2 text-sm font-semibold text-emerald-800">月別作業カレンダー</h2>
+      
+        <ul class="divide-y divide-emerald-50">
+          
+            <li class="py-2">
+              <p class="text-sm font-semibold text-emerald-900">3月</p>
+              <ul class="mt-1 space-y-1 text-sm text-gray-700">
+                
+                  <li>
+                    <span class="text-xs text-emerald-600">[上旬]</span>
+                    repotting: 芽出し前に植え替え。根の伸長が早いので毎年植え替えが望ましい。
+                  </li>
+                
+              </ul>
+            </li>
+          
+            <li class="py-2">
+              <p class="text-sm font-semibold text-emerald-900">4月</p>
+              <ul class="mt-1 space-y-1 text-sm text-gray-700">
+                
+                  <li>
+                    <span class="text-xs text-emerald-600">[中旬]</span>
+                    pruning: 新芽が伸びたら2〜3節で摘み、Y字の枝分かれを作る。
+                  </li>
+                
+              </ul>
+            </li>
+          
+            <li class="py-2">
+              <p class="text-sm font-semibold text-emerald-900">6月</p>
+              <ul class="mt-1 space-y-1 text-sm text-gray-700">
+                
+                  <li>
+                    <span class="text-xs text-emerald-600">[上旬]</span>
+                    defoliation: 全葉刈りで二番芽を促し、枝先を細かく分岐させる。
+                  </li>
+                
+              </ul>
+            </li>
+          
+            <li class="py-2">
+              <p class="text-sm font-semibold text-emerald-900">7月</p>
+              <ul class="mt-1 space-y-1 text-sm text-gray-700">
+                
+                  <li>
+                    <span class="text-xs text-emerald-600">[中旬]</span>
+                    watering: 高温期は朝夕の灌水を欠かさない。水切れで枝枯れする。
+                  </li>
+                
+              </ul>
+            </li>
+          
+            <li class="py-2">
+              <p class="text-sm font-semibold text-emerald-900">12月</p>
+              <ul class="mt-1 space-y-1 text-sm text-gray-700">
+                
+                  <li>
+                    <span class="text-xs text-emerald-600">[上旬]</span>
+                    pruning: 落葉後の透かし剪定。寒樹姿を整え、不要枝を整理する。
+                  </li>
+                
+              </ul>
+            </li>
+          
+        </ul>
+      
+    </section>
+
+    
+  </div>
+
+    </main>
+
+    
+<nav
+  class="fixed inset-x-0 bottom-0 z-40 grid grid-cols-4 border-t border-emerald-100 bg-white/95 shadow-[0_-2px_8px_rgba(0,0,0,0.04)] backdrop-blur"
+  aria-label="メインナビゲーション"
+>
+  <a href="home.html" class="flex min-h-[56px] flex-col items-center justify-center gap-0.5 py-2 text-xs text-emerald-700 hover:bg-emerald-50 active:bg-emerald-100">
+    <span class="text-lg" aria-hidden="true">🏠</span>
+    <span>ホーム</span>
+  </a>
+  <a href="schedules.html" class="flex min-h-[56px] flex-col items-center justify-center gap-0.5 py-2 text-xs text-emerald-700 hover:bg-emerald-50 active:bg-emerald-100">
+    <span class="text-lg" aria-hidden="true">📅</span>
+    <span>スケジュール</span>
+  </a>
+  <a href="logs.html" class="flex min-h-[56px] flex-col items-center justify-center gap-0.5 py-2 text-xs text-emerald-700 hover:bg-emerald-50 active:bg-emerald-100">
+    <span class="text-lg" aria-hidden="true">📝</span>
+    <span>ログ</span>
+  </a>
+  <a href="articles.html" class="flex min-h-[56px] flex-col items-center justify-center gap-0.5 py-2 text-xs text-emerald-700 hover:bg-emerald-50 active:bg-emerald-100">
+    <span class="text-lg" aria-hidden="true">📚</span>
+    <span>お役立ち</span>
+  </a>
+</nav>
+
+
+    
+  </body>
+</html>

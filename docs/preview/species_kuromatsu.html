@@ -1,0 +1,219 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="EFVTvuIbFtPTsnM12ovsonseHk9yBNvPQISWIvVt3izEzQDcKG8KevXiz7VnJkrQ">
+    <title>黒松 | 品種マスタ</title>
+
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined">
+    <link rel="stylesheet" href="app.css">
+
+    
+  </head>
+  <body
+    class="min-h-screen bg-emerald-50 text-gray-900 antialiased"
+    hx-headers='{"X-CSRFToken": "EFVTvuIbFtPTsnM12ovsonseHk9yBNvPQISWIvVt3izEzQDcKG8KevXiz7VnJkrQ"}'
+  >
+    
+<header class="fixed inset-x-0 top-0 z-40 flex h-14 items-center justify-between border-b border-emerald-100 bg-white/95 px-3 shadow-sm backdrop-blur">
+  <div class="flex items-center gap-2">
+    <button
+      type="button"
+      class="flex h-10 w-10 items-center justify-center rounded-full text-emerald-700 hover:bg-emerald-50 md:hidden"
+      aria-label="メニューを開く"
+    >
+      <span class="material-symbols-outlined">menu</span>
+    </button>
+  </div>
+
+  <a href="home.html" class="flex items-center gap-1 text-lg font-semibold text-emerald-800">
+    <span aria-hidden="true">🌳</span>
+    <span>盆栽管理</span>
+  </a>
+
+  <div class="flex items-center gap-1">
+    <button
+      type="button"
+      class="flex h-10 w-10 items-center justify-center rounded-full text-emerald-700 hover:bg-emerald-50"
+      aria-label="検索"
+    >
+      <span class="material-symbols-outlined">search</span>
+    </button>
+
+    
+    <button
+      type="button"
+      class="flex h-10 w-10 items-center justify-center rounded-full text-emerald-700 hover:bg-emerald-50"
+      aria-label="通知"
+      title="通知（Phase 3 で実装予定）"
+    >
+      <span class="material-symbols-outlined">notifications</span>
+    </button>
+
+    
+      
+      <a
+        href="#"
+        class="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-600 text-sm font-semibold text-white"
+        aria-label="アカウント"
+      >
+        D
+      </a>
+    
+  </div>
+</header>
+
+
+    
+    <main class="mx-auto w-full max-w-screen-md px-4 pt-16 pb-24">
+      
+
+      
+  <div class="space-y-4">
+    <header>
+      <h1 class="text-xl font-bold text-emerald-900">黒松</h1>
+      <p class="text-sm text-gray-600">
+        針葉樹
+        ・<i>Pinus thunbergii</i>
+      </p>
+    </header>
+
+    
+      <section class="rounded-lg border border-emerald-100 bg-white p-4 shadow-sm">
+        <p class="whitespace-pre-line text-sm text-gray-800">日本を代表する松柏盆栽。荒々しい樹皮と力強い枝振りが特徴。日当たりと風通しを好み、芽摘み・葉抜きで樹勢をコントロールする。</p>
+      </section>
+    
+
+    <section class="rounded-lg border border-emerald-100 bg-white p-4 shadow-sm">
+      <h2 class="mb-2 text-sm font-semibold text-emerald-800">月別作業カレンダー</h2>
+      
+        <ul class="divide-y divide-emerald-50">
+          
+            <li class="py-2">
+              <p class="text-sm font-semibold text-emerald-900">3月</p>
+              <ul class="mt-1 space-y-1 text-sm text-gray-700">
+                
+                  <li>
+                    <span class="text-xs text-emerald-600">[中旬]</span>
+                    repotting: 新芽が動き出す前に植え替え。2〜4年に一度が目安。
+                  </li>
+                
+              </ul>
+            </li>
+          
+            <li class="py-2">
+              <p class="text-sm font-semibold text-emerald-900">4月</p>
+              <ul class="mt-1 space-y-1 text-sm text-gray-700">
+                
+                  <li>
+                    <span class="text-xs text-emerald-600">[上旬]</span>
+                    fertilizing: 玉肥を置き肥。新芽が伸びる前の元肥として施す。
+                  </li>
+                
+              </ul>
+            </li>
+          
+            <li class="py-2">
+              <p class="text-sm font-semibold text-emerald-900">5月</p>
+              <ul class="mt-1 space-y-1 text-sm text-gray-700">
+                
+                  <li>
+                    <span class="text-xs text-emerald-600">[中旬]</span>
+                    bud_pinching: 新芽（みどり）の長さが揃ったら、強い芽は元から、弱い芽は半分残してつまむ。
+                  </li>
+                
+              </ul>
+            </li>
+          
+            <li class="py-2">
+              <p class="text-sm font-semibold text-emerald-900">6月</p>
+              <ul class="mt-1 space-y-1 text-sm text-gray-700">
+                
+                  <li>
+                    <span class="text-xs text-emerald-600">[下旬]</span>
+                    fertilizing: 肥料止め。梅雨明けまでに施肥を控え、徒長を抑える。
+                  </li>
+                
+              </ul>
+            </li>
+          
+            <li class="py-2">
+              <p class="text-sm font-semibold text-emerald-900">11月</p>
+              <ul class="mt-1 space-y-1 text-sm text-gray-700">
+                
+                  <li>
+                    <span class="text-xs text-emerald-600">[中旬]</span>
+                    defoliation: 古葉抜き。前年の古い葉を手で引き抜き、内部の日当たりと風通しを確保する。
+                  </li>
+                
+              </ul>
+            </li>
+          
+            <li class="py-2">
+              <p class="text-sm font-semibold text-emerald-900">12月</p>
+              <ul class="mt-1 space-y-1 text-sm text-gray-700">
+                
+                  <li>
+                    <span class="text-xs text-emerald-600">[上旬]</span>
+                    wiring: 休眠期に入ったら針金かけ。樹液の動きが少なく形が決まりやすい。
+                  </li>
+                
+              </ul>
+            </li>
+          
+        </ul>
+      
+    </section>
+
+    
+      <section class="rounded-lg border border-emerald-100 bg-white p-4 shadow-sm">
+        <h2 class="mb-2 text-sm font-semibold text-emerald-800">関連お役立ち記事</h2>
+        <ul class="divide-y divide-emerald-50">
+          
+            <li class="py-2 text-sm">
+              <a href="article_bonsai-watering-basics.html" class="text-emerald-700 hover:underline">
+                盆栽の水やり入門
+              </a>
+            </li>
+          
+        </ul>
+      </section>
+    
+  </div>
+
+    </main>
+
+    
+<nav
+  class="fixed inset-x-0 bottom-0 z-40 grid grid-cols-4 border-t border-emerald-100 bg-white/95 shadow-[0_-2px_8px_rgba(0,0,0,0.04)] backdrop-blur"
+  aria-label="メインナビゲーション"
+>
+  <a href="home.html" class="flex min-h-[56px] flex-col items-center justify-center gap-0.5 py-2 text-xs text-emerald-700 hover:bg-emerald-50 active:bg-emerald-100">
+    <span class="text-lg" aria-hidden="true">🏠</span>
+    <span>ホーム</span>
+  </a>
+  <a href="schedules.html" class="flex min-h-[56px] flex-col items-center justify-center gap-0.5 py-2 text-xs text-emerald-700 hover:bg-emerald-50 active:bg-emerald-100">
+    <span class="text-lg" aria-hidden="true">📅</span>
+    <span>スケジュール</span>
+  </a>
+  <a href="logs.html" class="flex min-h-[56px] flex-col items-center justify-center gap-0.5 py-2 text-xs text-emerald-700 hover:bg-emerald-50 active:bg-emerald-100">
+    <span class="text-lg" aria-hidden="true">📝</span>
+    <span>ログ</span>
+  </a>
+  <a href="articles.html" class="flex min-h-[56px] flex-col items-center justify-center gap-0.5 py-2 text-xs text-emerald-700 hover:bg-emerald-50 active:bg-emerald-100">
+    <span class="text-lg" aria-hidden="true">📚</span>
+    <span>お役立ち</span>
+  </a>
+</nav>
+
+
+    
+  </body>
+</html>

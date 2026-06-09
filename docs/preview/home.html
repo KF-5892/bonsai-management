@@ -1,0 +1,381 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="3IW7HDrZRZWlwtTeGtDeRxmqt2KSnX79fLTaUEEhfOG6DWKpoLgwHFRulPwHvu3a">
+    <title>ホーム | 盆栽管理</title>
+
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined">
+    <link rel="stylesheet" href="app.css">
+
+    
+  </head>
+  <body
+    class="min-h-screen bg-emerald-50 text-gray-900 antialiased"
+    hx-headers='{"X-CSRFToken": "3IW7HDrZRZWlwtTeGtDeRxmqt2KSnX79fLTaUEEhfOG6DWKpoLgwHFRulPwHvu3a"}'
+  >
+    
+<header class="fixed inset-x-0 top-0 z-40 flex h-14 items-center justify-between border-b border-emerald-100 bg-white/95 px-3 shadow-sm backdrop-blur">
+  <div class="flex items-center gap-2">
+    <button
+      type="button"
+      class="flex h-10 w-10 items-center justify-center rounded-full text-emerald-700 hover:bg-emerald-50 md:hidden"
+      aria-label="メニューを開く"
+    >
+      <span class="material-symbols-outlined">menu</span>
+    </button>
+  </div>
+
+  <a href="home.html" class="flex items-center gap-1 text-lg font-semibold text-emerald-800">
+    <span aria-hidden="true">🌳</span>
+    <span>盆栽管理</span>
+  </a>
+
+  <div class="flex items-center gap-1">
+    <button
+      type="button"
+      class="flex h-10 w-10 items-center justify-center rounded-full text-emerald-700 hover:bg-emerald-50"
+      aria-label="検索"
+    >
+      <span class="material-symbols-outlined">search</span>
+    </button>
+
+    
+    <button
+      type="button"
+      class="flex h-10 w-10 items-center justify-center rounded-full text-emerald-700 hover:bg-emerald-50"
+      aria-label="通知"
+      title="通知（Phase 3 で実装予定）"
+    >
+      <span class="material-symbols-outlined">notifications</span>
+    </button>
+
+    
+      
+      <a
+        href="#"
+        class="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-600 text-sm font-semibold text-white"
+        aria-label="アカウント"
+      >
+        D
+      </a>
+    
+  </div>
+</header>
+
+
+    
+    <main class="mx-auto w-full max-w-screen-md px-4 pt-16 pb-24">
+      
+
+      
+  <div class="space-y-6">
+    
+    <section>
+      <header class="mb-3 flex items-end justify-between">
+        <h1 class="text-xl font-bold text-emerald-900">
+          2026年6月のやること
+        </h1>
+        <a href="schedules.html" class="text-sm text-emerald-700 hover:underline">
+          すべて見る
+        </a>
+      </header>
+
+      
+        <ul class="space-y-2">
+          
+            <li class="rounded-lg border border-emerald-100 bg-white p-3 shadow-sm">
+              <div class="flex items-start justify-between gap-3">
+                <div class="min-w-0 flex-1">
+                  <p class="text-xs text-emerald-700">
+                    全体
+                    
+                    
+                  </p>
+                  <p class="font-semibold text-emerald-900">梅雨時の風通しと病害対策</p>
+                  
+                    <p class="mt-1 text-sm text-gray-700 line-clamp-2">長雨で過湿になりやすい時期。鉢を密集させず風通しを確保し、棚を一段空けて通気をよくする。うどんこ病・黒星病が発生しやすいため定期消毒を行う。</p>
+                  
+                </div>
+                <div class="shrink-0 text-right">
+                  
+                    <form method="post"
+                          action="#">
+                      <input type="hidden" name="csrfmiddlewaretoken" value="3IW7HDrZRZWlwtTeGtDeRxmqt2KSnX79fLTaUEEhfOG6DWKpoLgwHFRulPwHvu3a">
+                      <input type="hidden" name="year" value="2026">
+                      <input type="hidden" name="month" value="6">
+                      
+                      <input type="hidden" name="task_type" value="病害虫">
+                      <button type="submit"
+                              class="rounded-md bg-emerald-600 px-3 py-1 text-xs font-semibold text-white hover:bg-emerald-700">
+                        記録する
+                      </button>
+                    </form>
+                  
+                </div>
+              </div>
+            </li>
+          
+            <li class="rounded-lg border border-emerald-100 bg-white p-3 shadow-sm">
+              <div class="flex items-start justify-between gap-3">
+                <div class="min-w-0 flex-1">
+                  <p class="text-xs text-emerald-700">
+                    もみじ 花子
+                    ・五葉松
+                    
+                  </p>
+                  <p class="font-semibold text-emerald-900">もみじの置き肥</p>
+                  
+                </div>
+                <div class="shrink-0 text-right">
+                  
+                    <form method="post"
+                          action="#">
+                      <input type="hidden" name="csrfmiddlewaretoken" value="3IW7HDrZRZWlwtTeGtDeRxmqt2KSnX79fLTaUEEhfOG6DWKpoLgwHFRulPwHvu3a">
+                      <input type="hidden" name="year" value="2026">
+                      <input type="hidden" name="month" value="6">
+                      
+                        <input type="hidden" name="bonsai" value="06a279c7-e788-715a-8000-676679fb8728">
+                      
+                      <input type="hidden" name="task_type" value="fertilizing">
+                      <button type="submit"
+                              class="rounded-md bg-emerald-600 px-3 py-1 text-xs font-semibold text-white hover:bg-emerald-700">
+                        記録する
+                      </button>
+                    </form>
+                  
+                </div>
+              </div>
+            </li>
+          
+            <li class="rounded-lg border border-emerald-100 bg-white p-3 shadow-sm">
+              <div class="flex items-start justify-between gap-3">
+                <div class="min-w-0 flex-1">
+                  <p class="text-xs text-emerald-700">
+                    もみじ 花子
+                    ・五葉松
+                    ・上旬
+                  </p>
+                  <p class="font-semibold text-emerald-900">新芽が固まったら芽切り・芽数調整。バランスをとり古枝を整理。</p>
+                  
+                    <p class="mt-1 text-sm text-gray-700 line-clamp-2">新芽が固まったら芽切り・芽数調整。バランスをとり古枝を整理。</p>
+                  
+                </div>
+                <div class="shrink-0 text-right">
+                  
+                    <form method="post"
+                          action="#">
+                      <input type="hidden" name="csrfmiddlewaretoken" value="3IW7HDrZRZWlwtTeGtDeRxmqt2KSnX79fLTaUEEhfOG6DWKpoLgwHFRulPwHvu3a">
+                      <input type="hidden" name="year" value="2026">
+                      <input type="hidden" name="month" value="6">
+                      
+                        <input type="hidden" name="bonsai" value="06a279c7-e788-715a-8000-676679fb8728">
+                      
+                      <input type="hidden" name="task_type" value="pruning">
+                      <button type="submit"
+                              class="rounded-md bg-emerald-600 px-3 py-1 text-xs font-semibold text-white hover:bg-emerald-700">
+                        記録する
+                      </button>
+                    </form>
+                  
+                </div>
+              </div>
+            </li>
+          
+            <li class="rounded-lg border border-emerald-100 bg-white p-3 shadow-sm">
+              <div class="flex items-start justify-between gap-3">
+                <div class="min-w-0 flex-1">
+                  <p class="text-xs text-emerald-700">
+                    五葉松 次郎
+                    ・五葉松
+                    ・上旬
+                  </p>
+                  <p class="font-semibold text-emerald-900">新芽が固まったら芽切り・芽数調整。バランスをとり古枝を整理。</p>
+                  
+                    <p class="mt-1 text-sm text-gray-700 line-clamp-2">新芽が固まったら芽切り・芽数調整。バランスをとり古枝を整理。</p>
+                  
+                </div>
+                <div class="shrink-0 text-right">
+                  
+                    <form method="post"
+                          action="#">
+                      <input type="hidden" name="csrfmiddlewaretoken" value="3IW7HDrZRZWlwtTeGtDeRxmqt2KSnX79fLTaUEEhfOG6DWKpoLgwHFRulPwHvu3a">
+                      <input type="hidden" name="year" value="2026">
+                      <input type="hidden" name="month" value="6">
+                      
+                        <input type="hidden" name="bonsai" value="06a279c7-e796-75f4-8000-e6428099f710">
+                      
+                      <input type="hidden" name="task_type" value="pruning">
+                      <button type="submit"
+                              class="rounded-md bg-emerald-600 px-3 py-1 text-xs font-semibold text-white hover:bg-emerald-700">
+                        記録する
+                      </button>
+                    </form>
+                  
+                </div>
+              </div>
+            </li>
+          
+            <li class="rounded-lg border border-emerald-100 bg-white p-3 shadow-sm">
+              <div class="flex items-start justify-between gap-3">
+                <div class="min-w-0 flex-1">
+                  <p class="text-xs text-emerald-700">
+                    黒松 太郎
+                    ・黒松
+                    ・下旬
+                  </p>
+                  <p class="font-semibold text-emerald-900">肥料止め。梅雨明けまでに施肥を控え、徒長を抑える。</p>
+                  
+                    <p class="mt-1 text-sm text-gray-700 line-clamp-2">肥料止め。梅雨明けまでに施肥を控え、徒長を抑える。</p>
+                  
+                </div>
+                <div class="shrink-0 text-right">
+                  
+                    <form method="post"
+                          action="#">
+                      <input type="hidden" name="csrfmiddlewaretoken" value="3IW7HDrZRZWlwtTeGtDeRxmqt2KSnX79fLTaUEEhfOG6DWKpoLgwHFRulPwHvu3a">
+                      <input type="hidden" name="year" value="2026">
+                      <input type="hidden" name="month" value="6">
+                      
+                        <input type="hidden" name="bonsai" value="06a279c7-e778-708c-8000-1286272c070f">
+                      
+                      <input type="hidden" name="task_type" value="fertilizing">
+                      <button type="submit"
+                              class="rounded-md bg-emerald-600 px-3 py-1 text-xs font-semibold text-white hover:bg-emerald-700">
+                        記録する
+                      </button>
+                    </form>
+                  
+                </div>
+              </div>
+            </li>
+          
+            <li class="rounded-lg border border-emerald-100 bg-white p-3 shadow-sm">
+              <div class="flex items-start justify-between gap-3">
+                <div class="min-w-0 flex-1">
+                  <p class="text-xs text-emerald-700">
+                    黒松 太郎
+                    ・黒松
+                    
+                  </p>
+                  <p class="font-semibold text-emerald-900">黒松の水やり</p>
+                  
+                    <p class="mt-1 text-sm text-gray-700 line-clamp-2">朝夕の2回。</p>
+                  
+                </div>
+                <div class="shrink-0 text-right">
+                  
+                    <form method="post"
+                          action="#">
+                      <input type="hidden" name="csrfmiddlewaretoken" value="3IW7HDrZRZWlwtTeGtDeRxmqt2KSnX79fLTaUEEhfOG6DWKpoLgwHFRulPwHvu3a">
+                      <input type="hidden" name="year" value="2026">
+                      <input type="hidden" name="month" value="6">
+                      
+                        <input type="hidden" name="bonsai" value="06a279c7-e778-708c-8000-1286272c070f">
+                      
+                      <input type="hidden" name="task_type" value="watering">
+                      <button type="submit"
+                              class="rounded-md bg-emerald-600 px-3 py-1 text-xs font-semibold text-white hover:bg-emerald-700">
+                        記録する
+                      </button>
+                    </form>
+                  
+                </div>
+              </div>
+            </li>
+          
+        </ul>
+      
+    </section>
+
+    
+    <section>
+      <header class="mb-3 flex items-end justify-between">
+        <h2 class="text-sm font-semibold text-emerald-800">マイ盆栽</h2>
+        <a href="bonsai_form.html" class="text-sm text-emerald-700 hover:underline">
+          + 追加
+        </a>
+      </header>
+      
+        <div class="grid grid-cols-2 gap-3 sm:grid-cols-3">
+          
+            <a href="bonsai_e6428099f710.html"
+               class="overflow-hidden rounded-lg border border-emerald-100 bg-white shadow-sm hover:shadow">
+              <div class="aspect-square w-full bg-emerald-50">
+                
+              </div>
+              <div class="space-y-0.5 p-2">
+                <p class="truncate text-sm font-semibold text-emerald-900">五葉松 次郎</p>
+                <p class="truncate text-xs text-gray-500">
+                  五葉松
+                </p>
+              </div>
+            </a>
+          
+            <a href="bonsai_676679fb8728.html"
+               class="overflow-hidden rounded-lg border border-emerald-100 bg-white shadow-sm hover:shadow">
+              <div class="aspect-square w-full bg-emerald-50">
+                
+              </div>
+              <div class="space-y-0.5 p-2">
+                <p class="truncate text-sm font-semibold text-emerald-900">もみじ 花子</p>
+                <p class="truncate text-xs text-gray-500">
+                  五葉松
+                </p>
+              </div>
+            </a>
+          
+            <a href="bonsai_1286272c070f.html"
+               class="overflow-hidden rounded-lg border border-emerald-100 bg-white shadow-sm hover:shadow">
+              <div class="aspect-square w-full bg-emerald-50">
+                
+              </div>
+              <div class="space-y-0.5 p-2">
+                <p class="truncate text-sm font-semibold text-emerald-900">黒松 太郎</p>
+                <p class="truncate text-xs text-gray-500">
+                  黒松
+                </p>
+              </div>
+            </a>
+          
+        </div>
+      
+    </section>
+  </div>
+
+    </main>
+
+    
+<nav
+  class="fixed inset-x-0 bottom-0 z-40 grid grid-cols-4 border-t border-emerald-100 bg-white/95 shadow-[0_-2px_8px_rgba(0,0,0,0.04)] backdrop-blur"
+  aria-label="メインナビゲーション"
+>
+  <a href="home.html" class="flex min-h-[56px] flex-col items-center justify-center gap-0.5 py-2 text-xs text-emerald-700 hover:bg-emerald-50 active:bg-emerald-100">
+    <span class="text-lg" aria-hidden="true">🏠</span>
+    <span>ホーム</span>
+  </a>
+  <a href="schedules.html" class="flex min-h-[56px] flex-col items-center justify-center gap-0.5 py-2 text-xs text-emerald-700 hover:bg-emerald-50 active:bg-emerald-100">
+    <span class="text-lg" aria-hidden="true">📅</span>
+    <span>スケジュール</span>
+  </a>
+  <a href="logs.html" class="flex min-h-[56px] flex-col items-center justify-center gap-0.5 py-2 text-xs text-emerald-700 hover:bg-emerald-50 active:bg-emerald-100">
+    <span class="text-lg" aria-hidden="true">📝</span>
+    <span>ログ</span>
+  </a>
+  <a href="articles.html" class="flex min-h-[56px] flex-col items-center justify-center gap-0.5 py-2 text-xs text-emerald-700 hover:bg-emerald-50 active:bg-emerald-100">
+    <span class="text-lg" aria-hidden="true">📚</span>
+    <span>お役立ち</span>
+  </a>
+</nav>
+
+
+    
+  </body>
+</html>

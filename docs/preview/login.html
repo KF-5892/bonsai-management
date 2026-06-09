@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="cFOwuvY4uHKpfhco2QSHgRaO1LjsmzpjWBwbUrvvh1YbVKP36ZOgqL5kqsuF78kV">
+    <title>ログイン | 盆栽管理</title>
+
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined">
+    <link rel="stylesheet" href="app.css">
+
+    
+  </head>
+  <body
+    class="min-h-screen bg-emerald-50 text-gray-900 antialiased"
+    hx-headers='{"X-CSRFToken": "cFOwuvY4uHKpfhco2QSHgRaO1LjsmzpjWBwbUrvvh1YbVKP36ZOgqL5kqsuF78kV"}'
+  >
+    
+<header class="fixed inset-x-0 top-0 z-40 flex h-14 items-center justify-between border-b border-emerald-100 bg-white/95 px-3 shadow-sm backdrop-blur">
+  <div class="flex items-center gap-2">
+    <button
+      type="button"
+      class="flex h-10 w-10 items-center justify-center rounded-full text-emerald-700 hover:bg-emerald-50 md:hidden"
+      aria-label="メニューを開く"
+    >
+      <span class="material-symbols-outlined">menu</span>
+    </button>
+  </div>
+
+  <a href="home.html" class="flex items-center gap-1 text-lg font-semibold text-emerald-800">
+    <span aria-hidden="true">🌳</span>
+    <span>盆栽管理</span>
+  </a>
+
+  <div class="flex items-center gap-1">
+    <button
+      type="button"
+      class="flex h-10 w-10 items-center justify-center rounded-full text-emerald-700 hover:bg-emerald-50"
+      aria-label="検索"
+    >
+      <span class="material-symbols-outlined">search</span>
+    </button>
+
+    
+    <button
+      type="button"
+      class="flex h-10 w-10 items-center justify-center rounded-full text-emerald-700 hover:bg-emerald-50"
+      aria-label="通知"
+      title="通知（Phase 3 で実装予定）"
+    >
+      <span class="material-symbols-outlined">notifications</span>
+    </button>
+
+    
+      <a
+        href="login.html"
+        class="rounded-md px-3 py-1.5 text-sm font-medium text-emerald-700 hover:bg-emerald-50"
+      >
+        ログイン
+      </a>
+    
+  </div>
+</header>
+
+
+    
+    <main class="mx-auto w-full max-w-screen-md px-4 pt-16 pb-24">
+      
+
+      
+  <div class="mx-auto max-w-sm space-y-6">
+    <h1 class="text-center text-2xl font-bold text-emerald-900">ログイン</h1>
+
+    <form method="post" action="login.html" class="space-y-4 rounded-lg border border-emerald-100 bg-white p-5 shadow-sm">
+      <input type="hidden" name="csrfmiddlewaretoken" value="cFOwuvY4uHKpfhco2QSHgRaO1LjsmzpjWBwbUrvvh1YbVKP36ZOgqL5kqsuF78kV">
+      <div class="space-y-3 [&_input]:w-full [&_input]:rounded-md [&_input]:border [&_input]:border-gray-300 [&_input]:px-3 [&_input]:py-2 [&_input]:text-sm [&_input:focus]:border-emerald-500 [&_input:focus]:outline-none [&_input:focus]:ring-1 [&_input:focus]:ring-emerald-500 [&_label]:mb-1 [&_label]:block [&_label]:text-sm [&_label]:font-medium [&_label]:text-gray-700">
+        <p>
+    <label for="id_login">メールアドレス:</label>
+    <input type="email" name="login" autocomplete="email" placeholder="メールアドレス" maxlength="320" required id="id_login">
+    
+    
+  </p>
+
+  
+  <p>
+    <label for="id_password">パスワード:</label>
+    <input type="password" name="password" placeholder="パスワード" autocomplete="current-password" required aria-describedby="id_password_helptext" id="id_password">
+    
+      <span class="helptext" id="id_password_helptext"><a href="#">パスワードをお忘れですか?</a></span>
+    
+    
+  </p>
+
+  
+  <p>
+    <label for="id_remember">ログインしたままにする:</label>
+    <input type="checkbox" name="remember" id="id_remember">
+    
+    
+      
+    
+  </p>
+      </div>
+
+      
+
+      <button
+        type="submit"
+        class="w-full rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-emerald-700"
+      >
+        ログイン
+      </button>
+    </form>
+
+    <div class="relative">
+      <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-200"></div></div>
+      <div class="relative flex justify-center"><span class="bg-emerald-50 px-2 text-xs text-gray-500">または</span></div>
+    </div>
+
+    {# Google ログインボタン: SocialApp 未登録時は provider_login_url が空文字を返すため、リンクが機能しない場合がある。
+       MVP 後半で SocialApp 登録 + 管理画面の整備を行う想定。 #}
+    
+    
+      <a
+        href="#"
+        class="flex w-full items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
+      >
+        <span aria-hidden="true">G</span>
+        <span>Google でログイン</span>
+      </a>
+    
+
+    <p class="text-center text-sm text-gray-600">
+      アカウントをお持ちでない方は
+      <a href="signup.html" class="font-medium text-emerald-700 hover:underline">新規登録</a>
+    </p>
+  </div>
+
+    </main>
+
+    
+<nav
+  class="fixed inset-x-0 bottom-0 z-40 grid grid-cols-4 border-t border-emerald-100 bg-white/95 shadow-[0_-2px_8px_rgba(0,0,0,0.04)] backdrop-blur"
+  aria-label="メインナビゲーション"
+>
+  <a href="home.html" class="flex min-h-[56px] flex-col items-center justify-center gap-0.5 py-2 text-xs text-emerald-700 hover:bg-emerald-50 active:bg-emerald-100">
+    <span class="text-lg" aria-hidden="true">🏠</span>
+    <span>ホーム</span>
+  </a>
+  <a href="schedules.html" class="flex min-h-[56px] flex-col items-center justify-center gap-0.5 py-2 text-xs text-emerald-700 hover:bg-emerald-50 active:bg-emerald-100">
+    <span class="text-lg" aria-hidden="true">📅</span>
+    <span>スケジュール</span>
+  </a>
+  <a href="logs.html" class="flex min-h-[56px] flex-col items-center justify-center gap-0.5 py-2 text-xs text-emerald-700 hover:bg-emerald-50 active:bg-emerald-100">
+    <span class="text-lg" aria-hidden="true">📝</span>
+    <span>ログ</span>
+  </a>
+  <a href="articles.html" class="flex min-h-[56px] flex-col items-center justify-center gap-0.5 py-2 text-xs text-emerald-700 hover:bg-emerald-50 active:bg-emerald-100">
+    <span class="text-lg" aria-hidden="true">📚</span>
+    <span>お役立ち</span>
+  </a>
+</nav>
+
+
+    
+  </body>
+</html>

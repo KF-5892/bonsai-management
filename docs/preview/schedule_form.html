@@ -1,0 +1,254 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="68gbhYonmWtYWqdwwZlXiTDtZvg6nHD6ibdeuZBFKLdJ3T4HehYf818xRi2Vvez7">
+    <title>スケジュール作成 | 盆栽管理</title>
+
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined">
+    <link rel="stylesheet" href="app.css">
+
+    
+  </head>
+  <body
+    class="min-h-screen bg-emerald-50 text-gray-900 antialiased"
+    hx-headers='{"X-CSRFToken": "68gbhYonmWtYWqdwwZlXiTDtZvg6nHD6ibdeuZBFKLdJ3T4HehYf818xRi2Vvez7"}'
+  >
+    
+<header class="fixed inset-x-0 top-0 z-40 flex h-14 items-center justify-between border-b border-emerald-100 bg-white/95 px-3 shadow-sm backdrop-blur">
+  <div class="flex items-center gap-2">
+    <button
+      type="button"
+      class="flex h-10 w-10 items-center justify-center rounded-full text-emerald-700 hover:bg-emerald-50 md:hidden"
+      aria-label="メニューを開く"
+    >
+      <span class="material-symbols-outlined">menu</span>
+    </button>
+  </div>
+
+  <a href="home.html" class="flex items-center gap-1 text-lg font-semibold text-emerald-800">
+    <span aria-hidden="true">🌳</span>
+    <span>盆栽管理</span>
+  </a>
+
+  <div class="flex items-center gap-1">
+    <button
+      type="button"
+      class="flex h-10 w-10 items-center justify-center rounded-full text-emerald-700 hover:bg-emerald-50"
+      aria-label="検索"
+    >
+      <span class="material-symbols-outlined">search</span>
+    </button>
+
+    
+    <button
+      type="button"
+      class="flex h-10 w-10 items-center justify-center rounded-full text-emerald-700 hover:bg-emerald-50"
+      aria-label="通知"
+      title="通知（Phase 3 で実装予定）"
+    >
+      <span class="material-symbols-outlined">notifications</span>
+    </button>
+
+    
+      
+      <a
+        href="#"
+        class="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-600 text-sm font-semibold text-white"
+        aria-label="アカウント"
+      >
+        D
+      </a>
+    
+  </div>
+</header>
+
+
+    
+    <main class="mx-auto w-full max-w-screen-md px-4 pt-16 pb-24">
+      
+
+      
+  <div class="mx-auto max-w-md space-y-4">
+    <h1 class="text-xl font-bold text-emerald-900">
+      スケジュールを作成
+    </h1>
+    <form method="post" class="space-y-4 rounded-lg border border-emerald-100 bg-white p-5 shadow-sm">
+      <input type="hidden" name="csrfmiddlewaretoken" value="68gbhYonmWtYWqdwwZlXiTDtZvg6nHD6ibdeuZBFKLdJ3T4HehYf818xRi2Vvez7">
+      
+        <div>
+          <label for="id_bonsai" class="mb-1 block text-sm font-medium text-gray-700">
+            対象盆栽<span class="text-red-500"> *</span>
+          </label>
+          <select name="bonsai" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 bg-white" required id="id_bonsai">
+  <option value="" selected>---------</option>
+
+  <option value="06a279c7-e796-75f4-8000-e6428099f710">五葉松 次郎</option>
+
+  <option value="06a279c7-e788-715a-8000-676679fb8728">もみじ 花子</option>
+
+  <option value="06a279c7-e778-708c-8000-1286272c070f">黒松 太郎</option>
+
+</select>
+          
+          
+        </div>
+      
+        <div>
+          <label for="id_task_type" class="mb-1 block text-sm font-medium text-gray-700">
+            作業種別<span class="text-red-500"> *</span>
+          </label>
+          <select name="task_type" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 bg-white" id="id_task_type">
+  <option value="watering">潅水</option>
+
+  <option value="fertilizing">施肥</option>
+
+  <option value="pruning">剪定</option>
+
+  <option value="repotting">植え替え</option>
+
+  <option value="observation">観察</option>
+
+  <option value="bud_pinching">芽摘み</option>
+
+  <option value="defoliation">葉刈り</option>
+
+  <option value="leaf_misting">葉水</option>
+
+  <option value="wiring">針金かけ</option>
+
+  <option value="unwiring">針金外し</option>
+
+  <option value="pest_control">消毒</option>
+
+  <option value="jin_shari">ジン・シャリ作り</option>
+
+  <option value="air_layering">取り木</option>
+
+  <option value="cutting">挿し木</option>
+
+  <option value="other" selected>その他</option>
+
+</select>
+          
+          
+        </div>
+      
+        <div>
+          <label for="id_title" class="mb-1 block text-sm font-medium text-gray-700">
+            タスク名
+          </label>
+          <input type="text" name="title" maxlength="120" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500" aria-describedby="id_title_helptext" id="id_title">
+          
+            <p class="mt-1 text-xs text-gray-500">例: 黒松の水やり</p>
+          
+          
+        </div>
+      
+        <div>
+          <label for="id_notes" class="mb-1 block text-sm font-medium text-gray-700">
+            メモ
+          </label>
+          <textarea name="notes" cols="40" rows="3" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 min-h-[6rem]" id="id_notes">
+</textarea>
+          
+          
+        </div>
+      
+        <div>
+          <label for="id_repeat_type" class="mb-1 block text-sm font-medium text-gray-700">
+            繰り返し種別<span class="text-red-500"> *</span>
+          </label>
+          <select name="repeat_type" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 bg-white" id="id_repeat_type">
+  <option value="none" selected>繰り返しなし</option>
+
+  <option value="daily">毎日</option>
+
+  <option value="weekly">毎週</option>
+
+  <option value="monthly">毎月</option>
+
+  <option value="yearly">毎年</option>
+
+  <option value="custom">カスタム</option>
+
+</select>
+          
+          
+        </div>
+      
+        <div>
+          <label for="id_start_date" class="mb-1 block text-sm font-medium text-gray-700">
+            開始日<span class="text-red-500"> *</span>
+          </label>
+          <input type="date" name="start_date" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500" required id="id_start_date">
+          
+          
+        </div>
+      
+        <div>
+          <label for="id_next_run_at" class="mb-1 block text-sm font-medium text-gray-700">
+            次回予定日
+          </label>
+          <input type="date" name="next_run_at" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500" aria-describedby="id_next_run_at_helptext" id="id_next_run_at">
+          
+            <p class="mt-1 text-xs text-gray-500">一覧クエリ高速化のため都度キャッシュする</p>
+          
+          
+        </div>
+      
+        <div>
+          <label for="id_is_active" class="mb-1 block text-sm font-medium text-gray-700">
+            有効
+          </label>
+          <input type="checkbox" name="is_active" class="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500" id="id_is_active" checked>
+          
+          
+        </div>
+      
+      <div class="flex items-center justify-between">
+        <a href="schedules.html" class="text-sm text-gray-600 hover:underline">キャンセル</a>
+        <button type="submit"
+                class="rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-emerald-700">
+          保存
+        </button>
+      </div>
+    </form>
+  </div>
+
+    </main>
+
+    
+<nav
+  class="fixed inset-x-0 bottom-0 z-40 grid grid-cols-4 border-t border-emerald-100 bg-white/95 shadow-[0_-2px_8px_rgba(0,0,0,0.04)] backdrop-blur"
+  aria-label="メインナビゲーション"
+>
+  <a href="home.html" class="flex min-h-[56px] flex-col items-center justify-center gap-0.5 py-2 text-xs text-emerald-700 hover:bg-emerald-50 active:bg-emerald-100">
+    <span class="text-lg" aria-hidden="true">🏠</span>
+    <span>ホーム</span>
+  </a>
+  <a href="schedules.html" class="flex min-h-[56px] flex-col items-center justify-center gap-0.5 py-2 text-xs text-emerald-700 hover:bg-emerald-50 active:bg-emerald-100">
+    <span class="text-lg" aria-hidden="true">📅</span>
+    <span>スケジュール</span>
+  </a>
+  <a href="logs.html" class="flex min-h-[56px] flex-col items-center justify-center gap-0.5 py-2 text-xs text-emerald-700 hover:bg-emerald-50 active:bg-emerald-100">
+    <span class="text-lg" aria-hidden="true">📝</span>
+    <span>ログ</span>
+  </a>
+  <a href="articles.html" class="flex min-h-[56px] flex-col items-center justify-center gap-0.5 py-2 text-xs text-emerald-700 hover:bg-emerald-50 active:bg-emerald-100">
+    <span class="text-lg" aria-hidden="true">📚</span>
+    <span>お役立ち</span>
+  </a>
+</nav>
+
+
+    
+  </body>
+</html>
