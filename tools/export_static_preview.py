@@ -177,16 +177,17 @@ def main() -> None:
         "/schedules/new/": "schedule_form.html",
         "/logs/new/": "log_form.html",
     }
-    for p in plants:
-        pages[f"/bonsai/{p.pk}/"] = f"bonsai_{p.pk.split('-')[-1]}.html"
+    # 詳細ページのファイル名は連番にする（UUID は毎回変わり差分が荒れるため）。
+    for i, p in enumerate(plants, start=1):
+        pages[f"/bonsai/{p.pk}/"] = f"bonsai_{i}.html"
     for s in all_species:
         pages[f"/species/{s.slug}/"] = f"species_{s.slug}.html"
     for a in HelpArticle.objects.all():
         pages[f"/articles/{a.slug}/"] = f"article_{a.slug}.html"
     from apps.logs.models import CareLog
 
-    for log in CareLog.objects.all():
-        pages[f"/logs/{log.pk}/"] = f"log_{log.pk.split('-')[-1]}.html"
+    for i, log in enumerate(CareLog.objects.order_by("performed_at"), start=1):
+        pages[f"/logs/{log.pk}/"] = f"log_{i}.html"
 
     # ログアウト状態のページ
     public_pages = {
@@ -250,7 +251,7 @@ def write_gallery(rendered, plants, all_species) -> None:
         return f'<li><a href="{fname}">{label}</a></li>'
 
     plant_links = "\n".join(
-        link(f"bonsai_{p.pk.split('-')[-1]}.html", f"盆栽詳細 — {p.name}") for p in plants
+        link(f"bonsai_{i}.html", f"盆栽詳細 — {p.name}") for i, p in enumerate(plants, start=1)
     )
     species_links = "\n".join(
         link(f"species_{s.slug}.html", f"品種詳細 — {s.name}") for s in all_species[:8]
