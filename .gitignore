@@ -30,6 +30,9 @@ staticfiles/
 .env.local
 .env.*.local
 
+# Local-only docs (credentials, personal notes 等。コミット禁止)
+*.local.md
+
 # IDE
 .idea/
 .vscode/
