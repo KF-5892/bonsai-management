@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html lang="ja"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Noto+Sans+JP:wght@400;500;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "inverse-on-surface": "#eef2ee",
+              "surface-bright": "#f6faf6",
+              "background": "#f6faf6",
+              "surface-variant": "#dfe3e0",
+              "tertiary": "#923357",
+              "surface-container-high": "#e5e9e5",
+              "on-background": "#181d1a",
+              "inverse-surface": "#2d312f",
+              "on-tertiary-container": "#ffedf0",
+              "on-secondary-fixed-variant": "#3b4b39",
+              "inverse-primary": "#88d982",
+              "tertiary-container": "#b14b6f",
+              "primary-fixed-dim": "#88d982",
+              "on-tertiary-fixed": "#3f001c",
+              "secondary-container": "#d2e5cd",
+              "on-secondary-fixed": "#101f10",
+              "on-error-container": "#93000a",
+              "on-tertiary": "#ffffff",
+              "on-primary": "#ffffff",
+              "surface-container-highest": "#dfe3e0",
+              "surface": "#f6faf6",
+              "surface-container": "#ebefeb",
+              "on-surface": "#181d1a",
+              "outline-variant": "#bfcaba",
+              "on-secondary-container": "#566754",
+              "on-secondary": "#ffffff",
+              "on-primary-fixed": "#002204",
+              "primary": "#0d631b",
+              "secondary": "#526350",
+              "primary-container": "#2e7d32",
+              "on-primary-fixed-variant": "#005312",
+              "on-error": "#ffffff",
+              "primary-fixed": "#a3f69c",
+              "secondary-fixed": "#d5e8d0",
+              "surface-container-low": "#f1f5f1",
+              "on-tertiary-fixed-variant": "#7f2448",
+              "tertiary-fixed-dim": "#ffb1c7",
+              "secondary-fixed-dim": "#b9ccb5",
+              "tertiary-fixed": "#ffd9e2",
+              "error-container": "#ffdad6",
+              "surface-tint": "#1b6d24",
+              "surface-dim": "#d7dbd7",
+              "on-primary-container": "#cbffc2",
+              "on-surface-variant": "#40493d",
+              "error": "#ba1a1a",
+              "outline": "#707a6c",
+              "surface-container-lowest": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Noto Sans JP", "Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      body {
+        font-family: 'Noto Sans JP', sans-serif;
+        background-color: #f6faf6;
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="text-on-surface selection:bg-primary-fixed pb-40">
+<!-- Top App Bar (Task-Focused: Suppress navigation shell logic here per Rule) -->
+<header class="fixed top-0 w-full z-50 bg-[#f6faf6]/80 backdrop-blur-md flex justify-between items-center px-4 h-16">
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 flex items-center justify-center hover:bg-green-50 dark:hover:bg-green-900/30 rounded-full transition-colors duration-200">
+<span class="material-symbols-outlined text-green-800">arrow_back</span>
+</button>
+<h1 class="text-lg font-semibold text-green-800 font-['Inter']">作業を記録</h1>
+</div>
+<div class="w-10 h-10"></div> <!-- Placeholder for balance -->
+</header>
+<main class="pt-20 px-4 max-w-2xl mx-auto space-y-8">
+<!-- Target Selection Section -->
+<section class="space-y-3">
+<label class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider text-slate-500 ml-1">対象</label>
+<div class="relative group">
+<select class="w-full h-14 pl-4 pr-10 bg-surface-container-lowest border-none rounded-2xl appearance-none focus:ring-2 focus:ring-primary/20 text-on-surface font-medium transition-all shadow-sm">
+<option>黒松 太郎</option>
+<option>真柏 雅</option>
+<option>五葉松 清流</option>
+</select>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+<span class="material-symbols-outlined text-slate-400">expand_more</span>
+</div>
+</div>
+</section>
+<!-- Task Category Section -->
+<section class="space-y-4">
+<label class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider text-slate-500 ml-1">作業種別</label>
+<div class="flex flex-wrap gap-2">
+<button class="px-5 py-2.5 rounded-full bg-primary text-on-primary text-sm font-medium flex items-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-[18px]">water_drop</span>
+                    潅水
+                </button>
+<button class="px-5 py-2.5 rounded-full bg-surface-container-high text-on-surface-variant text-sm font-medium hover:bg-green-100 transition-colors">施肥</button>
+<button class="px-5 py-2.5 rounded-full bg-surface-container-high text-on-surface-variant text-sm font-medium hover:bg-green-100 transition-colors">剪定</button>
+<button class="px-5 py-2.5 rounded-full bg-surface-container-high text-on-surface-variant text-sm font-medium hover:bg-green-100 transition-colors">植え替え</button>
+<button class="px-5 py-2.5 rounded-full bg-surface-container-high text-on-surface-variant text-sm font-medium hover:bg-green-100 transition-colors">観察</button>
+<button class="px-5 py-2.5 rounded-full bg-surface-container-high text-on-surface-variant text-sm font-medium hover:bg-green-100 transition-colors">芽摘み</button>
+<button class="px-5 py-2.5 rounded-full bg-surface-container-high text-on-surface-variant text-sm font-medium hover:bg-green-100 transition-colors">葉刈り</button>
+<button class="px-5 py-2.5 rounded-full bg-surface-container-high text-on-surface-variant text-sm font-medium hover:bg-green-100 transition-colors">消毒</button>
+<button class="px-5 py-2.5 rounded-full border-2 border-dashed border-outline-variant/50 text-on-surface-variant text-sm font-medium hover:bg-green-100 hover:border-primary/50 transition-all flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]">add</span>
+追加
+</button></div>
+</section>
+<!-- Date & Environment Bento Grid -->
+<section class="grid grid-cols-2 gap-4">
+<div class="space-y-3">
+<label class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider text-slate-500 ml-1">日時</label>
+<div class="h-14 bg-surface-container-lowest rounded-2xl flex items-center px-4 gap-3 shadow-sm">
+<span class="material-symbols-outlined text-primary text-[20px]">calendar_today</span>
+<input class="bg-transparent border-none p-0 text-sm font-medium w-full focus:ring-0" type="text" value="2026/03/15"/>
+</div>
+</div>
+<div class="space-y-3">
+<label class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider text-slate-500 ml-1">気温</label>
+<div class="h-14 bg-surface-container-lowest rounded-2xl flex items-center px-4 gap-2 shadow-sm">
+<span class="material-symbols-outlined text-primary text-[20px]">device_thermostat</span>
+<input class="bg-transparent border-none p-0 text-sm font-medium w-12 text-right focus:ring-0" type="number" value="18"/>
+<span class="text-sm text-slate-500 font-medium">℃</span>
+</div>
+</div>
+</section>
+<!-- Weather Selection -->
+<section class="space-y-3">
+<label class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider text-slate-500 ml-1">天候</label>
+<div class="grid grid-cols-4 gap-2">
+<button class="flex flex-col items-center justify-center gap-2 py-3 bg-primary-fixed rounded-2xl text-on-primary-fixed">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">sunny</span>
+<span class="text-[10px] font-bold">晴れ</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-2 py-3 bg-surface-container-lowest rounded-2xl text-slate-500 hover:bg-surface-container-low transition-colors shadow-sm">
+<span class="material-symbols-outlined">cloud</span>
+<span class="text-[10px] font-bold">曇り</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-2 py-3 bg-surface-container-lowest rounded-2xl text-slate-500 hover:bg-surface-container-low transition-colors shadow-sm">
+<span class="material-symbols-outlined">rainy</span>
+<span class="text-[10px] font-bold">雨</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-2 py-3 bg-surface-container-lowest rounded-2xl text-slate-500 hover:bg-surface-container-low transition-colors shadow-sm">
+<span class="material-symbols-outlined">ac_unit</span>
+<span class="text-[10px] font-bold">雪</span>
+</button>
+</div>
+</section>
+<!-- Memo Area -->
+<section class="space-y-3">
+<label class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider text-slate-500 ml-1">メモ</label>
+<textarea class="w-full bg-surface-container-lowest border-none rounded-2xl p-4 h-32 text-sm focus:ring-2 focus:ring-primary/20 shadow-sm placeholder:text-slate-400" placeholder="作業のポイントや気づいたこと..."></textarea>
+</section>
+<!-- Photo Upload -->
+<section class="space-y-3">
+<label class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider text-slate-500 ml-1">写真</label>
+<div class="w-full aspect-video bg-surface-container-low border-2 border-dashed border-outline-variant/30 rounded-2xl flex flex-col items-center justify-center gap-2 text-slate-500 hover:bg-green-50 transition-colors cursor-pointer group">
+<div class="w-12 h-12 rounded-full bg-surface-container-lowest flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary">add_a_photo</span>
+</div>
+<span class="text-xs font-bold tracking-widest uppercase">＋ 写真を追加</span>
+</div>
+</section>
+<!-- Evaluation Stars -->
+<section class="space-y-3 flex flex-col items-center py-4 bg-surface-container-low/50 rounded-3xl">
+<label class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider text-slate-500">状態評価</label>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-outline-variant/50 text-3xl">star</span>
+</div>
+</section>
+</main>
+<!-- Fixed Action Footer -->
+<div class="fixed bottom-20 left-0 w-full px-4 pb-4 pt-4 bg-gradient-to-t from-background via-background/90 to-transparent z-40">
+<button class="w-full h-16 bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold rounded-full shadow-lg shadow-primary/20 active:scale-95 transition-transform flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">save</span>
+            記録する
+        </button>
+</div>
+<!-- Bottom Navigation Bar (Execution from JSON) -->
+<nav class="fixed bottom-0 w-full z-50 rounded-t-3xl bg-[#f6faf6]/80 backdrop-blur-md shadow-[0_-4px_16px_rgba(24,29,26,0.08)] flex justify-around items-center h-20 pb-safe">
+<!-- Home -->
+<div class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-4 py-1 hover:opacity-80 transition-transform active:scale-90 cursor-pointer">
+<span class="material-symbols-outlined">home</span>
+<span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">ホーム</span>
+</div>
+<!-- Schedule -->
+<div class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-4 py-1 hover:opacity-80 transition-transform active:scale-90 cursor-pointer">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">スケジュール</span>
+</div>
+<!-- Log (Active based on Intent: Record log) -->
+<div class="flex flex-col items-center justify-center bg-[#a3f69c] dark:bg-green-800 text-green-900 dark:text-green-100 rounded-full px-4 py-1 hover:opacity-80 transition-transform active:scale-90 cursor-pointer">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">edit_note</span>
+<span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">ログ記録</span>
+</div>
+<!-- Tips -->
+<div class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-4 py-1 hover:opacity-80 transition-transform active:scale-90 cursor-pointer">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">お役立ち</span>
+</div>
+</nav>
+</body></html>

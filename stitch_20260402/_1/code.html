@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html lang="ja"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Noto+Sans+JP:wght@400;500;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "inverse-on-surface": "#eef2ee",
+              "surface-bright": "#f6faf6",
+              "background": "#f6faf6",
+              "surface-variant": "#dfe3e0",
+              "tertiary": "#923357",
+              "surface-container-high": "#e5e9e5",
+              "on-background": "#181d1a",
+              "inverse-surface": "#2d312f",
+              "on-tertiary-container": "#ffedf0",
+              "on-secondary-fixed-variant": "#3b4b39",
+              "inverse-primary": "#88d982",
+              "tertiary-container": "#b14b6f",
+              "primary-fixed-dim": "#88d982",
+              "on-tertiary-fixed": "#3f001c",
+              "secondary-container": "#d2e5cd",
+              "on-secondary-fixed": "#101f10",
+              "on-error-container": "#93000a",
+              "on-tertiary": "#ffffff",
+              "on-primary": "#ffffff",
+              "surface-container-highest": "#dfe3e0",
+              "surface": "#f6faf6",
+              "surface-container": "#ebefeb",
+              "on-surface": "#181d1a",
+              "outline-variant": "#bfcaba",
+              "on-secondary-container": "#566754",
+              "on-secondary": "#ffffff",
+              "on-primary-fixed": "#002204",
+              "primary": "#0d631b",
+              "secondary": "#526350",
+              "primary-container": "#2e7d32",
+              "on-primary-fixed-variant": "#005312",
+              "on-error": "#ffffff",
+              "primary-fixed": "#a3f69c",
+              "secondary-fixed": "#d5e8d0",
+              "surface-container-low": "#f1f5f1",
+              "on-tertiary-fixed-variant": "#7f2448",
+              "tertiary-fixed-dim": "#ffb1c7",
+              "secondary-fixed-dim": "#b9ccb5",
+              "tertiary-fixed": "#ffd9e2",
+              "error-container": "#ffdad6",
+              "surface-tint": "#1b6d24",
+              "surface-dim": "#d7dbd7",
+              "on-primary-container": "#cbffc2",
+              "on-surface-variant": "#40493d",
+              "error": "#ba1a1a",
+              "outline": "#707a6c",
+              "surface-container-lowest": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Inter", "Noto Sans JP"],
+              "body": ["Inter", "Noto Sans JP"],
+              "label": ["Inter", "Noto Sans JP"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        display: inline-block;
+        line-height: 1;
+        text-transform: none;
+        letter-spacing: normal;
+        word-wrap: normal;
+        white-space: nowrap;
+        direction: ltr;
+      }
+      body {
+        font-family: 'Inter', 'Noto Sans JP', sans-serif;
+        background-color: #f6faf6;
+        color: #181d1a;
+      }
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen pb-44">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#f6faf6]/80 backdrop-blur-md flex justify-between items-center px-4 h-16">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="User profile photo avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmu6hkaj4AejPxbqMhkF3p2uKrfrN9uGL6oFrF51XtQWpLsgSD6eH8peagrGKipQqBdv0heafOOgOytn6dtBSiWGMKnQG8wA1tqEf52USyynC6JIZtI8zuLCwuZgH6jTlCLD4yA4-YAAnUh8zFPGWwnLk71ZnoJDSwr8A_b3sYYEzb4_e5rjMEjE2q17rA7SuyhIb7d6VGU4nRikd9G-7xxjVkjDrkCqmM0jl6FymTqcUScB2Ji1O8c31dNsB6Hi22ezc5Sa3P2Uc"/>
+</div>
+<h1 class="font-['Inter'] font-semibold text-lg text-green-800">スケジュール</h1>
+<div class="flex gap-2">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-green-50 transition-colors duration-200">
+<span class="material-symbols-outlined text-green-800">calendar_month</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-green-50 transition-colors duration-200">
+<span class="material-symbols-outlined text-green-800">notifications</span>
+</button>
+</div>
+</header>
+<main class="mt-16 px-4 pt-6 space-y-6">
+<!-- 年月切替 -->
+<div class="flex justify-center items-center gap-6 py-2">
+<button class="p-2 rounded-full hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">chevron_left</span>
+</button>
+<div class="text-center">
+<p class="text-label-md font-bold text-primary tracking-widest uppercase mb-1">MARCH</p>
+<h2 class="text-2xl font-bold font-headline">2026年3月</h2>
+</div>
+<button class="p-2 rounded-full hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+</button>
+</div>
+<!-- 品種別スケジュールカード（縦リスト） -->
+<section class="space-y-4">
+<div class="flex justify-between items-end mb-2">
+<h3 class="text-label-md font-bold text-on-surface-variant tracking-wider uppercase">SPECIES SPECIFIC</h3>
+</div>
+<!-- カード1: 黒松 -->
+<div class="bg-surface-container-lowest rounded-xl p-4 flex gap-4 relative overflow-hidden group hover:bg-white transition-all">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-[#ba1a1a]"></div>
+<div class="w-20 h-20 rounded-lg overflow-hidden shrink-0">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Close up of a Japanese black pine bonsai" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8WFeaOv5Eg_UMKPEt9aXWBqyGNkbp4XxOTY8YWKrtzHweciK4VdoR7Fryqqr61OJef5SMIKHV2z6NNl1WE0RwF1_YphjQBEWlGUk4Edhu-iMDTMyzofvj_TBE9mbsz3YSS2oqiQ4MaFsJ_5c6uO-fEbV_qMplwg_uZJtB70J1eQZHjAsExF6yzJpNlIe0jHK4rmvemvl_zLq3vo47Gs3CR6zAOi3hydxEUBUdaVsGIqI4mY71V7PNqIJAo0ioZ5jIdgmP5QuKZrk"/>
+</div>
+<div class="flex flex-col flex-1 justify-center">
+<div class="flex items-center justify-between mb-1">
+<span class="font-bold text-lg text-on-surface">黒松</span>
+<span class="px-2 py-0.5 rounded-full bg-pink-100 text-[#ba1a1a] text-[10px] font-bold">手入れ</span>
+</div>
+<p class="text-sm text-on-surface-variant leading-snug">古い葉を抜き、新芽の勢いを整えます</p>
+</div>
+</div>
+<!-- カード2: 楓 -->
+<div class="bg-surface-container-lowest rounded-xl p-4 flex gap-4 relative overflow-hidden group hover:bg-white transition-all">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
+<div class="w-20 h-20 rounded-lg overflow-hidden shrink-0">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Maple bonsai tree in spring with fresh green leaves" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2WP1NpyzlwYtklt1cv497i96OeB5qGOfAjAESvl3f4G9qMys2f6igj-qIL-VYi_03gVgD8ZHelxwJ-Jo76oGLFJlXLPux93ehd8xE105pkma5n3Oru4JCwaAC5Gsm0a21Pncy4gaUOZGQhX20F30xfciMEuJbGEs9aS8SRrHUnyGx1ibCpQCtP5BWg97bG5V5aC04lH99_waukuZw3K44OxubXhk3QdxuCI2qKCAQVFhqzaR5RQ48hZTTHXEX6vcd-Xt9mUaD-Fw"/>
+</div>
+<div class="flex flex-col flex-1 justify-center">
+<div class="flex items-center justify-between mb-1">
+<span class="font-bold text-lg text-on-surface">楓（モミジ）</span>
+<span class="px-2 py-0.5 rounded-full bg-green-100 text-primary text-[10px] font-bold">水やり</span>
+</div>
+<p class="text-sm text-on-surface-variant leading-snug">芽出し時期につき、水切れに注意してください</p>
+</div>
+</div>
+<!-- カード3: 真柏 -->
+<div class="bg-surface-container-lowest rounded-xl p-4 flex gap-4 relative overflow-hidden group hover:bg-white transition-all">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-[#d1a000]"></div>
+<div class="w-20 h-20 rounded-lg overflow-hidden shrink-0">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Shimpaku juniper bonsai with twisted trunk" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJSlcffs197_tefqk9ozgw0gJNq_2QddkNiVYgY0McbGfUWjO7qd2s8qcOZL6u7xFBWxHT7vrqWWzR_pj0a9y7-xCkRX6QItnv7MVAsT9WgHOjoWXHeewXDOoXSoQ4cAM-MkrJ4aV_Q8bLYEhbYB8nAAcWCEW-CvqFoa2WZyFmaEfwgC1psSXkmsBOM8lHVACDBDfV6DdVuZ3m5fY6jYAMFjDiGozq4NmJmNSNjjmHBWyMg6jwJCT_wfZfprZpMOkKK300-1UXRd8"/>
+</div>
+<div class="flex flex-col flex-1 justify-center">
+<div class="flex items-center justify-between mb-1">
+<span class="font-bold text-lg text-on-surface">真柏</span>
+<span class="px-2 py-0.5 rounded-full bg-yellow-100 text-[#7a5e00] text-[10px] font-bold">肥料</span>
+</div>
+<p class="text-sm text-on-surface-variant leading-snug">春の施肥を開始します</p>
+</div>
+</div>
+</section>
+<!-- 3月の栽培アドバイス -->
+<section class="bg-surface-container-low rounded-2xl p-6">
+<h3 class="text-sm font-bold text-green-900 mb-3">3月の栽培アドバイス</h3>
+<div class="space-y-4">
+<p class="text-xs text-on-surface-variant leading-relaxed">
+                三月は「啓蟄（けいちつ）」を迎え、多くの盆栽が冬の眠りから覚める大切な時期です。植え替えの適期でもあり、根の整理を行うことで一年の健康を左右します。
+            </p>
+<div class="bg-surface-container-lowest rounded-xl p-4 space-y-2 border border-outline-variant/30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-blue-600 text-sm">water_drop</span>
+<span class="text-xs font-bold text-on-surface">共通ルール: 水やり</span>
+</div>
+<p class="text-xs text-on-surface-variant pl-6">1日1回 (午前中) を基本とし、土の乾き具合を確認してください。芽吹き始めたら吸水が活発になります。</p>
+<div class="flex items-center gap-2 mt-3">
+<span class="material-symbols-outlined text-orange-500 text-sm">wb_sunny</span>
+<span class="text-xs font-bold text-on-surface">共通ルール: 置き場所</span>
+</div>
+<p class="text-xs text-on-surface-variant pl-6">冬の西日回避を徐々に解除し、春の柔らかな日差しに当てて活性化を促します。</p>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div class="bg-surface-container-lowest p-3 rounded-xl flex items-center gap-2">
+<span class="material-symbols-outlined text-green-700 text-lg">thermometer</span>
+<span class="text-[10px] font-bold">平均 12.5°C</span>
+</div>
+<div class="bg-surface-container-lowest p-3 rounded-xl flex items-center gap-2">
+<span class="material-symbols-outlined text-blue-700 text-lg">umbrella</span>
+<span class="text-[10px] font-bold">降水 多め</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Floating Filter Bar -->
+<div class="fixed bottom-20 left-0 w-full z-40 px-4 pb-4">
+<div class="bg-white/90 backdrop-blur-md rounded-2xl p-3 shadow-lg border border-surface-variant/30 flex items-center gap-3">
+<div class="flex-1 overflow-x-auto no-scrollbar flex items-center gap-2">
+<button class="px-4 py-2 rounded-full bg-primary text-white text-xs font-bold whitespace-nowrap shadow-sm">すべて</button>
+<button class="px-4 py-2 rounded-full bg-pink-100 text-[#ba1a1a] text-xs font-bold whitespace-nowrap border border-pink-200">手入れ</button>
+<button class="px-4 py-2 rounded-full bg-green-100 text-primary text-xs font-bold whitespace-nowrap border border-green-200">水やり</button>
+<button class="px-4 py-2 rounded-full bg-yellow-100 text-[#7a5e00] text-xs font-bold whitespace-nowrap border border-yellow-200">肥料</button>
+<button class="px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-xs font-bold whitespace-nowrap border border-blue-200">植え替え</button>
+</div>
+<div class="w-px h-8 bg-outline-variant/30 shrink-0"></div>
+<button class="flex flex-col items-center justify-center p-1 text-on-surface-variant hover:text-primary transition-colors shrink-0">
+<span class="material-symbols-outlined text-xl">sort</span>
+<span class="text-[8px] font-bold">品種順</span>
+</button>
+</div>
+</div>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 rounded-t-3xl bg-[#f6faf6]/80 backdrop-blur-md shadow-[0_-4px_16px_rgba(24,29,26,0.08)] flex justify-around items-center h-20 pb-safe">
+<!-- Home -->
+<a class="flex flex-col items-center justify-center text-slate-500 hover:opacity-80 transition-transform scale-95 active:scale-90 px-4 py-1" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider mt-1">ホーム</span>
+</a>
+<!-- Schedule (Active) -->
+<a class="flex flex-col items-center justify-center bg-[#a3f69c] text-green-900 rounded-full px-4 py-1 hover:opacity-80 transition-transform scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
+<span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider mt-1">スケジュール</span>
+</a>
+<!-- Log -->
+<a class="flex flex-col items-center justify-center text-slate-500 hover:opacity-80 transition-transform scale-95 active:scale-90 px-4 py-1" href="#">
+<span class="material-symbols-outlined">edit_note</span>
+<span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider mt-1">ログ記録</span>
+</a>
+<!-- Library -->
+<a class="flex flex-col items-center justify-center text-slate-500 hover:opacity-80 transition-transform scale-95 active:scale-90 px-4 py-1" href="#">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider mt-1">お役立ち</span>
+</a>
+</nav>
+</body></html>

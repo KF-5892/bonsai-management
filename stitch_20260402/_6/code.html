@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ja"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Digital Arboretum - Helpful Tips</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Noto+Sans+JP:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-bright": "#f6faf6",
+              "secondary-container": "#d2e5cd",
+              "outline-variant": "#bfcaba",
+              "error": "#ba1a1a",
+              "on-secondary": "#ffffff",
+              "tertiary-container": "#b14b6f",
+              "surface-container-highest": "#dfe3e0",
+              "on-secondary-container": "#566754",
+              "on-secondary-fixed-variant": "#3b4b39",
+              "on-primary": "#ffffff",
+              "on-background": "#181d1a",
+              "inverse-on-surface": "#eef2ee",
+              "primary-fixed-dim": "#88d982",
+              "surface-variant": "#dfe3e0",
+              "on-primary-fixed-variant": "#005312",
+              "on-primary-container": "#cbffc2",
+              "background": "#f6faf6",
+              "primary-container": "#2e7d32",
+              "inverse-surface": "#2d312f",
+              "on-error": "#ffffff",
+              "tertiary-fixed-dim": "#ffb1c7",
+              "surface-container-lowest": "#ffffff",
+              "on-primary-fixed": "#002204",
+              "on-tertiary": "#ffffff",
+              "tertiary": "#923357",
+              "secondary": "#526350",
+              "on-secondary-fixed": "#101f10",
+              "outline": "#707a6c",
+              "on-tertiary-fixed": "#3f001c",
+              "inverse-primary": "#88d982",
+              "secondary-fixed": "#d5e8d0",
+              "surface-container": "#ebefeb",
+              "on-error-container": "#93000a",
+              "primary-fixed": "#a3f69c",
+              "on-surface": "#181d1a",
+              "on-tertiary-container": "#ffedf0",
+              "tertiary-fixed": "#ffd9e2",
+              "surface": "#f6faf6",
+              "error-container": "#ffdad6",
+              "surface-container-high": "#e5e9e5",
+              "primary": "#0d631b",
+              "surface-dim": "#d7dbd7",
+              "secondary-fixed-dim": "#b9ccb5",
+              "surface-container-low": "#f1f5f1",
+              "on-tertiary-fixed-variant": "#7f2448",
+              "on-surface-variant": "#40493d",
+              "surface-tint": "#1b6d24"
+            },
+            fontFamily: {
+              "headline": ["Inter", "Noto Sans JP"],
+              "body": ["Noto Sans JP", "Inter"],
+              "label": ["Inter", "Noto Sans JP"]
+            },
+            borderRadius: {"DEFAULT": "0.75rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      body {
+        font-family: 'Noto Sans JP', sans-serif;
+        background-color: #f6faf6;
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-surface antialiased">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#f6faf6]/80 backdrop-blur-md flex justify-between items-center px-6 h-16 w-full">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-green-800">menu</span>
+<h1 class="text-xl font-bold text-green-900 font-['Inter'] tracking-tight">お役立ち</h1>
+</div>
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden">
+<img alt="User avatar" data-alt="Close-up portrait of a gardener with a friendly expression in a sunlit greenhouse setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZZ_6OkhGN1briG35jGM_e-JIxF56P6T2BKQLvSXJZroD3U_7TQCjRKxu464CmdTPMm44DpaftIs_ifSB1FANQJLv8k_aX6lQh421mOcTcdGh98BU3UokQyMtmdXNP593MEyqcBLW9IOiWOlW6I_aHhZp1mrGav8hMNAis-a-UF96n6aRUU_ARdqsjs3efIznw-9HKK28KaT_Ls4lN39yCAtlKW3AiQ_oUZDVkII9R74Mc61ZeFi9zVw7wWg2-q5AvxrZU8NTrT-s"/>
+</div>
+</header>
+<main class="pt-20 pb-28 px-4 max-w-2xl mx-auto space-y-10">
+<!-- Search Bar -->
+<section class="relative">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-4 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-full py-4 pl-12 pr-6 text-on-surface focus:ring-2 focus:ring-primary shadow-sm" placeholder="Tipsを検索する..." type="text"/>
+</div>
+</section>
+<!-- Featured Section: This Month's Notes -->
+<section class="space-y-4">
+<div class="flex items-center justify-between">
+<h2 class="text-xl font-semibold text-primary headline-md">今月の注意点</h2>
+<span class="text-xs font-bold text-primary-container bg-primary-fixed px-3 py-1 rounded-full label-md">3月 MARCH</span>
+</div>
+<div class="relative overflow-hidden rounded-lg bg-primary-container p-6 text-on-primary-container shadow-lg flex flex-col md:flex-row gap-6">
+<div class="flex-1 space-y-3">
+<h3 class="text-2xl font-bold leading-tight">西日避けの撤去と芽出しの準備</h3>
+<p class="text-on-primary-container/90 text-sm leading-relaxed">
+                        春の訪れとともに、冬の寒風除けや西日避けを段階的に外していきます。新芽が動き出すこの時期は、水切れに注意しましょう。
+                    </p>
+<button class="bg-primary-fixed text-on-primary-fixed font-bold py-2 px-5 rounded-full text-sm inline-flex items-center gap-2 active:scale-95 duration-200">
+                        詳しく見る <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<div class="w-full md:w-32 h-32 rounded-lg bg-surface-container-lowest/20 flex items-center justify-center overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="Macro detail of a small green bonsai bud emerging from a textured branch in soft morning light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbByWuyXr6OpcaHaFV1bT3kAZOhWavnKYA7qy6rKmRRRofr-Up-N6G47rxM2CY_mmhmoIq1EY3RzzZnvHBQwozZ2QtBfkZ4SJutop-uZMyvMv4jF4Lk1WksuYCAQhp7LmI0yF3KH7p0Ok5C50lwLEIJJ8uYcu-1ac65KjmfjlnI-C3dHluVP0OvlgTCZTkjJ_NhEP9N93ewj7qMP6zSZ-VFgUwkt5yjfub5hNQZw0dbEzVM2d0exEcd_BRnA282lvYFUJNHxCCuXU"/>
+</div>
+</div>
+</section>
+<!-- Categories Grid -->
+<section class="space-y-4">
+<h2 class="text-xl font-semibold text-primary headline-md">カテゴリー</h2>
+<div class="grid grid-cols-2 gap-4">
+<!-- Work Tips -->
+<div class="bg-surface-container-lowest p-5 rounded-lg border-l-4 border-primary shadow-sm hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center mb-3 group-hover:scale-110 duration-200">
+<span class="material-symbols-outlined text-primary">content_cut</span>
+</div>
+<h3 class="font-bold text-on-background title-md mb-1">作業TIPS</h3>
+<p class="text-xs text-on-surface-variant">剪定・水やり・施肥</p>
+</div>
+<!-- Species Guide -->
+<div class="bg-surface-container-lowest p-5 rounded-lg border-l-4 border-primary shadow-sm hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center mb-3 group-hover:scale-110 duration-200">
+<span class="material-symbols-outlined text-primary">potted_plant</span>
+</div>
+<h3 class="font-bold text-on-background title-md mb-1">品種別ガイド</h3>
+<p class="text-xs text-on-surface-variant">松・楓・真柏など</p>
+</div>
+<!-- Pest Control -->
+<div class="bg-surface-container-lowest p-5 rounded-lg border-l-4 border-primary shadow-sm hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center mb-3 group-hover:scale-110 duration-200">
+<span class="material-symbols-outlined text-primary">pest_control</span>
+</div>
+<h3 class="font-bold text-on-background title-md mb-1">病害虫対策</h3>
+<p class="text-xs text-on-surface-variant">早期発見と治療法</p>
+</div>
+<!-- Media Gallery -->
+<div class="bg-surface-container-lowest p-5 rounded-lg border-l-4 border-primary shadow-sm hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center mb-3 group-hover:scale-110 duration-200">
+<span class="material-symbols-outlined text-primary">gallery_thumbnail</span>
+</div>
+<h3 class="font-bold text-on-background title-md mb-1">ギャラリー</h3>
+<p class="text-xs text-on-surface-variant">愛好家の作品集</p>
+</div>
+</div>
+</section>
+<!-- Latest Articles -->
+<section class="space-y-6">
+<h2 class="text-xl font-semibold text-primary headline-md">最新の記事</h2>
+<div class="space-y-8">
+<!-- Article 1 -->
+<div class="flex gap-4 group cursor-pointer">
+<div class="w-24 h-24 rounded-lg bg-surface-container-high overflow-hidden shrink-0">
+<img class="w-full h-full object-cover group-hover:scale-105 duration-300" data-alt="Miniature pine bonsai tree in a ceramic pot with mossy soil, minimalist background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtWAPEU0VfM320mqV7veM5CKoUOr1cNzPoHUBy9SXpiwUUxYpGWpkfRcXBv-dcBlboHgVLAxqALgjRds4F5HOxlwu3-0Brpt0g-tZcD98KivpXl-tK1bf8EqtMtLVCHtdK-y9i-jiicHyVaKXsMZlzwX51Yn7H4h2ZsX64gzQB2u57KB6dpxIlftKQRL1zpnWGRztjqCCf0AaRSASXUK5enM_UlHh_Lv_8g2GbBahjTiAcx9Riym4bOKkhnGYWJI9RnR2YLi7Y9B8"/>
+</div>
+<div class="flex flex-col justify-center gap-1">
+<span class="text-[10px] font-bold text-primary uppercase tracking-widest label-md">WORK TIPS</span>
+<h3 class="text-md font-bold text-on-background leading-snug">初心者でも失敗しない「黒松」の芽摘みテクニック</h3>
+<p class="text-xs text-on-surface-variant">2日前 · 5分で読める</p>
+</div>
+</div>
+<!-- Article 2 -->
+<div class="flex gap-4 group cursor-pointer">
+<div class="w-24 h-24 rounded-lg bg-surface-container-high overflow-hidden shrink-0">
+<img class="w-full h-full object-cover group-hover:scale-105 duration-300" data-alt="Bright red maple bonsai leaves against a blurred natural green garden background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvQ2hB-gSl671fGUL3ECF4WiVTyycl5XH9ykOOVVwTMXqJjt8uo8An-R48DBZt3D-CbDURAOv8hN1O29NOpRwp63nAedVx70uTMLQchgTqCFyctTcz3DLHxrjqpe0HfopuDp3arDATy7ooLFTq4QaNVLS7eLxWv8yorV9TQ1N0gEfk_PYAosRTzk7pvYBc_bPcqulX3L08LWxYtsZTsJOJ9shkyWD3cuKJnl9LW2CH9lhaHFUCYBNeS6lBiFWSU6B0KCs2iicK9Q0"/>
+</div>
+<div class="flex flex-col justify-center gap-1">
+<span class="text-[10px] font-bold text-primary uppercase tracking-widest label-md">SPECIES GUIDE</span>
+<h3 class="text-md font-bold text-on-background leading-snug">もみじの葉焼けを防ぐ、夏の置き場所完全ガイド</h3>
+<p class="text-xs text-on-surface-variant">5日前 · 8分で読める</p>
+</div>
+</div>
+<!-- Article 3 -->
+<div class="flex gap-4 group cursor-pointer">
+<div class="w-24 h-24 rounded-lg bg-surface-container-high overflow-hidden shrink-0">
+<img class="w-full h-full object-cover group-hover:scale-105 duration-300" data-alt="Hands holding a small bonsai tool near a trunk, detailed professional pruning action" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6_eaA4mv1ejRwBYVQ3IZ1YpePpJ7r-NMWKbcwWtJizE5DkyoV6oiT6Cw1KmSsAoEVAQnXQozfTfNpJYFeG3AonfzGo2iNaUmHlJkTOcff5biEWacfOJCcxwZ1k5-8-8hdSk1F2fxfKJrUUhOpKS2yR77RSCetiQ9LZZnGV6s6NZs0m2dJtkreS5kSHuanT6CHPqRoQtKqjTo4j9ZVix9aFN8KTMtlmm0vrMx9j0JKGzXInTxuFtTi-aKGhX-7n-IC3vL090Gwb-o"/>
+</div>
+<div class="flex flex-col justify-center gap-1">
+<span class="text-[10px] font-bold text-primary uppercase tracking-widest label-md">BASIC CARE</span>
+<h3 class="text-md font-bold text-on-background leading-snug">土の種類で変わる？盆栽の健康を支える配合の秘密</h3>
+<p class="text-xs text-on-surface-variant">1週間前 · 6分で読める</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full h-20 bg-[#f6faf6]/80 backdrop-blur-md flex justify-around items-center px-4 pb-2 z-50 rounded-t-3xl shadow-[0_-4px_16px_rgba(24,29,26,0.12)]">
+<a class="flex flex-col items-center justify-center text-green-700 dark:text-green-400 px-5 py-1 transition-opacity hover:opacity-80 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">potted_plant</span>
+<span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider mt-1">Collection</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#a3f69c] text-green-900 rounded-full px-5 py-1 transition-opacity hover:opacity-80 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">lightbulb</span>
+<span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider mt-1">Tips</span>
+</a>
+<a class="flex flex-col items-center justify-center text-green-700 dark:text-green-400 px-5 py-1 transition-opacity hover:opacity-80 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">history_edu</span>
+<span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider mt-1">Logs</span>
+</a>
+<a class="flex flex-col items-center justify-center text-green-700 dark:text-green-400 px-5 py-1 transition-opacity hover:opacity-80 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">library_books</span>
+<span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider mt-1">Species</span>
+</a>
+</nav>
+<!-- Floating Action Button - Search enhancement or Quick Note -->
+<button class="fixed bottom-24 right-6 w-14 h-14 rounded-full bg-gradient-to-br from-primary to-primary-container text-on-primary shadow-lg flex items-center justify-center active:scale-95 transition-transform z-40">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">bookmark</span>
+</button>
+</body></html>

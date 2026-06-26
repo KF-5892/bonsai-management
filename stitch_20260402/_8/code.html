@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ja"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Noto+Sans+JP:wght@400;500;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-error": "#ffffff",
+              "error": "#ba1a1a",
+              "surface-tint": "#1b6d24",
+              "primary-container": "#2e7d32",
+              "primary-fixed": "#a3f69c",
+              "on-surface-variant": "#40493d",
+              "outline": "#707a6c",
+              "secondary-fixed": "#d5e8d0",
+              "surface-container-highest": "#dfe3e0",
+              "secondary": "#526350",
+              "surface-container-lowest": "#ffffff",
+              "on-secondary-fixed": "#101f10",
+              "surface": "#f6faf6",
+              "secondary-fixed-dim": "#b9ccb5",
+              "secondary-container": "#d2e5cd",
+              "surface-bright": "#f6faf6",
+              "inverse-primary": "#88d982",
+              "primary-fixed-dim": "#88d982",
+              "error-container": "#ffdad6",
+              "tertiary-container": "#b14b6f",
+              "on-secondary": "#ffffff",
+              "on-error-container": "#93000a",
+              "tertiary-fixed-dim": "#ffb1c7",
+              "primary": "#0d631b",
+              "on-tertiary-container": "#ffedf0",
+              "on-surface": "#181d1a",
+              "surface-variant": "#dfe3e0",
+              "on-background": "#181d1a",
+              "inverse-on-surface": "#eef2ee",
+              "surface-dim": "#d7dbd7",
+              "on-primary": "#ffffff",
+              "on-primary-fixed": "#002204",
+              "inverse-surface": "#2d312f",
+              "tertiary": "#923357",
+              "on-primary-fixed-variant": "#005312",
+              "surface-container-high": "#e5e9e5",
+              "surface-container-low": "#f1f5f1",
+              "surface-container": "#ebefeb",
+              "on-tertiary-fixed": "#3f001c",
+              "on-secondary-fixed-variant": "#3b4b39",
+              "tertiary-fixed": "#ffd9e2",
+              "on-tertiary": "#ffffff",
+              "on-secondary-container": "#566754",
+              "outline-variant": "#bfcaba",
+              "on-tertiary-fixed-variant": "#7f2448",
+              "on-primary-container": "#cbffc2",
+              "background": "#f6faf6"
+            },
+            fontFamily: {
+              "headline": ["Inter", "Noto Sans JP"],
+              "body": ["Noto Sans JP", "Inter"],
+              "label": ["Inter", "Noto Sans JP"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .botanical-gradient {
+            background: linear-gradient(135deg, #0d631b 0%, #2e7d32 100%);
+        }
+        .glass-nav {
+            background-color: rgba(246, 250, 246, 0.8);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen pb-24">
+<!-- TopAppBar: Small Center Aligned -->
+<header class="w-full top-0 sticky z-50 bg-[#f1f5f1] dark:bg-stone-900 transition-colors duration-200 flex items-center justify-between px-6 py-4">
+<div class="flex items-center gap-4">
+<button class="p-2 -ml-2 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-full transition-colors">
+<span class="material-symbols-outlined text-green-800 dark:text-green-400">arrow_back</span>
+</button>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-green-800 dark:text-green-400" data-icon="park">park</span>
+<h1 class="text-green-900 dark:text-green-100 font-bold tracking-tight font-['Inter'] text-lg">The Digital Arboretum</h1>
+</div>
+</div>
+<div class="w-10"></div> <!-- Spacer for center alignment feel -->
+</header>
+<main class="max-w-md mx-auto px-6 pt-8 space-y-10">
+<!-- Header Text Section -->
+<section class="space-y-2">
+<span class="text-[0.75rem] font-bold uppercase tracking-wider text-primary font-['Inter']">Management</span>
+<h2 class="text-[1.75rem] font-semibold text-on-surface leading-tight">肥料の登録/編集</h2>
+<p class="text-[0.875rem] text-on-surface-variant">盆栽の健康を維持するための肥料データを管理します。</p>
+</section>
+<!-- Form Section -->
+<form class="space-y-8">
+<!-- Name Input Card -->
+<div class="bg-surface-container-low p-6 rounded-lg space-y-4">
+<label class="block text-[0.75rem] font-bold uppercase tracking-wider text-on-surface-variant font-['Inter']">肥料名</label>
+<div class="bg-surface-container-lowest p-4 rounded shadow-sm border border-outline-variant/15">
+<input class="w-full bg-transparent border-none focus:ring-0 text-[1.125rem] font-medium text-on-surface p-0 placeholder:text-outline-variant" placeholder="例: Bonsai Pro Solid" type="text"/>
+</div>
+</div>
+<!-- Type Selection (Chips) -->
+<div class="space-y-4">
+<label class="block text-[0.75rem] font-bold uppercase tracking-wider text-on-surface-variant font-['Inter']">肥料の種類</label>
+<div class="flex gap-3">
+<button class="flex-1 py-4 px-6 rounded-full botanical-gradient text-on-primary font-semibold flex items-center justify-center gap-2 shadow-lg shadow-primary/10" type="button">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">circle</span>
+<span>固形</span>
+</button>
+<button class="flex-1 py-4 px-6 rounded-full bg-surface-container-high text-on-surface-variant font-medium flex items-center justify-center gap-2 hover:bg-surface-container-highest transition-colors" type="button">
+<span class="material-symbols-outlined text-sm">water_drop</span>
+<span>液体</span>
+</button>
+</div>
+</div>
+<!-- NPK Ratio Grid -->
+<div class="bg-surface-container-low p-6 rounded-lg space-y-6">
+<label class="block text-[0.75rem] font-bold uppercase tracking-wider text-on-surface-variant font-['Inter']">成分比率 (N-P-K)</label>
+<div class="grid grid-cols-3 gap-4">
+<!-- Nitrogen -->
+<div class="space-y-2 text-center">
+<div class="bg-surface-container-lowest h-20 w-full rounded flex items-center justify-center border border-outline-variant/15">
+<input class="w-full text-center bg-transparent border-none focus:ring-0 text-[1.75rem] font-bold text-primary font-['Inter'] p-0" placeholder="5" type="number"/>
+</div>
+<span class="text-[0.75rem] font-bold text-on-surface-variant">窒素 (N)</span>
+</div>
+<!-- Phosphorus -->
+<div class="space-y-2 text-center">
+<div class="bg-surface-container-lowest h-20 w-full rounded flex items-center justify-center border border-outline-variant/15">
+<input class="w-full text-center bg-transparent border-none focus:ring-0 text-[1.75rem] font-bold text-primary font-['Inter'] p-0" placeholder="5" type="number"/>
+</div>
+<span class="text-[0.75rem] font-bold text-on-surface-variant">リン酸 (P)</span>
+</div>
+<!-- Potassium -->
+<div class="space-y-2 text-center">
+<div class="bg-surface-container-lowest h-20 w-full rounded flex items-center justify-center border border-outline-variant/15">
+<input class="w-full text-center bg-transparent border-none focus:ring-0 text-[1.75rem] font-bold text-primary font-['Inter'] p-0" placeholder="5" type="number"/>
+</div>
+<span class="text-[0.75rem] font-bold text-on-surface-variant">カリ (K)</span>
+</div>
+</div>
+</div>
+<!-- Decorative Card / Info -->
+<div class="relative overflow-hidden bg-secondary-container rounded-lg p-6 flex items-center gap-6">
+<div class="w-16 h-16 rounded-full bg-white/40 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-primary text-3xl">info</span>
+</div>
+<div class="space-y-1">
+<h4 class="font-bold text-on-secondary-container">最適な養分設計</h4>
+<p class="text-xs text-on-secondary-container/80">成長期には窒素を多めに、開花前にはリン酸を多めに調整するのが理想的です。</p>
+</div>
+<!-- Abstract leaf pattern -->
+<div class="absolute -right-4 -bottom-4 opacity-10">
+<span class="material-symbols-outlined text-8xl" style="font-variation-settings: 'FILL' 1;">eco</span>
+</div>
+</div>
+</form>
+</main>
+<!-- Bottom Action Area -->
+<div class="fixed bottom-0 left-0 w-full bg-surface/80 backdrop-blur-md p-6 border-t border-outline-variant/15 flex justify-center z-40">
+<button class="w-full max-w-md botanical-gradient text-on-primary py-5 rounded-full font-bold text-lg flex items-center justify-center gap-3 shadow-lg shadow-primary/20 active:scale-[0.98] transition-transform">
+<span class="material-symbols-outlined">save</span>
+            肥料を登録する
+        </button>
+</div>
+<!-- Hidden padding to prevent content being cut off by floating button -->
+<div class="h-24"></div>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-[#f6faf6]/80 dark:bg-stone-950/80 backdrop-blur-md z-50 rounded-t-3xl shadow-[0_-4px_16px_rgba(24,29,26,0.08)] md:hidden">
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 px-5 py-1 hover:opacity-80 transition-transform scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 px-5 py-1 hover:opacity-80 transition-transform scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">Schedule</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 px-5 py-1 hover:opacity-80 transition-transform scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">history_edu</span>
+<span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">Logs</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#a3f69c] dark:bg-green-900/60 text-green-900 dark:text-green-100 rounded-full px-5 py-1 hover:opacity-80 transition-transform scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">handyman</span>
+<span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">Tools</span>
+</a>
+</nav>
+</body></html>

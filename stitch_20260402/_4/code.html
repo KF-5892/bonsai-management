@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+
+<html lang="ja"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>お役立ちポータル | Helpful Tips</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Noto+Sans+JP:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-fixed-variant": "#7f2448",
+              "surface-container": "#ebefeb",
+              "error-container": "#ffdad6",
+              "primary": "#0d631b",
+              "secondary-container": "#d2e5cd",
+              "on-tertiary-container": "#ffedf0",
+              "on-background": "#181d1a",
+              "secondary-fixed": "#d5e8d0",
+              "on-error": "#ffffff",
+              "outline": "#707a6c",
+              "surface-container-low": "#f1f5f1",
+              "on-tertiary-fixed": "#3f001c",
+              "tertiary-container": "#b14b6f",
+              "primary-container": "#2e7d32",
+              "secondary-fixed-dim": "#b9ccb5",
+              "surface-container-high": "#e5e9e5",
+              "surface-bright": "#f6faf6",
+              "on-secondary-fixed-variant": "#3b4b39",
+              "surface-variant": "#dfe3e0",
+              "on-error-container": "#93000a",
+              "surface-container-highest": "#dfe3e0",
+              "on-primary-fixed-variant": "#005312",
+              "on-tertiary": "#ffffff",
+              "on-secondary-container": "#566754",
+              "inverse-on-surface": "#eef2ee",
+              "surface": "#f6faf6",
+              "surface-dim": "#d7dbd7",
+              "outline-variant": "#bfcaba",
+              "surface-tint": "#1b6d24",
+              "on-primary-fixed": "#002204",
+              "on-primary": "#ffffff",
+              "on-surface-variant": "#40493d",
+              "on-secondary": "#ffffff",
+              "primary-fixed-dim": "#88d982",
+              "secondary": "#526350",
+              "tertiary": "#923357",
+              "on-secondary-fixed": "#101f10",
+              "primary-fixed": "#a3f69c",
+              "on-primary-container": "#cbffc2",
+              "error": "#ba1a1a",
+              "inverse-primary": "#88d982",
+              "tertiary-fixed-dim": "#ffb1c7",
+              "background": "#f6faf6",
+              "surface-container-lowest": "#ffffff",
+              "inverse-surface": "#2d312f",
+              "on-surface": "#181d1a",
+              "tertiary-fixed": "#ffd9e2"
+            },
+            fontFamily: {
+              "headline": ["Inter", "Noto Sans JP"],
+              "body": ["Inter", "Noto Sans JP"],
+              "label": ["Inter", "Noto Sans JP"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      body { font-family: 'Inter', 'Noto Sans JP', sans-serif; }
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .tonal-shift-bg { background-color: #f1f5f1; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface pb-32">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#f6faf6]/80 backdrop-blur-md">
+<div class="flex items-center px-4 h-16 w-full max-w-none">
+<button class="p-2 mr-2 text-green-800 active:scale-95 duration-200 transition-colors hover:bg-green-100/50 rounded-full">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-['Inter'] font-semibold tracking-tight text-green-800 text-lg flex-1">Helpful Tips</h1>
+<button class="p-2 text-green-800 active:scale-95 duration-200 transition-colors hover:bg-green-100/50 rounded-full">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</header>
+<main class="pt-20 px-4 max-w-2xl mx-auto space-y-8">
+<!-- Search Bar Section -->
+<section class="relative">
+<div class="flex items-center bg-surface-container-lowest px-4 py-3 rounded-2xl shadow-sm border border-outline-variant/15">
+<span class="material-symbols-outlined text-outline mr-3" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md w-full placeholder:text-on-surface-variant/60" placeholder="ヒントや記事を検索" type="text"/>
+</div>
+</section>
+<!-- Featured Banner: This Month's Advice -->
+<section class="relative overflow-hidden rounded-lg aspect-[16/9] bg-primary-container text-on-primary-container p-6 flex flex-col justify-end group">
+<img alt="Featured Advice" class="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-60 group-hover:scale-105 transition-transform duration-700" data-alt="Close-up of vibrant green moss and small bonsai leaves under soft morning sunlight with a refreshing natural atmosphere" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZ_1zwD5haKh_9dE-PDRSiBJzIoH3RbK5q3uM7QBo1onPWT6USfs3p7GnZFkBbXYHwrBeDDb_M3lvM7kdNkFiKcVrpBg5nf5Xv7bLPKhG5mIV02Fsuk3S7PAeFW4IOWUVp062tk0pucgPclXIvvjSxaWzOayi-IVAiLbs_qKvbKZDPAUaTIyKwPSOy2Qczt2aMWU3DSX5mSAK8mLcaeBHuLzrg8Axj7KjuTu-F3GUhLXXG_f_IapHAfNN0bBQl-RgIoBNNnmjk2lE"/>
+<div class="relative z-10 space-y-2">
+<span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">Special Feature</span>
+<h2 class="text-2xl font-bold leading-tight">今月の注意点:<br/>梅雨時期の根腐れ防止</h2>
+<p class="text-sm opacity-90 line-clamp-2">湿気が多い季節、盆栽の水分管理は非常に繊細です。通気性を確保する具体的なステップを解説します。</p>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent"></div>
+</section>
+<!-- Category Grid (NavigationDrawer Influence) -->
+<section>
+<h3 class="font-headline text-title-md mb-4 text-on-surface px-1">カテゴリー</h3>
+<div class="grid grid-cols-1 gap-3">
+<!-- Work TIPS -->
+<div class="flex items-center p-4 bg-surface-container-lowest rounded-2xl border border-outline-variant/15 hover:bg-surface-container transition-colors group">
+<div class="w-12 h-12 rounded-xl bg-primary-container/10 flex items-center justify-center mr-4 group-hover:bg-primary-container/20 transition-colors">
+<span class="material-symbols-outlined text-primary" data-icon="handyman">handyman</span>
+</div>
+<div class="flex-1">
+<span class="block text-title-md font-semibold">Work TIPS (作業TIPS)</span>
+<span class="text-label-md text-on-surface-variant/70">剪定、針金かけ、植え替え</span>
+</div>
+<span class="material-symbols-outlined text-outline" data-icon="chevron_right">chevron_right</span>
+</div>
+<!-- Species Guide -->
+<div class="flex items-center p-4 bg-surface-container-lowest rounded-2xl border border-outline-variant/15 hover:bg-surface-container transition-colors group">
+<div class="w-12 h-12 rounded-xl bg-primary-container/10 flex items-center justify-center mr-4 group-hover:bg-primary-container/20 transition-colors">
+<span class="material-symbols-outlined text-primary" data-icon="menu_book">menu_book</span>
+</div>
+<div class="flex-1">
+<span class="block text-title-md font-semibold">Species Guide (品種別ガイド)</span>
+<span class="text-label-md text-on-surface-variant/70">松柏、雑木、実もの、花もの</span>
+</div>
+<span class="material-symbols-outlined text-outline" data-icon="chevron_right">chevron_right</span>
+</div>
+<!-- Gallery -->
+<div class="flex items-center p-4 bg-surface-container-lowest rounded-2xl border border-outline-variant/15 hover:bg-surface-container transition-colors group">
+<div class="w-12 h-12 rounded-xl bg-primary-container/10 flex items-center justify-center mr-4 group-hover:bg-primary-container/20 transition-colors">
+<span class="material-symbols-outlined text-primary" data-icon="photo_library">photo_library</span>
+</div>
+<div class="flex-1">
+<span class="block text-title-md font-semibold">Gallery (ギャラリー)</span>
+<span class="text-label-md text-on-surface-variant/70">お手本、季節の情景、会員作品</span>
+</div>
+<span class="material-symbols-outlined text-outline" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+</section>
+<!-- Sub-category Focus: Pest Control -->
+<section class="bg-surface-container-low rounded-lg p-6 flex items-start gap-4">
+<div class="p-3 bg-error-container rounded-2xl">
+<span class="material-symbols-outlined text-error" data-icon="bug_report">bug_report</span>
+</div>
+<div class="flex-1">
+<h4 class="text-title-md font-bold text-on-background mb-1">病害虫対策 (Pest Control)</h4>
+<p class="text-body-md text-on-surface-variant mb-4 leading-relaxed">夏に向けて発生しやすい害虫の早期発見と、環境に優しい駆除方法のまとめ。</p>
+<a class="inline-flex items-center text-primary font-bold text-sm tracking-wide" href="#">
+                    詳細を見る
+                    <span class="material-symbols-outlined text-[18px] ml-1" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</section>
+<!-- Latest Articles (Bento Style) -->
+<section class="space-y-4">
+<div class="flex items-center justify-between px-1">
+<h3 class="font-headline text-title-md text-on-surface">最新の記事</h3>
+<button class="text-sm font-bold text-primary">すべて見る</button>
+</div>
+<!-- Article List -->
+<div class="space-y-4">
+<!-- Card 1 -->
+<article class="flex gap-4 p-3 bg-surface-container-lowest rounded-2xl border border-outline-variant/15 items-center">
+<img alt="Pruning Guide" class="w-24 h-24 rounded-xl object-cover shrink-0" data-alt="Detailed close-up of sharp pruning shears trimming a small bonsai branch with surgical precision and artistic focus" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwnJLZY50MTMVDWfK9XFO-rki7yOdRggQBGdODkVjliaA3BFU825NSrUvSfTTkHyRMZzX0v4o56aZJ56_VRqtECpPIBu5OXZimFevZO5xzfizt6qpEU2XotKFZjZE0uYjglCGaHRGEKgnRZqDhtxHA4jJ6cdQiwbrPUVr5EerLUXmqY6LzNQLnU-92eznCaXP8p1auPuMhkGyOvYrFP9SWRZeIcfUN4Otd8ldATuO2uLeOrVQe3Ap3-lYGCvjMa0eGH6yxaFpd8EE"/>
+<div class="flex-1 space-y-1">
+<div class="flex items-center gap-2">
+<span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded-full text-[10px] font-bold uppercase">Work Tips</span>
+</div>
+<h4 class="text-sm font-bold line-clamp-2">真柏の芽摘み：バランスを整えるコツ</h4>
+<p class="text-[11px] text-on-surface-variant/70">2日前 • 5分で読める</p>
+</div>
+</article>
+<!-- Card 2 -->
+<article class="flex gap-4 p-3 bg-surface-container-lowest rounded-2xl border border-outline-variant/15 items-center">
+<img alt="Juniper Guide" class="w-24 h-24 rounded-xl object-cover shrink-0" data-alt="Exquisite shimpaku juniper bonsai tree with twisted trunk and vibrant green foliage against a minimalist dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIufmVxZC3qebagJNkGfuF_kTPAiX_L3mmJG3io-XDwj2Ijuaf3oOssinjqJlZWp6aPrNiiQqzT0ShlyYsWRKa-zaGt7GVuQ-48KE4Rg6bRMkrP9LqhjOfoH1vLW2y8wzyM3e0lEriooX-T_j9RudE95fFDzVg38cF_J9yQF23k5ex8pxTL45hkUKvH7oBAz_wg6zxxE1HWXX1SpzmklInC16KaeHuhY_3TFoFppfeiH41bZX_QnhjL_1-dKhMW4Rly39v-O-5-e0"/>
+<div class="flex-1 space-y-1">
+<div class="flex items-center gap-2">
+<span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded-full text-[10px] font-bold uppercase">Species Guide</span>
+</div>
+<h4 class="text-sm font-bold line-clamp-2">初心者のための黒松の育て方完全ガイド</h4>
+<p class="text-[11px] text-on-surface-variant/70">5日前 • 10分で読める</p>
+</div>
+</article>
+<!-- Card 3 -->
+<article class="flex gap-4 p-3 bg-surface-container-lowest rounded-2xl border border-outline-variant/15 items-center">
+<img alt="Seasonal Display" class="w-24 h-24 rounded-xl object-cover shrink-0" data-alt="Traditional Japanese tokonoma display featuring a maple bonsai in autumn colors, creating a sense of seasonal harmony and tranquility" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBAcdlvcpT1qTe9EfBui--E2hSuPPhQ381VR4a8X5STnC_GtQXk7JnSsKqOmvX3RMWTTdQal581W71UMqA-ntR372KhRMLz32TxgTmLY1zBRsK1_4-BdE6uBq-Dqz2onYc-Z8Mta7v4L1TTayfMvtvShx6b5LF16ONEOUDbYavkradtAdGpBhSyZ8qjk5FyZG5e_xCW2DxyXx3EcoMhWMJVvQ27BhhiZOHS-2K-5GWmGrwJYH4HdSFhWwJdA7whXttkFRTIrRfsCvE"/>
+<div class="flex-1 space-y-1">
+<div class="flex items-center gap-2">
+<span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded-full text-[10px] font-bold uppercase">Gallery</span>
+</div>
+<h4 class="text-sm font-bold line-clamp-2">初夏の盆栽展：光と影の芸術</h4>
+<p class="text-[11px] text-on-surface-variant/70">1週間前 • 3分で読める</p>
+</div>
+</article>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-[#f6faf6]/80 backdrop-blur-md z-50 rounded-t-3xl shadow-[0_-4px_16px_rgba(24,29,26,0.08)]">
+<!-- Collection -->
+<a class="flex flex-col items-center justify-center text-green-800/60 dark:text-green-200/50 px-5 py-2 hover:text-green-900 transition-colors" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="home_app_logo">home_app_logo</span>
+<span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">Collection</span>
+</a>
+<!-- Tips (Active) -->
+<a class="flex flex-col items-center justify-center bg-[#a3f69c] text-green-900 rounded-2xl px-5 py-2 Active:scale-90 transition-transform duration-300 ease-out" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="lightbulb" style="font-variation-settings: 'FILL' 1;">lightbulb</span>
+<span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">Tips</span>
+</a>
+<!-- Logs -->
+<a class="flex flex-col items-center justify-center text-green-800/60 dark:text-green-200/50 px-5 py-2 hover:text-green-900 transition-colors" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="history_edu">history_edu</span>
+<span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">Logs</span>
+</a>
+<!-- Species -->
+<a class="flex flex-col items-center justify-center text-green-800/60 dark:text-green-200/50 px-5 py-2 hover:text-green-900 transition-colors" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="Park">park</span>
+<span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">Species</span>
+</a>
+</nav>
+</body></html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ja"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Noto+Sans+JP:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-fixed-variant": "#7f2448",
+              "surface-container": "#ebefeb",
+              "error-container": "#ffdad6",
+              "primary": "#0d631b",
+              "secondary-container": "#d2e5cd",
+              "on-tertiary-container": "#ffedf0",
+              "on-background": "#181d1a",
+              "secondary-fixed": "#d5e8d0",
+              "on-error": "#ffffff",
+              "outline": "#707a6c",
+              "surface-container-low": "#f1f5f1",
+              "on-tertiary-fixed": "#3f001c",
+              "tertiary-container": "#b14b6f",
+              "primary-container": "#2e7d32",
+              "secondary-fixed-dim": "#b9ccb5",
+              "surface-container-high": "#e5e9e5",
+              "surface-bright": "#f6faf6",
+              "on-secondary-fixed-variant": "#3b4b39",
+              "surface-variant": "#dfe3e0",
+              "on-error-container": "#93000a",
+              "surface-container-highest": "#dfe3e0",
+              "on-primary-fixed-variant": "#005312",
+              "on-tertiary": "#ffffff",
+              "on-secondary-container": "#566754",
+              "inverse-on-surface": "#eef2ee",
+              "surface": "#f6faf6",
+              "surface-dim": "#d7dbd7",
+              "outline-variant": "#bfcaba",
+              "surface-tint": "#1b6d24",
+              "on-primary-fixed": "#002204",
+              "on-primary": "#ffffff",
+              "on-surface-variant": "#40493d",
+              "on-secondary": "#ffffff",
+              "primary-fixed-dim": "#88d982",
+              "secondary": "#526350",
+              "tertiary": "#923357",
+              "on-secondary-fixed": "#101f10",
+              "primary-fixed": "#a3f69c",
+              "on-primary-container": "#cbffc2",
+              "error": "#ba1a1a",
+              "inverse-primary": "#88d982",
+              "tertiary-fixed-dim": "#ffb1c7",
+              "background": "#f6faf6",
+              "surface-container-lowest": "#ffffff",
+              "inverse-surface": "#2d312f",
+              "on-surface": "#181d1a",
+              "tertiary-fixed": "#ffd9e2"
+            },
+            fontFamily: {
+              "headline": ["Inter", "Noto Sans JP"],
+              "body": ["Noto Sans JP", "Inter"],
+              "label": ["Inter", "Noto Sans JP"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Noto Sans JP', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface antialiased pb-24">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#f6faf6]/80 dark:bg-[#1a1c1a]/80 backdrop-blur-md">
+<div class="flex items-center px-4 h-16 w-full max-w-none justify-between">
+<div class="flex items-center gap-4">
+<button class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-green-100/50 active:scale-95 transition-all text-green-800">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<span class="font-['Inter'] font-semibold tracking-tight text-green-800">Work TIPS</span>
+</div>
+<button class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-green-100/50 active:scale-95 transition-all text-green-800">
+<span class="material-symbols-outlined" data-icon="share">share</span>
+</button>
+</div>
+</header>
+<main class="pt-16 max-w-3xl mx-auto px-4 lg:px-0">
+<!-- Hero Section -->
+<section class="mt-6 mb-8 overflow-hidden rounded-lg">
+<div class="relative aspect-video w-full rounded-lg overflow-hidden">
+<img alt="Main Visual" class="w-full h-full object-cover" data-alt="Close-up of a master gardener hands carefully using bonsai scissors to prune a Japanese Black Pine bonsai in a serene workshop with natural light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCr7la1A6txCn8j7UtjLImHuErOVgOIEoyLKhW4JiO_sxGeWIyB8xeIZwArVJWEXNuDZihXO6Jr87CssfKwbEcIHD7IHsz8c_p3YwhWzRKFhEO9yVwj9cX97QkVN6orLE2F8hegIJePb65QwOjwfwHuQ-UrTdtVkPnQqQUBAsMFAnZkVoB6zGnWFm99pe1nQowTa9ETeXHqEg36sOVhrH-QpLcPKJfsQZLQ43Q7DLd77E8n5dzlVZd17uMAxiAmh_tM1UtyAjNJb7o"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+</div>
+<div class="mt-6">
+<div class="flex gap-2 mb-3">
+<span class="px-3 py-1 bg-primary-container text-on-primary-container text-xs font-bold rounded-full uppercase tracking-wider">Guide</span>
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container text-xs font-bold rounded-full uppercase tracking-wider">Pinus Thunbergii</span>
+</div>
+<h1 class="text-2xl md:text-3xl font-bold font-headline text-on-background leading-tight">
+                    黒松（クロマツ）の芽摘み：初心者向け完全ガイド
+                </h1>
+<p class="text-on-surface-variant mt-4 leading-relaxed font-body">
+                    3月は黒松の盆栽にとって、一年の姿を決める極めて重要な時期です。この時期に行う「芽摘み」が、なぜ美しい樹形を維持するために不可欠なのか、その理由と具体的な手法を解説します。
+                </p>
+</div>
+</section>
+<!-- Content Body -->
+<article class="space-y-12">
+<!-- Intro Section -->
+<section class="p-6 bg-surface-container-low rounded-lg">
+<h2 class="text-xl font-bold text-primary mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+                    なぜ3月に芽摘みが必要なのか？
+                </h2>
+<p class="text-on-surface-variant leading-relaxed mb-4">
+                    春の訪れとともに黒松の芽は一気に伸び始めます。これをそのまま放置すると、上部の枝ばかりが太くなり、内側の小さな枝に日光が届かず枯れてしまいます。芽摘みを行うことで、栄養のバランスを整え、繊細な葉並びを保つことができます。
+                </p>
+<div class="grid grid-cols-2 gap-4 mt-6">
+<div class="p-4 bg-surface-container-lowest rounded-lg border-l-4 border-primary">
+<span class="text-[10px] font-bold text-primary uppercase block mb-1">Benefit 01</span>
+<p class="font-bold text-sm">樹形の維持</p>
+</div>
+<div class="p-4 bg-surface-container-lowest rounded-lg border-l-4 border-primary">
+<span class="text-[10px] font-bold text-primary uppercase block mb-1">Benefit 02</span>
+<p class="font-bold text-sm">脇芽の促進</p>
+</div>
+</div>
+</section>
+<!-- Step by Step -->
+<section>
+<h2 class="text-2xl font-bold mb-8 text-on-background">作業のステップ</h2>
+<div class="space-y-10">
+<!-- Step 1 -->
+<div class="flex flex-col md:flex-row gap-6 items-start">
+<div class="w-full md:w-1/3 aspect-square rounded-lg overflow-hidden bg-surface-container-high">
+<img alt="Step 1" class="w-full h-full object-cover" data-alt="Extreme close-up of healthy green pine needles and the central bud of a bonsai tree, focused sharp macro photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXrdEIpvMF09IoGeHweBNmpgnSu93T-ZxpksDEfpG_DzdD_U097fMb6QByI9WV0-Pq6q6ilmwF1mzN2TdDbYO8y2pGWXJpTncsEKTqlkSxAHbhvr7nUDVo9GU3wcwwIQ8F5culkAXnAMJgrtOdTlA2nADnf4LFwWIyNM7-cth0fr19_5BCYjl1_hyVpxTw9NXDAdR5TDwzmZtl-jx7G8rJ97W73c4509phDAiOeVhCCrQOPoO1Wf9lUWuuNlb9Ac1Sb-YzhnltLiI"/>
+</div>
+<div class="flex-1">
+<div class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-primary text-on-primary font-bold mb-3">1</div>
+<h3 class="text-xl font-bold mb-2">芽の選別</h3>
+<p class="text-on-surface-variant leading-relaxed">
+                                まずは樹冠部（てっぺん）の強い芽から確認します。勢いの強い芽、中くらいの芽、弱い芽を見極めることが成功の第一歩です。
+                            </p>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="flex flex-col md:flex-row-reverse gap-6 items-start">
+<div class="w-full md:w-1/3 aspect-square rounded-lg overflow-hidden bg-surface-container-high">
+<img alt="Step 2" class="w-full h-full object-cover" data-alt="Bonsai tools, specialized scissors and tweezers laying on a wooden table beside a small pine tree." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnVmeT-YOz7EmVMouHfoE7lcoLL0QN9AGS5GjPsE6gfeE6JUsggVPh6ODA-kp7niaVjZZMPK73-K7GP0aMumLNaIs0c_lipCr112DPdIlbe5RvdsCLdnsuX1haPTQLWVi9r6w-RySEy7a9ICqXVVSmet4Y3CV8fX3urKnQ7hfSKZ8pPdmkdcevLypW5hJPtrUxoxinDQtAJG2fqrYqmCzJF8KELlqMbSXMHLcbHPal2B6ThCOxwsq0enBDoLi2Bb7xrt3T9kiALGY"/>
+</div>
+<div class="flex-1">
+<div class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-primary text-on-primary font-bold mb-3">2</div>
+<h3 class="text-xl font-bold mb-2">指先での処理</h3>
+<p class="text-on-surface-variant leading-relaxed">
+                                黒松の芽摘みは、基本的にハサミを使わず「指先」でひねり切ります。金属を嫌う性質があるため、親指と人差し指で芽の半分から3分の2を摘み取ります。
+                            </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Pro Tip Box -->
+<section class="bg-primary text-on-primary p-8 rounded-lg relative overflow-hidden">
+<div class="absolute -right-8 -bottom-8 opacity-20">
+<span class="material-symbols-outlined text-9xl" data-icon="lightbulb">lightbulb</span>
+</div>
+<div class="relative z-10">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+<h3 class="text-lg font-bold font-headline">PRO TIP</h3>
+</div>
+<p class="text-primary-fixed leading-relaxed text-lg italic">
+                        「一気に全てを摘まないこと。強い芽から順に、一週間ほど間隔を空けて作業することで、全体の勢いが平均化され、秋の紅葉も美しくなります。」
+                    </p>
+</div>
+</section>
+<!-- Pest Control Section -->
+<section class="p-6 border-2 border-error/10 bg-error-container/20 rounded-lg">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-12 h-12 rounded-full bg-error-container flex items-center justify-center text-error">
+<span class="material-symbols-outlined" data-icon="pest_control">pest_control</span>
+</div>
+<div>
+<h2 class="text-xl font-bold text-on-error-container">害虫対策のポイント</h2>
+<p class="text-sm text-error/80 font-medium">3月〜4月の注意点</p>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex gap-4 p-4 bg-surface-container-lowest rounded-lg">
+<span class="material-symbols-outlined text-error" data-icon="warning">warning</span>
+<div>
+<p class="font-bold text-on-background">アブラムシの発生</p>
+<p class="text-sm text-on-surface-variant">新芽の時期はアブラムシがつきやすいです。見つけ次第、専用の薬剤で防除しましょう。</p>
+</div>
+</div>
+<div class="flex gap-4 p-4 bg-surface-container-lowest rounded-lg">
+<span class="material-symbols-outlined text-error" data-icon="bug_report">bug_report</span>
+<div>
+<p class="font-bold text-on-background">マツカレハの幼虫</p>
+<p class="text-sm text-on-surface-variant">葉を食害する毛虫に注意。早期発見が木を守る鍵となります。</p>
+</div>
+</div>
+</div>
+</section>
+</article>
+<!-- Related Articles -->
+<section class="mt-16 mb-12">
+<h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined" data-icon="library_books">library_books</span>
+                関連記事
+            </h2>
+<div class="flex overflow-x-auto pb-4 gap-4 snap-x no-scrollbar">
+<!-- Card 1 -->
+<div class="min-w-[280px] snap-start bg-surface-container-lowest rounded-lg shadow-sm border border-outline-variant/10 overflow-hidden">
+<img alt="Article 1" class="w-full h-40 object-cover" data-alt="A small detailed bonsai tree in a ceramic pot on a wooden pedestal." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAX_rmkzzyqDqd8YZtHCOrAsECblOV-fpOr40B9wXOOCLPmmf93v2Zvl6hb6qw8bAt0Z9kmizMJK9WiAeFjI7GhkR2d4YO1F5s5UFGyFuZSDc_vYvUMnOa2DyOMzGbUrvpuQ2SzFt2_gmQhcXY-AfUJ6yQjAMnPqSGtD-AAkyULHJUgyigZDzH-CFJRrvJYJQFFDE-wqa2P_xMgfJHdkvUNN3N7oUgrvXB6DeBfkmyYH-rEHvi-AFTxEWLzI-0nWdILUmqmD_mRlz8"/>
+<div class="p-4">
+<span class="text-[10px] font-bold text-primary uppercase mb-2 block">Technique</span>
+<h3 class="font-bold line-clamp-2">真柏の糸魚川：春の植え替え時期と土の配合</h3>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="min-w-[280px] snap-start bg-surface-container-lowest rounded-lg shadow-sm border border-outline-variant/10 overflow-hidden">
+<img alt="Article 2" class="w-full h-40 object-cover" data-alt="Traditional Japanese garden with neatly manicured plants and a stone lantern." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2xdJtbh3n7tC7dbwBRuoLfhkeTpTNqUb3yf5HjzZRmJ8fsRyIhk-q8uHOEsW6MwgobUdxqcZKL5lLfE8cJ-ayGxsKO0GmWsw9pY3FHeZxmccNf7QByWqSkmp9B5wu26j2YWVPPUU5vmOhPt5SUBnJX5XmlJCsno7iPBELHXuOczDjXHVcHgcZgQPmwj_ZcipJk4iB3YuUH9dkKl2uCuIaTd2zCq9nG0CsHKnOFpIA-xlrTFI6U0SXooLXzViWMI3B8HwJ6wCiS-4"/>
+<div class="p-4">
+<span class="text-[10px] font-bold text-primary uppercase mb-2 block">Basics</span>
+<h3 class="font-bold line-clamp-2">盆栽鉢の選び方：樹種に合わせた形と色のルール</h3>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Filtered based on Contextual Shell Visibility & Relevance) -->
+<!-- Not visible here as per Task-Focused "Back" action rule, but if requested: -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-[#f6faf6]/80 dark:bg-[#1a1c1a]/80 backdrop-blur-md z-50 rounded-t-3xl shadow-[0_-4px_16px_rgba(24,29,26,0.08)]">
+<a class="flex flex-col items-center justify-center text-green-800/60 dark:text-green-200/50 px-5 py-2 hover:text-green-900 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="home_app_logo">home_app_logo</span>
+<span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider mt-1">Collection</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#a3f69c] dark:bg-green-800 text-green-900 dark:text-green-100 rounded-2xl px-5 py-2" href="#">
+<span class="material-symbols-outlined" data-icon="lightbulb">lightbulb</span>
+<span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider mt-1">Tips</span>
+</a>
+<a class="flex flex-col items-center justify-center text-green-800/60 dark:text-green-200/50 px-5 py-2 hover:text-green-900 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="history_edu">history_edu</span>
+<span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider mt-1">Logs</span>
+</a>
+<a class="flex flex-col items-center justify-center text-green-800/60 dark:text-green-200/50 px-5 py-2 hover:text-green-900 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="Park">park</span>
+<span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider mt-1">Species</span>
+</a>
+</nav>
+</body></html>

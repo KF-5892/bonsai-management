@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ja"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Noto+Sans+JP:wght@400;500;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "inverse-on-surface": "#eef2ee",
+              "surface-bright": "#f6faf6",
+              "background": "#f6faf6",
+              "surface-variant": "#dfe3e0",
+              "tertiary": "#923357",
+              "surface-container-high": "#e5e9e5",
+              "on-background": "#181d1a",
+              "inverse-surface": "#2d312f",
+              "on-tertiary-container": "#ffedf0",
+              "on-secondary-fixed-variant": "#3b4b39",
+              "inverse-primary": "#88d982",
+              "tertiary-container": "#b14b6f",
+              "primary-fixed-dim": "#88d982",
+              "on-tertiary-fixed": "#3f001c",
+              "secondary-container": "#d2e5cd",
+              "on-secondary-fixed": "#101f10",
+              "on-error-container": "#93000a",
+              "on-tertiary": "#ffffff",
+              "on-primary": "#ffffff",
+              "surface-container-highest": "#dfe3e0",
+              "surface": "#f6faf6",
+              "surface-container": "#ebefeb",
+              "on-surface": "#181d1a",
+              "outline-variant": "#bfcaba",
+              "on-secondary-container": "#566754",
+              "on-secondary": "#ffffff",
+              "on-primary-fixed": "#002204",
+              "primary": "#0d631b",
+              "secondary": "#526350",
+              "primary-container": "#2e7d32",
+              "on-primary-fixed-variant": "#005312",
+              "on-error": "#ffffff",
+              "primary-fixed": "#a3f69c",
+              "secondary-fixed": "#d5e8d0",
+              "surface-container-low": "#f1f5f1",
+              "on-tertiary-fixed-variant": "#7f2448",
+              "tertiary-fixed-dim": "#ffb1c7",
+              "secondary-fixed-dim": "#b9ccb5",
+              "tertiary-fixed": "#ffd9e2",
+              "error-container": "#ffdad6",
+              "surface-tint": "#1b6d24",
+              "surface-dim": "#d7dbd7",
+              "on-primary-container": "#cbffc2",
+              "on-surface-variant": "#40493d",
+              "error": "#ba1a1a",
+              "outline": "#707a6c",
+              "surface-container-lowest": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#f6faf6]/80 dark:bg-slate-900/80 backdrop-blur-md flex justify-between items-center px-4 h-16 w-full">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden">
+<img alt="User Profile Avatar" class="w-full h-full object-cover" data-alt="Portrait of a bonsai enthusiast smiling" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUfj4s-Bu23nM79gshoAO9F0XnFw2nD2ts2AXjUIiwnSH9MED9PUa3FFZcqI_yhMXLSHpLBA7NaIee5Os22J2AWO2_WeKAtM9XMR6MRq0Vw8ZCLsOsiYXJlmt-BlVUxS_bDJ0V1qILYrz9Ru4CCb54hDDaZLZ-Gb88Z8xwS-st7l-WUULmj9LhGdvnDctcJjic-1EONUTYdSjGG9arrpKdNXtRG3pREXXGQmq02cBDGzAkpQ49oMlZNwUaGCdxKb2Ns4kqOZU8LA4"/>
+</div>
+<h1 class="font-['Inter'] font-semibold text-lg text-green-900 dark:text-green-100 text-xl font-bold">盆栽管理</h1>
+</div>
+<button class="p-2 rounded-full hover:bg-green-50 dark:hover:bg-green-900/30 transition-colors duration-200">
+<span class="material-symbols-outlined text-green-800 dark:text-green-400" data-icon="notifications">notifications</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col items-center justify-center px-6 pt-16 pb-20">
+<!-- Empty State Visual -->
+<div class="relative w-full max-w-sm aspect-square flex items-center justify-center mb-12">
+<!-- Asymmetric Botanical Background Elements -->
+<div class="absolute inset-0 bg-primary-fixed/20 rounded-full blur-3xl scale-75 opacity-50"></div>
+<div class="relative z-10 w-64 h-64 bg-surface-container-lowest rounded-full shadow-xl flex items-center justify-center">
+<div class="text-primary/10 absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-[180px] opacity-10" data-icon="potted_plant">potted_plant</span>
+</div>
+<!-- Main Stylized Illustration Placeholder -->
+<div class="relative w-48 h-48 rounded-2xl overflow-hidden bg-gradient-to-br from-surface-container-low to-surface-container-high">
+<img alt="Bonsai Illustration" class="w-full h-full object-cover mix-blend-multiply opacity-80" data-alt="Minimalist artistic watercolor painting of a juniper bonsai" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDC8-IBBe-ddspxlqJWv-4EdvkgTl1OXisLDwIa9tnmHqEOMb11XHTkaGjHTaszeH8EZtn2zrREqixBLRY3aDEMnMJDFhyq3_WAFPdmqU6DL-9rnxXoRVG4GOM1WJdCYt37XO_lw5tbvv4Ul9ZzVClgRHABKlwHvWHmA3eOu3rV1a81YZOoRe6K-PPpOEishuGNmoxgj4aDRlTSbmKlvtk5Pt5ZT3Vz6MC_19OReVwjELG9EbA3dbl_zjPUQqadTBh3h0rhZHOyV8s"/>
+</div>
+</div>
+</div>
+<!-- Text Messaging -->
+<div class="text-center space-y-4 max-w-xs mx-auto">
+<h2 class="text-2xl font-bold text-on-surface tracking-tight">まだ盆栽が登録されていません</h2>
+<p class="text-on-surface-variant font-medium leading-relaxed">
+                最初の盆栽を登録して、年間の手入れ予定を管理しましょう
+            </p>
+</div>
+<!-- Primary CTA -->
+<div class="mt-10 w-full max-w-xs">
+<button class="w-full py-5 px-8 rounded-full bg-gradient-to-r from-primary to-primary-container text-on-primary font-bold text-lg shadow-lg shadow-primary/20 flex items-center justify-center gap-3 active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="add" style="font-variation-settings: 'wght' 600;">add</span>
+                盆栽を登録する
+            </button>
+</div>
+<!-- Secondary Link -->
+<div class="mt-8">
+<a class="flex items-center gap-2 text-primary font-bold hover:opacity-80 transition-opacity" href="#">
+<span>お役立ち記事を読む</span>
+<span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 bg-[#f6faf6]/80 dark:bg-slate-900/80 backdrop-blur-md rounded-t-3xl shadow-[0_-4px_16px_rgba(24,29,26,0.08)] flex justify-around items-center h-20 pb-safe w-full">
+<!-- Home (Active) -->
+<button class="flex flex-col items-center justify-center bg-[#a3f69c] dark:bg-green-800 text-green-900 dark:text-green-100 rounded-full px-4 py-1 scale-95 active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">ホーム</span>
+</button>
+<!-- Schedule -->
+<button class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-4 py-1 scale-95 active:scale-90 transition-transform hover:opacity-80">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+<span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">スケジュール</span>
+</button>
+<!-- Log -->
+<button class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-4 py-1 scale-95 active:scale-90 transition-transform hover:opacity-80">
+<span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+<span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">ログ記録</span>
+</button>
+<!-- Info/Articles -->
+<button class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-4 py-1 scale-95 active:scale-90 transition-transform hover:opacity-80">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+<span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">お役立ち</span>
+</button>
+</nav>
+<!-- Contextual FAB (Hidden on this screen as requested by logic - only primary CTA used) -->
+</body></html>

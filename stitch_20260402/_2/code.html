@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+
+<html lang="ja"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Noto+Sans+JP:wght@400;500;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        body {
+            font-family: 'Noto Sans JP', 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "inverse-on-surface": "#eef2ee",
+              "surface-bright": "#f6faf6",
+              "background": "#f6faf6",
+              "surface-variant": "#dfe3e0",
+              "tertiary": "#923357",
+              "surface-container-high": "#e5e9e5",
+              "on-background": "#181d1a",
+              "inverse-surface": "#2d312f",
+              "on-tertiary-container": "#ffedf0",
+              "on-secondary-fixed-variant": "#3b4b39",
+              "inverse-primary": "#88d982",
+              "tertiary-container": "#b14b6f",
+              "primary-fixed-dim": "#88d982",
+              "on-tertiary-fixed": "#3f001c",
+              "secondary-container": "#d2e5cd",
+              "on-secondary-fixed": "#101f10",
+              "on-error-container": "#93000a",
+              "on-tertiary": "#ffffff",
+              "on-primary": "#ffffff",
+              "surface-container-highest": "#dfe3e0",
+              "surface": "#f6faf6",
+              "surface-container": "#ebefeb",
+              "on-surface": "#181d1a",
+              "outline-variant": "#bfcaba",
+              "on-secondary-container": "#566754",
+              "on-secondary": "#ffffff",
+              "on-primary-fixed": "#002204",
+              "primary": "#0d631b",
+              "secondary": "#526350",
+              "primary-container": "#2e7d32",
+              "on-primary-fixed-variant": "#005312",
+              "on-error": "#ffffff",
+              "primary-fixed": "#a3f69c",
+              "secondary-fixed": "#d5e8d0",
+              "surface-container-low": "#f1f5f1",
+              "on-tertiary-fixed-variant": "#7f2448",
+              "tertiary-fixed-dim": "#ffb1c7",
+              "secondary-fixed-dim": "#b9ccb5",
+              "tertiary-fixed": "#ffd9e2",
+              "error-container": "#ffdad6",
+              "surface-tint": "#1b6d24",
+              "surface-dim": "#d7dbd7",
+              "on-primary-container": "#cbffc2",
+              "on-surface-variant": "#40493d",
+              "error": "#ba1a1a",
+              "outline": "#707a6c",
+              "surface-container-lowest": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#f6faf6]/80 backdrop-blur-md flex justify-between items-center px-4 h-16 w-full">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-secondary-fixed flex items-center justify-center">
+<img alt="User Profile Avatar" class="w-full h-full object-cover" data-alt="User profile portrait for Japanese bonsai enthusiast" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSTW38w5cTq-ZTyCMU7WEwevF4q-pgCk_UhCfnDk0Qe3SXHa7ThIr4sxUCxBldvWvHwgDwaFNnb2OFWyieOKJpCst50YY7GEvr5i3--47aVom1dgrGEN_T7YE5U7mBP5U4VJ4gbTXz1AogbobHwQw35upZV1djmZ_8J4nGNzeCsXHbBQIG4hYdtjC7DAGxJpskJ1jZi3_tgjfpn4s6I8kNutA3JeEDRjlSUnjyxep6rugC3w8iY4QkDKjYJ5g4IN-xfW81JIbh0LY"/>
+</div>
+<h1 class="text-xl font-bold text-green-900 font-['Inter']">盆栽管理</h1>
+</div>
+<button class="p-2 rounded-full hover:bg-green-50 transition-colors duration-200">
+<span class="material-symbols-outlined text-green-800" data-icon="notifications">notifications</span>
+</button>
+</header>
+<main class="pt-20 px-4 space-y-6">
+<!-- Search Bar -->
+<section class="mt-4">
+<div class="relative w-full">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline" data-icon="search">search</span>
+</div>
+<input class="block w-full pl-12 pr-4 py-4 bg-surface-container-low border-none rounded-2xl text-on-surface focus:ring-2 focus:ring-primary placeholder-on-surface-variant/60 font-medium" placeholder="盆栽を検索..." type="text"/>
+</div>
+</section>
+<!-- Filter Chips (Horizontal Scroll) -->
+<section class="flex overflow-x-auto gap-3 pb-2 scrollbar-hide">
+<button class="flex-none px-6 py-2.5 rounded-full bg-primary text-on-primary font-bold shadow-sm">全て</button>
+<button class="flex-none px-6 py-2.5 rounded-full bg-surface-container-high text-on-surface-variant font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-lg" data-icon="check_circle">check_circle</span> 良好
+            </button>
+<button class="flex-none px-6 py-2.5 rounded-full bg-surface-container-high text-on-surface-variant font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-lg" data-icon="warning">warning</span> 要注意
+            </button>
+<button class="flex-none px-6 py-2.5 rounded-full bg-surface-container-high text-on-surface-variant font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-lg" data-icon="cancel">cancel</span> 不調
+            </button>
+</section>
+<!-- Bonsai Card List -->
+<section class="space-y-4">
+<!-- Card 1: Healthy Bonsai -->
+<div class="bg-surface-container-lowest rounded-xl flex overflow-hidden relative group">
+<div class="w-1 bg-green-600 h-full absolute left-0 top-0"></div>
+<div class="w-1/3 aspect-square max-w-[120px]">
+<img class="w-full h-full object-cover" data-alt="Traditional Japanese black pine bonsai in ceramic pot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIxfl472e0yL8mjeeayouyPvQcY77V-XDqisOYRIo2Y4eOp9Yn_0z-FXGzT6QCl4izvEi0A-qYPR9KaKsg1KXnRbxezxFLjDvgBZsbJz0-YcUpZyLPbK_3Q8KZ_LYNJJxpRTxgkKR2vJPjMHbDyh05oC4mCqsRetM_HFDNsAtc5ZLbDrq13Ml-nveY768K37Be8m8UnFD3ujXpPEo8L8wsZmORh7l-scEPZdQ2W-PTy_178hgjp6geehxG45OGU3pZKnVVYEcTekI"/>
+</div>
+<div class="flex-1 p-4 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start">
+<h3 class="text-lg font-bold text-on-surface">黒松 太郎</h3>
+<span class="bg-[#E8F5E9] text-[#2E7D32] text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="check">check</span>良好
+                            </span>
+</div>
+<p class="text-sm text-on-surface-variant mt-0.5">品種：黒松</p>
+</div>
+<div class="mt-4 flex items-center gap-2 text-primary font-bold">
+<span class="material-symbols-outlined text-lg" data-icon="water_drop">water_drop</span>
+<span class="text-xs uppercase tracking-wider">次の作業：水やり 今日</span>
+</div>
+</div>
+</div>
+<!-- Card 2: Warning Bonsai -->
+<div class="bg-surface-container-lowest rounded-xl flex overflow-hidden relative group">
+<div class="w-1 bg-tertiary h-full absolute left-0 top-0"></div>
+<div class="w-1/3 aspect-square max-w-[120px]">
+<img class="w-full h-full object-cover" data-alt="Juniper bonsai with twisted wood trunk style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAahrOPS3K3Hj07tiI-EGOsE41bur6qFjOqmadbRv07YhE228GMWuCYFarZ_TVhfNUAm8e-_fZDzDe707D7-9dhELvsN4X1wv2vF3LyJYffXVXgbhCZTy07qYU_K2_RDadrKfxSfNQaR8GXX18465KjsUhmMdpYmPOJqp55_Ie4E1NWJ0lLyhoJ9xtMui1Cnt_0IGZ7aUTShAD38bQJPlwarnIeIMDoADDvFGdGbFuf2m_G7HoY0-x4wn4OIBN45w2E2yDDVlPmchw"/>
+</div>
+<div class="flex-1 p-4 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start">
+<h3 class="text-lg font-bold text-on-surface">真柏 雲海</h3>
+<span class="bg-[#FCE4EC] text-[#BA1A1A] text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="warning">warning</span>要注意
+                            </span>
+</div>
+<p class="text-sm text-on-surface-variant mt-0.5">品種：真柏</p>
+</div>
+<div class="mt-4 flex items-center gap-2 text-tertiary font-bold">
+<span class="material-symbols-outlined text-lg" data-icon="content_cut">content_cut</span>
+<span class="text-xs uppercase tracking-wider">次の作業：剪定 3/25</span>
+</div>
+</div>
+</div>
+<!-- Group Card -->
+<div class="bg-surface-container-low rounded-xl p-4">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-secondary" data-icon="potted_plant">potted_plant</span>
+<h3 class="text-lg font-bold text-on-surface">寄せ植え A</h3>
+</div>
+<div class="space-y-3 pl-6 border-l-2 border-primary-fixed-dim">
+<div class="flex justify-between items-center bg-surface-container-lowest p-3 rounded-lg">
+<span class="font-medium">楓 (カエデ)</span>
+<span class="text-xs text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full">管理中</span>
+</div>
+<div class="flex justify-between items-center bg-surface-container-lowest p-3 rounded-lg">
+<span class="font-medium">欅 (ケヤキ)</span>
+<span class="text-xs text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full">管理中</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- FAB: 新規登録 -->
+<button class="fixed bottom-24 right-6 w-16 h-16 rounded-full bg-gradient-to-br from-primary to-primary-container text-on-primary shadow-xl flex items-center justify-center active:scale-95 transition-transform z-40">
+<span class="material-symbols-outlined text-3xl" data-icon="add">add</span>
+</button>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 bg-[#f6faf6]/80 backdrop-blur-md rounded-t-3xl shadow-[0_-4px_16px_rgba(24,29,26,0.08)] flex justify-around items-center h-20 pb-safe">
+<!-- Home (Active) -->
+<a class="flex flex-col items-center justify-center bg-[#a3f69c] text-green-900 rounded-full px-4 py-1 transition-transform scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">ホーム</span>
+</a>
+<!-- Schedule -->
+<a class="flex flex-col items-center justify-center text-slate-500 px-4 py-1 hover:opacity-80 transition-transform active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+<span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">スケジュール</span>
+</a>
+<!-- Log -->
+<a class="flex flex-col items-center justify-center text-slate-500 px-4 py-1 hover:opacity-80 transition-transform active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+<span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">ログ記録</span>
+</a>
+<!-- Info -->
+<a class="flex flex-col items-center justify-center text-slate-500 px-4 py-1 hover:opacity-80 transition-transform active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+<span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">お役立ち</span>
+</a>
+</nav>
+</body></html>
