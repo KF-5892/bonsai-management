@@ -11,4 +11,6 @@
 .material-symbols-outlined {
   font-size: 22px;
   line-height: 1;
+  /* FILL 軸のデフォルトは 0（アウトライン）。アクティブ要素では inline style で FILL 1 を指定して塗りつぶす */
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
