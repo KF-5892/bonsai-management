@@ -1,15 +1,16 @@
 {% if messages %}
   <div class="mb-4 space-y-2">
     {% for message in messages %}
+      {# MD3 トークンで着色。No-Line ルールに従いボーダーなし・背景色のみで区分 #}
       <div
         x-data="{ show: true }"
         x-show="show"
         x-transition
-        class="flex items-start justify-between gap-3 rounded-md border px-4 py-3 text-sm
-          {% if message.tags == 'error' %}border-red-200 bg-red-50 text-red-800
-          {% elif message.tags == 'warning' %}border-amber-200 bg-amber-50 text-amber-800
-          {% elif message.tags == 'success' %}border-emerald-200 bg-emerald-50 text-emerald-800
-          {% else %}border-sky-200 bg-sky-50 text-sky-800{% endif %}"
+        class="flex items-start justify-between gap-3 rounded-2xl px-4 py-3 text-sm font-medium
+          {% if message.tags == 'error' %}bg-error-container text-on-error-container
+          {% elif message.tags == 'warning' %}bg-[#FCE4EC] text-[#BA1A1A]
+          {% elif message.tags == 'success' %}bg-secondary-container text-on-secondary-container
+          {% else %}bg-surface-container-high text-on-surface-variant{% endif %}"
         role="alert"
       >
         <span>{{ message }}</span>

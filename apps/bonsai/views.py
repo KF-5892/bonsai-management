@@ -26,7 +26,23 @@ from django.views.generic import (
 from apps.schedules.services.todos import compose_monthly_todos
 
 from .forms import BonsaiPlantForm
-from .models import BonsaiPlant, BonsaiSpecies
+from .models import BonsaiPlant, BonsaiSpecies, HealthStatus, TaskType
+
+# 盆栽カードの「次の作業」行に出す Material Symbols アイコン（Stitch _2 準拠）
+TASK_TYPE_ICONS: dict[str, str] = {
+    TaskType.WATERING.value: "water_drop",
+    TaskType.LEAF_MISTING.value: "water_drop",
+    TaskType.FERTILIZING.value: "compost",
+    TaskType.PRUNING.value: "content_cut",
+    TaskType.BUD_PINCHING.value: "content_cut",
+    TaskType.DEFOLIATION.value: "content_cut",
+    TaskType.REPOTTING.value: "potted_plant",
+    TaskType.PEST_CONTROL.value: "pest_control",
+    TaskType.OBSERVATION.value: "visibility",
+    TaskType.WIRING.value: "cable",
+    TaskType.UNWIRING.value: "cable",
+}
+DEFAULT_TASK_ICON = "eco"
 
 
 class HomeView(LoginRequiredMixin, TemplateView):
@@ -34,6 +50,7 @@ class HomeView(LoginRequiredMixin, TemplateView):
 
     - 「今月のやること」: ``compose_monthly_todos`` の結果
     - 「マイ盆栽」: ``BonsaiPlant.objects.filter(user=request.user)``
+      に名前検索（``?q=``）と健康状態絞り込み（``?status=``）を適用
     """
 
     template_name = "home.html"
@@ -45,9 +62,46 @@ class HomeView(LoginRequiredMixin, TemplateView):
         todos = compose_monthly_todos(self.request.user, year_month)
         ctx["todos"] = todos
         ctx["year_month"] = year_month
-        ctx["plants"] = BonsaiPlant.objects.filter(user=self.request.user).select_related(
+
+        base_qs = BonsaiPlant.objects.filter(user=self.request.user).select_related(
             "species", "cover_media"
         )
+        # 空状態の判定は絞り込み前の所持数で行う（検索 0 件と未登録を区別する）
+        ctx["has_plants"] = base_qs.exists()
+
+        q = self.request.GET.get("q", "").strip()
+        status = self.request.GET.get("status", "")
+        if status not in HealthStatus.values:
+            status = ""
+        if q:
+            base_qs = base_qs.filter(name__icontains=q)
+        if status:
+            base_qs = base_qs.filter(health_status=status)
+        plants = list(base_qs)
+
+        # 各盆栽の「次の作業」= 当月 ToDo のうち未完了で個体に紐付く先頭のもの
+        next_tasks: dict[str, dict[str, str]] = {}
+        for todo in todos:
+            if not todo.bonsai_id or todo.bonsai_id in next_tasks:
+                continue
+            if todo.completion and todo.completion.get("status") == "done":
+                continue
+            try:
+                label = str(TaskType(todo.task_type).label)
+            except ValueError:
+                label = todo.title
+            if todo.period:
+                label = f"{label}（{todo.period}）"
+            next_tasks[todo.bonsai_id] = {
+                "icon": TASK_TYPE_ICONS.get(todo.task_type, DEFAULT_TASK_ICON),
+                "label": label,
+            }
+        for plant in plants:
+            plant.next_task = next_tasks.get(plant.id)
+
+        ctx["plants"] = plants
+        ctx["q"] = q
+        ctx["status_filter"] = status
         return ctx
 
 

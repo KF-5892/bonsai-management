@@ -1,22 +1,40 @@
-{# 下部固定ボトムナビ（モバイル想定） #}
-<nav
-  class="fixed inset-x-0 bottom-0 z-40 grid grid-cols-4 border-t border-emerald-100 bg-white/95 shadow-[0_-2px_8px_rgba(0,0,0,0.04)] backdrop-blur"
-  aria-label="メインナビゲーション"
->
-  <a href="{% url 'bonsai:home' %}" class="flex min-h-[56px] flex-col items-center justify-center gap-0.5 py-2 text-xs text-emerald-700 hover:bg-emerald-50 active:bg-emerald-100">
-    <span class="text-lg" aria-hidden="true">🏠</span>
-    <span>ホーム</span>
-  </a>
-  <a href="{% url 'schedules:list' %}" class="flex min-h-[56px] flex-col items-center justify-center gap-0.5 py-2 text-xs text-emerald-700 hover:bg-emerald-50 active:bg-emerald-100">
-    <span class="text-lg" aria-hidden="true">📅</span>
-    <span>スケジュール</span>
-  </a>
-  <a href="{% url 'logs:list' %}" class="flex min-h-[56px] flex-col items-center justify-center gap-0.5 py-2 text-xs text-emerald-700 hover:bg-emerald-50 active:bg-emerald-100">
-    <span class="text-lg" aria-hidden="true">📝</span>
-    <span>ログ</span>
-  </a>
-  <a href="{% url 'articles:list' %}" class="flex min-h-[56px] flex-col items-center justify-center gap-0.5 py-2 text-xs text-emerald-700 hover:bg-emerald-50 active:bg-emerald-100">
-    <span class="text-lg" aria-hidden="true">📚</span>
-    <span>お役立ち</span>
-  </a>
-</nav>
+{# 下部固定ボトムナビ（Stitch _2 BottomNavBar 準拠: グラス + 角丸 + アクティブピル） #}
+{% with ns=request.resolver_match.namespace %}
+  <nav
+    class="fixed inset-x-0 bottom-0 z-50 flex h-20 items-center justify-around rounded-t-3xl bg-[#f6faf6]/80 shadow-[0_-4px_16px_rgba(24,29,26,0.08)] backdrop-blur-md"
+    aria-label="メインナビゲーション"
+  >
+    <a
+      href="{% url 'bonsai:home' %}"
+      class="flex flex-col items-center justify-center px-4 py-1 transition-transform active:scale-90 {% if ns == 'bonsai' %}scale-95 rounded-full bg-[#a3f69c] text-green-900{% else %}text-slate-500 hover:opacity-80{% endif %}"
+      {% if ns == 'bonsai' %}aria-current="page"{% endif %}
+    >
+      <span class="material-symbols-outlined" aria-hidden="true" {% if ns == 'bonsai' %}style="font-variation-settings: 'FILL' 1;"{% endif %}>home</span>
+      <span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">ホーム</span>
+    </a>
+    <a
+      href="{% url 'schedules:list' %}"
+      class="flex flex-col items-center justify-center px-4 py-1 transition-transform active:scale-90 {% if ns == 'schedules' %}scale-95 rounded-full bg-[#a3f69c] text-green-900{% else %}text-slate-500 hover:opacity-80{% endif %}"
+      {% if ns == 'schedules' %}aria-current="page"{% endif %}
+    >
+      <span class="material-symbols-outlined" aria-hidden="true" {% if ns == 'schedules' %}style="font-variation-settings: 'FILL' 1;"{% endif %}>calendar_month</span>
+      <span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">スケジュール</span>
+    </a>
+    <a
+      href="{% url 'logs:list' %}"
+      class="flex flex-col items-center justify-center px-4 py-1 transition-transform active:scale-90 {% if ns == 'logs' %}scale-95 rounded-full bg-[#a3f69c] text-green-900{% else %}text-slate-500 hover:opacity-80{% endif %}"
+      {% if ns == 'logs' %}aria-current="page"{% endif %}
+    >
+      <span class="material-symbols-outlined" aria-hidden="true" {% if ns == 'logs' %}style="font-variation-settings: 'FILL' 1;"{% endif %}>edit_note</span>
+      <span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">ログ記録</span>
+    </a>
+    <a
+      href="{% url 'articles:list' %}"
+      class="flex flex-col items-center justify-center px-4 py-1 transition-transform active:scale-90 {% if ns == 'articles' %}scale-95 rounded-full bg-[#a3f69c] text-green-900{% else %}text-slate-500 hover:opacity-80{% endif %}"
+      {% if ns == 'articles' %}aria-current="page"{% endif %}
+    >
+      <span class="material-symbols-outlined" aria-hidden="true" {% if ns == 'articles' %}style="font-variation-settings: 'FILL' 1;"{% endif %}>auto_stories</span>
+      <span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">お役立ち</span>
+    </a>
+  </nav>
+{% endwith %}

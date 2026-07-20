@@ -88,8 +88,8 @@
   >
     {% include "_partials/header.html" %}
 
-    {# pt-16: 固定ヘッダー（h-14）の高さ + 余白。pb-24: 固定ボトムナビ高さ + iOS safe-area の余裕 #}
-    <main class="mx-auto w-full max-w-screen-md px-4 pt-16 pb-24">
+    {# pt-20: 固定ヘッダー（h-16）の高さ + 余白。pb-32: 固定ボトムナビ（h-20）+ FAB + iOS safe-area の余裕 #}
+    <main class="mx-auto w-full max-w-screen-md px-4 pt-20 pb-32">
       {% include "_partials/messages.html" %}
       {% block content %}{% endblock %}
     </main>
