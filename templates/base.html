@@ -8,7 +8,7 @@
     <title>{% block title %}盆栽管理{% endblock %}</title>
 
     {# TODO: 本番では @tailwindcss/cli でビルドする（CDN は MVP 専用） #}
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
     {# Stitch モックのデザインシステム（Material Design 3 トークン）を移植。CDN 読込後に config を適用する #}
     <script>
       tailwind.config = {

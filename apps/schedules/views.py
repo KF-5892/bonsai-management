@@ -10,6 +10,7 @@ from __future__ import annotations
 from datetime import date
 from typing import Any
 
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
@@ -82,7 +83,9 @@ class CareScheduleCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form: CareScheduleForm) -> HttpResponse:
         form.instance.user = self.request.user
-        return super().form_valid(form)
+        response = super().form_valid(form)
+        messages.success(self.request, "スケジュールを作成しました。")
+        return response
 
 
 class CareScheduleUpdateView(LoginRequiredMixin, UpdateView):
@@ -99,6 +102,11 @@ class CareScheduleUpdateView(LoginRequiredMixin, UpdateView):
         kwargs["user"] = self.request.user
         return kwargs
 
+    def form_valid(self, form: CareScheduleForm) -> HttpResponse:
+        response = super().form_valid(form)
+        messages.success(self.request, "スケジュールを更新しました。")
+        return response
+
 
 class CareScheduleDeleteView(LoginRequiredMixin, DeleteView):
     model = CareSchedule
@@ -107,6 +115,11 @@ class CareScheduleDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_queryset(self) -> QuerySet[CareSchedule]:
         return CareSchedule.objects.filter(user=self.request.user)
+
+    def form_valid(self, form: Any) -> HttpResponse:
+        response = super().form_valid(form)
+        messages.success(self.request, "スケジュールを削除しました。")
+        return response
 
 
 class TodoCompleteRedirectView(LoginRequiredMixin, View):

@@ -10,6 +10,7 @@ from __future__ import annotations
 from datetime import date
 from typing import Any
 
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse
@@ -115,7 +116,9 @@ class BonsaiPlantCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form: BonsaiPlantForm) -> HttpResponse:
         form.instance.user = self.request.user
-        return super().form_valid(form)
+        response = super().form_valid(form)
+        messages.success(self.request, f"盆栽「{self.object.name}」を登録しました。")
+        return response
 
     def get_success_url(self) -> str:
         return reverse_lazy("bonsai:detail", kwargs={"pk": self.object.pk})
@@ -149,6 +152,11 @@ class BonsaiPlantUpdateView(LoginRequiredMixin, UpdateView):
     def get_queryset(self) -> QuerySet[BonsaiPlant]:
         return BonsaiPlant.objects.filter(user=self.request.user)
 
+    def form_valid(self, form: BonsaiPlantForm) -> HttpResponse:
+        response = super().form_valid(form)
+        messages.success(self.request, f"盆栽「{self.object.name}」を更新しました。")
+        return response
+
     def get_success_url(self) -> str:
         return reverse_lazy("bonsai:detail", kwargs={"pk": self.object.pk})
 
@@ -160,6 +168,11 @@ class BonsaiPlantDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_queryset(self) -> QuerySet[BonsaiPlant]:
         return BonsaiPlant.objects.filter(user=self.request.user)
+
+    def form_valid(self, form: Any) -> HttpResponse:
+        response = super().form_valid(form)
+        messages.success(self.request, f"盆栽「{self.object.name}」を削除しました。")
+        return response
 
 
 # ---------------------------------------------------------------------------

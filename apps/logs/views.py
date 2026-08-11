@@ -11,6 +11,7 @@ from __future__ import annotations
 from datetime import date
 from typing import Any
 
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q, QuerySet
 from django.http import HttpResponse
@@ -86,6 +87,7 @@ class CareLogCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form: CareLogForm) -> HttpResponse:
         form.instance.user = self.request.user
         response = super().form_valid(form)
+        messages.success(self.request, "作業ログを記録しました。")
         # ToDo 由来のプリフィルなら mark_todo_done する
         source_type = self.request.GET.get("source_type") or self.request.POST.get("source_type")
         source_ref = self.request.GET.get("source_ref") or self.request.POST.get("source_ref")
@@ -136,6 +138,11 @@ class CareLogUpdateView(LoginRequiredMixin, UpdateView):
         kwargs["user"] = self.request.user
         return kwargs
 
+    def form_valid(self, form: CareLogForm) -> HttpResponse:
+        response = super().form_valid(form)
+        messages.success(self.request, "作業ログを更新しました。")
+        return response
+
     def get_success_url(self) -> str:
         return reverse_lazy("logs:detail", kwargs={"pk": self.object.pk})
 
@@ -147,3 +154,8 @@ class CareLogDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_queryset(self) -> QuerySet[CareLog]:
         return CareLog.objects.filter(user=self.request.user)
+
+    def form_valid(self, form: Any) -> HttpResponse:
+        response = super().form_valid(form)
+        messages.success(self.request, "作業ログを削除しました。")
+        return response
