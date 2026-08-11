@@ -31,7 +31,7 @@ os.environ.setdefault("USE_SQLITE_FOR_TESTS", "True")
 os.environ.setdefault("DJANGO_DEBUG", "True")
 os.environ.setdefault("DJANGO_SECRET_KEY", "preview-only-key")
 
-import django  # noqa: E402
+import django
 
 django.setup()
 
@@ -82,74 +82,150 @@ def seed_demo_data():
 
     plants = []
     plant_specs = [
-        ("黒松 太郎", kuro or (others[0] if others else None), HealthStatus.GOOD,
-         date(2021, 5, 10), "実生3年。芽摘みで樹勢を調整中。"),
-        ("もみじ 花子", momiji or (others[1] if len(others) > 1 else None), HealthStatus.WATCH,
-         date(2022, 3, 20), "葉やけ気味。半日陰に移動して様子見。"),
-        ("五葉松 次郎", species.get("goyomatsu") or (others[2] if len(others) > 2 else None),
-         HealthStatus.GOOD, date(2020, 11, 1), "棚の主役。針金で枝順を整えた。"),
+        (
+            "黒松 太郎",
+            kuro or (others[0] if others else None),
+            HealthStatus.GOOD,
+            date(2021, 5, 10),
+            "実生3年。芽摘みで樹勢を調整中。",
+        ),
+        (
+            "もみじ 花子",
+            momiji or (others[1] if len(others) > 1 else None),
+            HealthStatus.WATCH,
+            date(2022, 3, 20),
+            "葉やけ気味。半日陰に移動して様子見。",
+        ),
+        (
+            "五葉松 次郎",
+            species.get("goyomatsu") or (others[2] if len(others) > 2 else None),
+            HealthStatus.GOOD,
+            date(2020, 11, 1),
+            "棚の主役。針金で枝順を整えた。",
+        ),
     ]
     for name, sp, health, acquired, notes in plant_specs:
         plants.append(
             BonsaiPlant.objects.create(
-                user=user, species=sp, name=name,
-                health_status=health, acquired_at=acquired, notes=notes,
+                user=user,
+                species=sp,
+                name=name,
+                health_status=health,
+                acquired_at=acquired,
+                notes=notes,
             )
         )
 
     # スケジュール（当月に次回予定が来るもの）
     CareSchedule.objects.create(
-        bonsai=plants[0], user=user, task_type=TaskType.WATERING,
-        title="黒松の水やり", repeat_type=RepeatType.DAILY,
-        repeat_rule={"interval": 1}, start_date=today - timedelta(days=30),
-        next_run_at=today, is_active=True, notes="朝夕の2回。",
+        bonsai=plants[0],
+        user=user,
+        task_type=TaskType.WATERING,
+        title="黒松の水やり",
+        repeat_type=RepeatType.DAILY,
+        repeat_rule={"interval": 1},
+        start_date=today - timedelta(days=30),
+        next_run_at=today,
+        is_active=True,
+        notes="朝夕の2回。",
     )
     CareSchedule.objects.create(
-        bonsai=plants[1], user=user, task_type=TaskType.FERTILIZING,
-        title="もみじの置き肥", repeat_type=RepeatType.MONTHLY,
+        bonsai=plants[1],
+        user=user,
+        task_type=TaskType.FERTILIZING,
+        title="もみじの置き肥",
+        repeat_type=RepeatType.MONTHLY,
         repeat_rule={"interval": 1, "bymonthday": 1},
         start_date=today - timedelta(days=60),
-        next_run_at=today + timedelta(days=3), is_active=True,
+        next_run_at=today + timedelta(days=3),
+        is_active=True,
     )
 
     # 作業ログ
     log_specs = [
-        (plants[0], TaskType.WATERING, Weather.SUNNY, 22.5, "たっぷり灌水。", HealthEvaluation.GOOD, 1),
-        (plants[0], TaskType.BUD_PINCHING, Weather.CLOUDY, 20.0,
-         "強い芽を元から摘んだ。", HealthEvaluation.VERY_GOOD, 5),
-        (plants[1], TaskType.OBSERVATION, Weather.SUNNY, 24.0,
-         "葉先が少し茶色い。風通しを改善。", HealthEvaluation.NORMAL, 8),
-        (plants[2], TaskType.WIRING, Weather.CLOUDY, 18.0,
-         "下枝にアルミ線をかけた。", HealthEvaluation.GOOD, 12),
+        (
+            plants[0],
+            TaskType.WATERING,
+            Weather.SUNNY,
+            22.5,
+            "たっぷり灌水。",
+            HealthEvaluation.GOOD,
+            1,
+        ),
+        (
+            plants[0],
+            TaskType.BUD_PINCHING,
+            Weather.CLOUDY,
+            20.0,
+            "強い芽を元から摘んだ。",
+            HealthEvaluation.VERY_GOOD,
+            5,
+        ),
+        (
+            plants[1],
+            TaskType.OBSERVATION,
+            Weather.SUNNY,
+            24.0,
+            "葉先が少し茶色い。風通しを改善。",
+            HealthEvaluation.NORMAL,
+            8,
+        ),
+        (
+            plants[2],
+            TaskType.WIRING,
+            Weather.CLOUDY,
+            18.0,
+            "下枝にアルミ線をかけた。",
+            HealthEvaluation.GOOD,
+            12,
+        ),
     ]
     first_log = None
     for bonsai, tt, weather, temp, note, ev, days_ago in log_specs:
         log = CareLog.objects.create(
-            bonsai=bonsai, user=user, task_type=tt, weather=weather,
-            temperature_c=temp, notes=note, health_evaluation=ev,
+            bonsai=bonsai,
+            user=user,
+            task_type=tt,
+            weather=weather,
+            temperature_c=temp,
+            notes=note,
+            health_evaluation=ev,
             performed_at=timezone.now() - timedelta(days=days_ago),
         )
         first_log = first_log or log
 
     # お役立ち記事（公開）
     article_specs = [
-        ("bonsai-watering-basics", "盆栽の水やり入門",
-         "盆栽管理で最も大切な日課が水やりです。",
-         "## 基本\n\n- 土の表面が乾いたらたっぷりと\n- 朝夕の2回が目安\n\n### 季節の注意\n\n夏場は乾きやすいので回数を増やします。",
-         kuro),
-        ("repotting-guide", "植え替えの基本とタイミング",
-         "2〜3年に一度の植え替えで根詰まりを防ぎます。",
-         "## 適期\n\n芽が動き出す直前の春が基本です。\n\n```\n古い土を1/3落とす\n```\n",
-         None),
-        ("pest-control", "病害虫の予防と対策",
-         "早期発見・早期対処が肝心です。",
-         "## よくある害虫\n\n| 害虫 | 対策 |\n|---|---|\n| アブラムシ | 薬剤散布 |\n| ハダニ | 葉水 |\n",
-         momiji),
+        (
+            "bonsai-watering-basics",
+            "盆栽の水やり入門",
+            "盆栽管理で最も大切な日課が水やりです。",
+            "## 基本\n\n- 土の表面が乾いたらたっぷりと\n- 朝夕の2回が目安\n\n### 季節の注意\n\n夏場は乾きやすいので回数を増やします。",
+            kuro,
+        ),
+        (
+            "repotting-guide",
+            "植え替えの基本とタイミング",
+            "2〜3年に一度の植え替えで根詰まりを防ぎます。",
+            "## 適期\n\n芽が動き出す直前の春が基本です。\n\n```\n古い土を1/3落とす\n```\n",
+            None,
+        ),
+        (
+            "pest-control",
+            "病害虫の予防と対策",
+            "早期発見・早期対処が肝心です。",
+            "## よくある害虫\n\n| 害虫 | 対策 |\n|---|---|\n| アブラムシ | 薬剤散布 |\n| ハダニ | 葉水 |\n",
+            momiji,
+        ),
     ]
     for slug, title, summary, body, rel_sp in article_specs:
         art = HelpArticle.objects.create(
-            title=title, slug=slug, summary=summary, body=body,
-            status=ArticleStatus.PUBLISHED, author=user,
+            title=title,
+            slug=slug,
+            summary=summary,
+            body=body,
+            status=ArticleStatus.PUBLISHED,
+            author=user,
             published_at=timezone.now() - timedelta(days=5),
         )
         if rel_sp:
@@ -221,7 +297,7 @@ def main() -> None:
     # リンク書き換え
     def rewrite(html: str) -> str:
         # 静的 CSS（ハッシュ付き含む）-> app.css
-        html = re.sub(r'/static/css/app(\.[0-9a-f]+)?\.css', "app.css", html)
+        html = re.sub(r"/static/css/app(\.[0-9a-f]+)?\.css", "app.css", html)
         # 既知パス -> 静的ファイル名（長いパス優先）
         for path in sorted(full_map, key=len, reverse=True):
             fname = full_map[path]
@@ -257,7 +333,9 @@ def write_gallery(rendered, plants, all_species) -> None:
         link(f"species_{s.slug}.html", f"品種詳細 — {s.name}") for s in all_species[:8]
     )
     article_files = sorted(f for f in rendered if f.startswith("article_"))
-    article_links = "\n".join(link(f, f.replace("article_", "").replace(".html", "")) for f in article_files)
+    article_links = "\n".join(
+        link(f, f.replace("article_", "").replace(".html", "")) for f in article_files
+    )
     log_files = sorted(f for f in rendered if f.startswith("log_"))
     log_links = "\n".join(link(f, "作業ログ詳細") for f in log_files)
 
