@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}タグを削除 | 盆栽管理{% endblock %}
+
+{% block content %}
+  <div class="space-y-4">
+    <h1 class="text-xl font-bold text-on-surface">タグを削除</h1>
+    <div class="rounded-xl bg-surface-container-lowest p-4">
+      <p class="text-sm text-on-surface">
+        タグ「{{ tag.name }}」を削除します。盆栽への紐付けも解除されますが、盆栽自体は削除されません。
+      </p>
+      <form method="post" class="mt-4 flex gap-2">
+        {% csrf_token %}
+        <button type="submit" class="rounded-full bg-error px-6 py-2.5 font-bold text-on-error">削除する</button>
+        <a href="{% url 'bonsai:tag_list' %}" class="rounded-full bg-surface-container-high px-6 py-2.5 font-bold text-on-surface-variant">キャンセル</a>
+      </form>
+    </div>
+  </div>
+{% endblock %}

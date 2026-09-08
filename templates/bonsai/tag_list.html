@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}タグ管理 | 盆栽管理{% endblock %}
+
+{% block content %}
+  <div class="space-y-4">
+    <header class="flex items-center justify-between">
+      <h1 class="text-xl font-bold text-on-surface">タグ管理</h1>
+      <a href="{% url 'bonsai:tag_create' %}"
+         class="rounded-full bg-primary px-4 py-2 text-sm font-bold text-on-primary">+ 追加</a>
+    </header>
+
+    {% if tags %}
+      <ul class="space-y-2">
+        {% for tag in tags %}
+          <li class="flex items-center justify-between rounded-xl bg-surface-container-lowest px-4 py-3">
+            <span class="flex min-w-0 items-center gap-2">
+              <span class="h-3 w-3 shrink-0 rounded-full"
+                    style="background-color: {{ tag.color|default:'#9E9E9E' }}"></span>
+              <span class="truncate font-medium text-on-surface">{{ tag.name }}</span>
+              <span class="shrink-0 text-xs text-on-surface-variant">{{ tag.plant_count }} 件</span>
+            </span>
+            <span class="flex shrink-0 gap-3">
+              <a href="{% url 'bonsai:tag_edit' pk=tag.pk %}" class="text-sm font-bold text-primary">編集</a>
+              <a href="{% url 'bonsai:tag_delete' pk=tag.pk %}" class="text-sm font-bold text-error">削除</a>
+            </span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="rounded-xl bg-surface-container-low p-4 text-center text-sm text-on-surface-variant">
+        タグがまだありません。盆栽を分類するタグを作成しましょう。
+      </p>
+    {% endif %}
+  </div>
+{% endblock %}

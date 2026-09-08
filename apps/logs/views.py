@@ -26,8 +26,8 @@ from django.views.generic import (
 
 from apps.schedules.services.todos import mark_todo_done
 
-from .forms import CareLogForm
-from .models import CareLog
+from .forms import CareLogForm, FertilizerMasterForm
+from .models import CareLog, Fertilizer
 
 
 class CareLogListView(LoginRequiredMixin, ListView):
@@ -158,4 +158,63 @@ class CareLogDeleteView(LoginRequiredMixin, DeleteView):
     def form_valid(self, form: Any) -> HttpResponse:
         response = super().form_valid(form)
         messages.success(self.request, "作業ログを削除しました。")
+        return response
+
+
+# ---------------------------------------------------------------------------
+# 肥料マスタ CRUD（ライブラリ配下）
+# ---------------------------------------------------------------------------
+class FertilizerListView(LoginRequiredMixin, ListView):
+    """肥料マスタ一覧（共通マスタ + 自分の登録）。"""
+
+    model = Fertilizer
+    template_name = "logs/fertilizer_list.html"
+    context_object_name = "fertilizers"
+
+    def get_queryset(self) -> QuerySet[Fertilizer]:
+        return Fertilizer.objects.visible_to(self.request.user).order_by("user_id", "name")
+
+
+class FertilizerCreateView(LoginRequiredMixin, CreateView):
+    model = Fertilizer
+    form_class = FertilizerMasterForm
+    template_name = "logs/fertilizer_form.html"
+    success_url = reverse_lazy("logs:fertilizer_list")
+
+    def form_valid(self, form: FertilizerMasterForm) -> HttpResponse:
+        form.instance.user = self.request.user
+        response = super().form_valid(form)
+        messages.success(self.request, f"肥料「{self.object.name}」を登録しました。")
+        return response
+
+
+class FertilizerUpdateView(LoginRequiredMixin, UpdateView):
+    model = Fertilizer
+    form_class = FertilizerMasterForm
+    template_name = "logs/fertilizer_form.html"
+    success_url = reverse_lazy("logs:fertilizer_list")
+
+    def get_queryset(self) -> QuerySet[Fertilizer]:
+        # 共通マスタは編集させない（Admin 管理）
+        return Fertilizer.objects.personal(self.request.user)
+
+    def form_valid(self, form: FertilizerMasterForm) -> HttpResponse:
+        response = super().form_valid(form)
+        messages.success(self.request, f"肥料「{self.object.name}」を更新しました。")
+        return response
+
+
+class FertilizerDeleteView(LoginRequiredMixin, DeleteView):
+    model = Fertilizer
+    template_name = "logs/fertilizer_confirm_delete.html"
+    success_url = reverse_lazy("logs:fertilizer_list")
+    context_object_name = "fertilizer"
+
+    def get_queryset(self) -> QuerySet[Fertilizer]:
+        return Fertilizer.objects.personal(self.request.user)
+
+    def form_valid(self, form: Any) -> HttpResponse:
+        name = self.object.name if self.object else ""
+        response = super().form_valid(form)
+        messages.success(self.request, f"肥料「{name}」を削除しました。")
         return response

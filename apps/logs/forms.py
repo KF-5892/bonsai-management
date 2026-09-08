@@ -46,3 +46,18 @@ class CareLogForm(TailwindFormMixin, forms.ModelForm):
             self.fields["fertilizer"].queryset = Fertilizer.objects.visible_to(user)
         # 任意項目を表現するため empty_label を上書き
         self.fields["fertilizer"].required = False
+
+
+class FertilizerMasterForm(TailwindFormMixin, forms.ModelForm):
+    """肥料マスタ（ユーザー個別）の登録・編集フォーム。
+
+    共通マスタ（``user`` が NULL）は Django Admin で管理し、本フォームでは
+    常にログインユーザー所有のレコードだけを作成・編集する。
+    """
+
+    class Meta:
+        model = Fertilizer
+        fields = ["name", "form_type", "n", "p", "k", "is_organic", "note"]
+        widgets = {
+            "note": forms.Textarea(attrs={"rows": 3}),
+        }

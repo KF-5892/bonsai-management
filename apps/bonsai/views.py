@@ -12,7 +12,7 @@ from typing import Any
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import QuerySet
+from django.db.models import Count, QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -20,14 +20,15 @@ from django.views.generic import (
     CreateView,
     DeleteView,
     DetailView,
+    ListView,
     TemplateView,
     UpdateView,
 )
 
 from apps.schedules.services.todos import compose_monthly_todos
 
-from .forms import BonsaiPlantForm
-from .models import BonsaiPlant, BonsaiSpecies, HealthStatus, TaskType
+from .forms import BonsaiPlantForm, TagForm
+from .models import BonsaiPlant, BonsaiSpecies, HealthStatus, Tag, TaskType
 
 # 盆栽カードの「次の作業」行に出す Material Symbols アイコン（Stitch _2 準拠）
 TASK_TYPE_ICONS: dict[str, str] = {
@@ -114,6 +115,11 @@ class BonsaiPlantCreateView(LoginRequiredMixin, CreateView):
     form_class = BonsaiPlantForm
     template_name = "bonsai/form.html"
 
+    def get_form_kwargs(self) -> dict[str, Any]:
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+
     def form_valid(self, form: BonsaiPlantForm) -> HttpResponse:
         form.instance.user = self.request.user
         response = super().form_valid(form)
@@ -151,6 +157,11 @@ class BonsaiPlantUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_queryset(self) -> QuerySet[BonsaiPlant]:
         return BonsaiPlant.objects.filter(user=self.request.user)
+
+    def get_form_kwargs(self) -> dict[str, Any]:
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
 
     def form_valid(self, form: BonsaiPlantForm) -> HttpResponse:
         response = super().form_valid(form)
@@ -207,6 +218,78 @@ class BonsaiSpeciesDetailView(DetailView):
             status=ArticleStatus.PUBLISHED,
         ).distinct()[:10]
         return ctx
+
+
+# ---------------------------------------------------------------------------
+# Tag CRUD（ライブラリ配下）
+# ---------------------------------------------------------------------------
+class TagListView(LoginRequiredMixin, ListView):
+    """タグ管理一覧。各タグの利用件数も併せて表示する。"""
+
+    model = Tag
+    template_name = "bonsai/tag_list.html"
+    context_object_name = "tags"
+
+    def get_queryset(self) -> QuerySet[Tag]:
+        return (
+            Tag.objects.filter(user=self.request.user)
+            .annotate(plant_count=Count("bonsai_plants"))
+            .order_by("name")
+        )
+
+
+class TagCreateView(LoginRequiredMixin, CreateView):
+    model = Tag
+    form_class = TagForm
+    template_name = "bonsai/tag_form.html"
+    success_url = reverse_lazy("bonsai:tag_list")
+
+    def get_form_kwargs(self) -> dict[str, Any]:
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+
+    def form_valid(self, form: TagForm) -> HttpResponse:
+        form.instance.user = self.request.user
+        response = super().form_valid(form)
+        messages.success(self.request, f"タグ「{self.object.name}」を作成しました。")
+        return response
+
+
+class TagUpdateView(LoginRequiredMixin, UpdateView):
+    model = Tag
+    form_class = TagForm
+    template_name = "bonsai/tag_form.html"
+    success_url = reverse_lazy("bonsai:tag_list")
+
+    def get_queryset(self) -> QuerySet[Tag]:
+        return Tag.objects.filter(user=self.request.user)
+
+    def get_form_kwargs(self) -> dict[str, Any]:
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+
+    def form_valid(self, form: TagForm) -> HttpResponse:
+        response = super().form_valid(form)
+        messages.success(self.request, f"タグ「{self.object.name}」を更新しました。")
+        return response
+
+
+class TagDeleteView(LoginRequiredMixin, DeleteView):
+    model = Tag
+    template_name = "bonsai/tag_confirm_delete.html"
+    success_url = reverse_lazy("bonsai:tag_list")
+    context_object_name = "tag"
+
+    def get_queryset(self) -> QuerySet[Tag]:
+        return Tag.objects.filter(user=self.request.user)
+
+    def form_valid(self, form: Any) -> HttpResponse:
+        name = self.object.name if self.object else ""
+        response = super().form_valid(form)
+        messages.success(self.request, f"タグ「{name}」を削除しました。")
+        return response
 
 
 def healthcheck(request: HttpRequest) -> HttpResponse:

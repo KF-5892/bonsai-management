@@ -1,0 +1,12 @@
+{# 汎用フォームフィールド描画。``form`` を渡して使う（ラベル・ヘルプ・エラー付き） #}
+{{ form.non_field_errors }}
+{% for field in form %}
+  <div>
+    <label for="{{ field.id_for_label }}" class="mb-1 block text-sm font-medium text-on-surface-variant">
+      {{ field.label }}{% if field.field.required %} <span class="text-error">*</span>{% endif %}
+    </label>
+    {{ field }}
+    {% if field.help_text %}<p class="mt-1 text-xs text-on-surface-variant">{{ field.help_text }}</p>{% endif %}
+    {% for error in field.errors %}<p class="mt-1 text-xs text-error">{{ error }}</p>{% endfor %}
+  </div>
+{% endfor %}

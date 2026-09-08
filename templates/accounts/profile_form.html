@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}プロフィール | 盆栽管理{% endblock %}
+
+{% block content %}
+  <div class="space-y-4">
+    <h1 class="text-xl font-bold text-on-surface">プロフィール</h1>
+    <form method="post" class="space-y-4 rounded-xl bg-surface-container-lowest p-4">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      {% for field in form %}
+        <div>
+          <label for="{{ field.id_for_label }}" class="mb-1 block text-sm font-medium text-on-surface-variant">
+            {{ field.label }}
+          </label>
+          {{ field }}
+          {% if field.help_text %}<p class="mt-1 text-xs text-on-surface-variant">{{ field.help_text }}</p>{% endif %}
+          {% for error in field.errors %}<p class="mt-1 text-xs text-error">{{ error }}</p>{% endfor %}
+        </div>
+      {% endfor %}
+      <div class="flex gap-2 pt-2">
+        <button type="submit" class="rounded-full bg-primary px-6 py-2.5 font-bold text-on-primary">保存</button>
+        <a href="{% url 'accounts:settings' %}" class="rounded-full bg-surface-container-high px-6 py-2.5 font-bold text-on-surface-variant">キャンセル</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

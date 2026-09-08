@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}肥料マスタ | 盆栽管理{% endblock %}
+
+{% block content %}
+  <div class="space-y-4">
+    <header class="flex items-center justify-between">
+      <h1 class="text-xl font-bold text-on-surface">肥料マスタ</h1>
+      <a href="{% url 'logs:fertilizer_create' %}"
+         class="rounded-full bg-primary px-4 py-2 text-sm font-bold text-on-primary">+ 追加</a>
+    </header>
+
+    {% if fertilizers %}
+      <ul class="space-y-2">
+        {% for fertilizer in fertilizers %}
+          <li class="rounded-xl bg-surface-container-lowest p-4">
+            <div class="flex items-start justify-between gap-2">
+              <div class="min-w-0">
+                <p class="truncate font-bold text-on-surface">{{ fertilizer.name }}</p>
+                <p class="mt-0.5 text-xs text-on-surface-variant">
+                  {{ fertilizer.get_form_type_display }}
+                  {% if fertilizer.is_organic %}・有機{% endif %}
+                  {% if fertilizer.is_common %}・共通マスタ{% endif %}
+                </p>
+                <p class="mt-1 text-sm font-medium text-primary">
+                  N-P-K: {{ fertilizer.n|default:"—" }} - {{ fertilizer.p|default:"—" }} - {{ fertilizer.k|default:"—" }}
+                </p>
+              </div>
+              {% if not fertilizer.is_common %}
+                <span class="flex shrink-0 gap-3">
+                  <a href="{% url 'logs:fertilizer_edit' pk=fertilizer.pk %}" class="text-sm font-bold text-primary">編集</a>
+                  <a href="{% url 'logs:fertilizer_delete' pk=fertilizer.pk %}" class="text-sm font-bold text-error">削除</a>
+                </span>
+              {% endif %}
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="rounded-xl bg-surface-container-low p-4 text-center text-sm text-on-surface-variant">
+        肥料がまだ登録されていません。
+      </p>
+    {% endif %}
+  </div>
+{% endblock %}
