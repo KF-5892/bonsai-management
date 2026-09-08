@@ -5,10 +5,13 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
+from apps.common.views import GlobalSearchView
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
     path("settings/", include("apps.accounts.urls")),
+    path("search/", GlobalSearchView.as_view(), name="search"),
     path("", include("apps.bonsai.urls")),
     path("schedules/", include("apps.schedules.urls")),
     path("logs/", include("apps.logs.urls")),

@@ -20,13 +20,14 @@ from django.views.generic import (
     CreateView,
     DeleteView,
     DetailView,
+    FormView,
     ListView,
     UpdateView,
 )
 
 from apps.schedules.services.todos import mark_todo_done
 
-from .forms import CareLogForm, FertilizerMasterForm
+from .forms import BulkCareLogForm, CareLogForm, FertilizerMasterForm
 from .models import CareLog, Fertilizer
 
 
@@ -159,6 +160,38 @@ class CareLogDeleteView(LoginRequiredMixin, DeleteView):
         response = super().form_valid(form)
         messages.success(self.request, "作業ログを削除しました。")
         return response
+
+
+# ---------------------------------------------------------------------------
+# 一括ログ記録（多鉢運用）
+# ---------------------------------------------------------------------------
+class BulkCareLogCreateView(LoginRequiredMixin, FormView):
+    """複数の盆栽 × 同一作業をまとめて記録する（docs/サイトマップ.md §11-3）。"""
+
+    template_name = "logs/bulk_form.html"
+    form_class = BulkCareLogForm
+    success_url = reverse_lazy("logs:list")
+
+    def get_form_kwargs(self) -> dict[str, Any]:
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+
+    def get_initial(self) -> dict[str, Any]:
+        """盆栽一覧などから ``?bonsai=`` を複数渡された場合に初期選択する。"""
+        initial = super().get_initial()
+        bonsai_ids = self.request.GET.getlist("bonsai")
+        if bonsai_ids:
+            initial["bonsai"] = bonsai_ids
+        task_type = self.request.GET.get("task_type")
+        if task_type:
+            initial["task_type"] = task_type
+        return initial
+
+    def form_valid(self, form: BulkCareLogForm) -> HttpResponse:
+        logs = form.create_logs(self.request.user)
+        messages.success(self.request, f"{len(logs)} 件の作業ログを記録しました。")
+        return super().form_valid(form)
 
 
 # ---------------------------------------------------------------------------

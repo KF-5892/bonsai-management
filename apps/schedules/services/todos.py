@@ -15,7 +15,7 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
-from datetime import date
+from datetime import date, timedelta
 from typing import TYPE_CHECKING, Any
 
 from django.db.models import Q
@@ -58,6 +58,9 @@ class Todo:
     title: str
     description: str
     completion: dict[str, Any] | None = field(default=None)
+    # 期間フィルタ（今週 / カスタム期間）用の目安日。両端を含む。
+    period_start: date | None = field(default=None)
+    period_end: date | None = field(default=None)
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -88,6 +91,31 @@ def _schedule_ref(schedule_id: str) -> str:
 
 def _advice_ref(advice_id: str) -> str:
     return f"advice:{advice_id}"
+
+
+def _month_bounds(year_month: date) -> tuple[date, date]:
+    """当月の初日と末日（両端を含む）を返す。"""
+    first = date(year_month.year, year_month.month, 1)
+    if first.month == 12:
+        next_first = date(first.year + 1, 1, 1)
+    else:
+        next_first = date(first.year, first.month + 1, 1)
+    return first, next_first - timedelta(days=1)
+
+
+def _period_range(year_month: date, period: str | None) -> tuple[date, date]:
+    """「上旬 / 中旬 / 下旬」を日付範囲（両端含む）に変換する。
+
+    未指定・不明な値は当月全体として扱う。
+    """
+    first, last = _month_bounds(year_month)
+    if period and "上旬" in period:
+        return first, first.replace(day=10)
+    if period and "中旬" in period:
+        return first.replace(day=11), first.replace(day=20)
+    if period and "下旬" in period:
+        return first.replace(day=21), last
+    return first, last
 
 
 # ---------------------------------------------------------------------------
@@ -134,6 +162,7 @@ def compose_monthly_todos(user: AbstractBaseUser, year_month: date) -> list[Todo
             description = str(task.get("description", "") or "")
             title = description[:40] or f"{species.name} の {task_type}"
 
+            task_start, task_end = _period_range(year_month, period)
             todos.append(
                 Todo(
                     source_type=CompletionSourceType.SPECIES_TASK,
@@ -145,6 +174,8 @@ def compose_monthly_todos(user: AbstractBaseUser, year_month: date) -> list[Todo
                     period=period,
                     title=title,
                     description=description,
+                    period_start=task_start,
+                    period_end=task_end,
                 )
             )
 
@@ -169,9 +200,11 @@ def compose_monthly_todos(user: AbstractBaseUser, year_month: date) -> list[Todo
         )
         .select_related("bonsai", "bonsai__species")
     )
+    month_first, month_last = _month_bounds(year_month)
     for sched in schedules:
         plant = sched.bonsai
         species = plant.species if plant else None
+        due = sched.next_run_at or sched.start_date
         todos.append(
             Todo(
                 source_type=CompletionSourceType.SCHEDULE,
@@ -183,6 +216,8 @@ def compose_monthly_todos(user: AbstractBaseUser, year_month: date) -> list[Todo
                 period=None,
                 title=sched.title or sched.get_task_type_display(),
                 description=sched.notes,
+                period_start=due,
+                period_end=due,
             )
         )
 
@@ -202,6 +237,8 @@ def compose_monthly_todos(user: AbstractBaseUser, year_month: date) -> list[Todo
                 period=None,
                 title=advice.title,
                 description=advice.advice_text,
+                period_start=month_first,
+                period_end=month_last,
             )
         )
 
@@ -383,3 +420,56 @@ def compose_yearly_summaries(user: AbstractBaseUser, year: int) -> list[MonthlyS
     十分だが、鉢数が増えた場合はキャッシュや一括クエリ化を検討する。
     """
     return [summarize_monthly_todos(user, date(year, month, 1)) for month in range(1, 13)]
+
+
+# ---------------------------------------------------------------------------
+# 期間指定（今週 / カスタム期間）
+# ---------------------------------------------------------------------------
+def compose_todos_for_range(
+    user: AbstractBaseUser,
+    start: date,
+    end: date,
+) -> list[Todo]:
+    """``start``〜``end``（両端含む）に重なる ToDo を返す。
+
+    ToDo の合成単位は月なので、期間がまたぐ各月を合成してから
+    ``period_start``/``period_end`` との重なりで絞り込む。
+    留守番・短期確認のユースケース（docs/サイトマップ.md §11 P3）向け。
+    """
+    if end < start:
+        start, end = end, start
+
+    todos: list[Todo] = []
+    cursor = date(start.year, start.month, 1)
+    last_month = date(end.year, end.month, 1)
+    while cursor <= last_month:
+        todos.extend(compose_monthly_todos(user, cursor))
+        if cursor.month == 12:
+            cursor = date(cursor.year + 1, 1, 1)
+        else:
+            cursor = date(cursor.year, cursor.month + 1, 1)
+
+    def overlaps(todo: Todo) -> bool:
+        todo_start = todo.period_start
+        todo_end = todo.period_end or todo_start
+        if todo_start is None or todo_end is None:
+            # 期間が判定できないものは落とさず残す
+            return True
+        return todo_start <= end and todo_end >= start
+
+    filtered = [todo for todo in todos if overlaps(todo)]
+    filtered.sort(
+        key=lambda t: (
+            _is_done(t),
+            t.period_start or date.max,
+            (t.bonsai_name or ""),
+            t.task_type,
+        )
+    )
+    return filtered
+
+
+def current_week_range(today: date) -> tuple[date, date]:
+    """``today`` を含む週（月曜〜日曜）の範囲を返す。"""
+    monday = today - timedelta(days=today.weekday())
+    return monday, monday + timedelta(days=6)

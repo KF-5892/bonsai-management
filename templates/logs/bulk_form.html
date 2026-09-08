@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}一括でログを記録 | 盆栽管理{% endblock %}
+
+{% block content %}
+  <div class="space-y-4">
+    <header>
+      <a href="{% url 'logs:list' %}" class="text-sm font-bold text-primary">← 作業ログ</a>
+      <h1 class="text-xl font-bold text-on-surface">一括でログを記録</h1>
+      <p class="mt-1 text-sm text-on-surface-variant">選んだ盆栽すべてに同じ作業を記録します。</p>
+    </header>
+
+    <form method="post" class="space-y-4 rounded-xl bg-surface-container-lowest p-4">
+      {% csrf_token %}
+      {% include "_partials/form_fields.html" %}
+      <div class="flex gap-2 pt-2">
+        <button type="submit" class="rounded-full bg-primary px-6 py-2.5 font-bold text-on-primary">まとめて記録</button>
+        <a href="{% url 'logs:list' %}" class="rounded-full bg-surface-container-high px-6 py-2.5 font-bold text-on-surface-variant">キャンセル</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

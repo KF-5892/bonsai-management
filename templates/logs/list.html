@@ -6,10 +6,12 @@
   <div class="space-y-4">
     <header class="flex items-center justify-between">
       <h1 class="text-xl font-bold text-emerald-900">作業ログ</h1>
-      <a href="{% url 'logs:create' %}"
-         class="rounded-md bg-emerald-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-emerald-700">
-        + 記録
-      </a>
+      <span class="flex shrink-0 gap-2">
+        <a href="{% url 'logs:bulk_create' %}"
+           class="rounded-full bg-surface-container-high px-4 py-2 text-sm font-bold text-on-surface-variant">一括記録</a>
+        <a href="{% url 'logs:create' %}"
+           class="rounded-full bg-primary px-4 py-2 text-sm font-bold text-on-primary">+ 記録</a>
+      </span>
     </header>
 
     <form method="get" class="flex gap-2">
