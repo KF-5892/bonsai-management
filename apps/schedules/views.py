@@ -10,6 +10,7 @@
 
 from __future__ import annotations
 
+import csv
 from datetime import date, datetime, time
 from typing import Any
 from urllib.parse import quote
@@ -21,6 +22,7 @@ from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
+from django.utils.dateparse import parse_date
 from django.views import View
 from django.views.generic import CreateView, DeleteView, UpdateView
 
@@ -32,6 +34,7 @@ from .models import CareSchedule
 from .services.todos import (
     Todo,
     compose_monthly_todos,
+    compose_todos_for_range,
     compose_yearly_summaries,
     summarize_monthly_todos,
 )
@@ -169,6 +172,46 @@ class ScheduleListView(LoginRequiredMixin, View):
                 "tags": Tag.objects.filter(user=request.user),
             },
         )
+
+
+class TodoExportView(LoginRequiredMixin, View):
+    """ToDo を CSV でエクスポートする（家族・代理人への共有用）。
+
+    ``?from=YYYY-MM-DD&to=YYYY-MM-DD`` があればその期間、無ければ
+    ``?year=&month=``（既定は当月）の 1 か月分を出力する。
+    Excel で開けるよう UTF-8 BOM 付きで返す（docs/サイトマップ.md §11-2）。
+    """
+
+    def get(self, request: HttpRequest) -> HttpResponse:
+        start = parse_date(request.GET.get("from", "") or "")
+        end = parse_date(request.GET.get("to", "") or "")
+        if start and end:
+            todos = compose_todos_for_range(request.user, start, end)
+            label = f"{start:%Y%m%d}-{end:%Y%m%d}"
+        else:
+            year_month = _resolve_year_month(request)
+            todos = compose_monthly_todos(request.user, year_month)
+            label = f"{year_month:%Y%m}"
+
+        response = HttpResponse(content_type="text/csv; charset=utf-8")
+        response["Content-Disposition"] = f'attachment; filename="todos_{label}.csv"'
+        response.write("\ufeff")  # Excel 用 BOM
+
+        writer = csv.writer(response)
+        writer.writerow(["対象の盆栽", "品種", "時期", "やること", "説明", "状態"])
+        for todo in todos:
+            done = todo.completion and todo.completion.get("status") == "done"
+            writer.writerow(
+                [
+                    todo.bonsai_name or "全体",
+                    todo.species_name or "",
+                    todo.period or "",
+                    todo.title,
+                    todo.description,
+                    "完了" if done else "未完了",
+                ]
+            )
+        return response
 
 
 class YearlyScheduleView(LoginRequiredMixin, View):

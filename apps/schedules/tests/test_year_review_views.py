@@ -109,3 +109,31 @@ def test_summary_breakdown_uses_task_type_labels(user, bonsai_species):
     _schedule(user, plant, title="水やり", run_at=date(2026, 4, 5))
     summary = summarize_monthly_todos(user, date(2026, 4, 1))
     assert ("潅水", 1) in summary.task_type_breakdown
+
+
+def test_todo_export_returns_csv(client, user, bonsai_species):
+    plant = BonsaiPlant.objects.create(user=user, species=bonsai_species, name="黒松 太郎")
+    _schedule(user, plant, title="4月の水やり", run_at=date(2026, 4, 10))
+    client.force_login(user)
+
+    res = client.get(reverse("schedules:export"), {"year": "2026", "month": "4"})
+    assert res.status_code == 200
+    assert res["Content-Type"].startswith("text/csv")
+    assert "todos_202604.csv" in res["Content-Disposition"]
+    body = res.content.decode("utf-8-sig")
+    assert "対象の盆栽" in body
+    assert "4月の水やり" in body
+
+
+def test_todo_export_supports_custom_range(client, user, bonsai_species):
+    plant = BonsaiPlant.objects.create(user=user, species=bonsai_species, name="黒松 太郎")
+    _schedule(user, plant, title="4/15 の作業", run_at=date(2026, 4, 15))
+    client.force_login(user)
+
+    res = client.get(reverse("schedules:export"), {"from": "2026-04-14", "to": "2026-04-16"})
+    body = res.content.decode("utf-8-sig")
+    assert "4/15 の作業" in body
+
+    res = client.get(reverse("schedules:export"), {"from": "2026-04-01", "to": "2026-04-05"})
+    body = res.content.decode("utf-8-sig")
+    assert "4/15 の作業" not in body

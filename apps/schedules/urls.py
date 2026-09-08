@@ -12,6 +12,7 @@ urlpatterns = [
     path("", views.ScheduleListView.as_view(), name="list"),
     path("year/", views.YearlyScheduleView.as_view(), name="year"),
     path("review/", views.MonthlyReviewView.as_view(), name="review"),
+    path("export/", views.TodoExportView.as_view(), name="export"),
     path("new/", views.CareScheduleCreateView.as_view(), name="create"),
     path("<str:pk>/edit/", views.CareScheduleUpdateView.as_view(), name="edit"),
     path("<str:pk>/delete/", views.CareScheduleDeleteView.as_view(), name="delete"),

@@ -25,8 +25,8 @@ class ArticleSpeciesRelationInline(admin.TabularInline):
 
 @admin.register(HelpArticle)
 class HelpArticleAdmin(admin.ModelAdmin):
-    list_display = ("title", "status", "author", "published_at")
-    list_filter = ("status",)
+    list_display = ("title", "category", "is_featured", "status", "author", "published_at")
+    list_filter = ("status", "category", "is_featured")
     search_fields = ("title", "slug")
     prepopulated_fields = {"slug": ("title",)}
     autocomplete_fields = ("author",)
@@ -35,6 +35,7 @@ class HelpArticleAdmin(admin.ModelAdmin):
     inlines = (ArticleSpeciesRelationInline,)
     fieldsets = (
         (None, {"fields": ("title", "slug", "summary", "cover_image")}),
+        (_("分類"), {"fields": ("category", "is_featured")}),
         (_("本文"), {"fields": ("body",)}),
         (_("公開"), {"fields": ("status", "published_at", "author")}),
         (_("日時"), {"fields": ("created_at", "updated_at")}),

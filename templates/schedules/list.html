@@ -20,6 +20,8 @@
          class="flex-1 rounded-xl bg-surface-container-lowest px-4 py-3 text-center text-sm font-bold text-primary">年間スケジュール</a>
       <a href="{% url 'schedules:review' %}?year={{ year_month|date:'Y' }}&amp;month={{ year_month|date:'n' }}"
          class="flex-1 rounded-xl bg-surface-container-lowest px-4 py-3 text-center text-sm font-bold text-primary">月末レビュー</a>
+      <a href="{% url 'schedules:export' %}?year={{ year_month|date:'Y' }}&amp;month={{ year_month|date:'n' }}"
+         class="flex-1 rounded-xl bg-surface-container-lowest px-4 py-3 text-center text-sm font-bold text-primary">共有エクスポート</a>
     </div>
 
     {# 絞り込み（作業種別 / 盆栽 / 品種 / タグ） #}

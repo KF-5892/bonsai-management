@@ -399,6 +399,11 @@ class BonsaiSpeciesDetailView(DetailView):
             related_species=species,
             status=ArticleStatus.PUBLISHED,
         ).distinct()[:10]
+        # ログイン中なら、この品種に該当する自分の盆栽を並べる
+        if self.request.user.is_authenticated:
+            ctx["my_plants"] = BonsaiPlant.objects.filter(
+                user=self.request.user, species=species
+            ).select_related("cover_media")
         return ctx
 
 

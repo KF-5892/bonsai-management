@@ -17,9 +17,13 @@
             {{ todo_total }}件中 {{ todo_done }}件完了
           </p>
         </div>
-        <a href="{% url 'schedules:list' %}" class="text-sm font-bold text-primary hover:opacity-80">
-          すべて見る
-        </a>
+        <span class="flex shrink-0 items-center gap-3">
+          <a href="{% url 'schedules:export' %}{% if range_mode != 'month' %}?from={{ range_start|date:'Y-m-d' }}&amp;to={{ range_end|date:'Y-m-d' }}{% endif %}"
+             class="text-sm font-bold text-primary hover:opacity-80">共有</a>
+          <a href="{% url 'schedules:list' %}" class="text-sm font-bold text-primary hover:opacity-80">
+            すべて見る
+          </a>
+        </span>
       </header>
 
       {# 期間切替（今月 / 今週 / カスタム期間） #}

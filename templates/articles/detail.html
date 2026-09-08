@@ -1,27 +1,77 @@
 {% extends "base.html" %}
 
-{% block title %}{{ article.title }} | お役立ち記事{% endblock %}
+{% block title %}{{ article.title }} | お役立ち{% endblock %}
 
 {% block content %}
   <article class="space-y-4">
     <header>
-      <p class="text-xs text-gray-500">{{ article.published_at|date:"Y/m/d" }}</p>
-      <h1 class="text-2xl font-bold text-emerald-900">{{ article.title }}</h1>
+      <p class="text-xs text-on-surface-variant">
+        {{ article.get_category_display }}・{{ article.published_at|date:"Y/m/d" }}
+      </p>
+      <h1 class="text-2xl font-bold text-on-surface">{{ article.title }}</h1>
       {% if article.summary %}
-        <p class="mt-1 text-sm text-gray-700">{{ article.summary }}</p>
+        <p class="mt-1 text-sm text-on-surface-variant">{{ article.summary }}</p>
       {% endif %}
     </header>
 
     {% if article.cover_image %}
-      <img src="{{ article.cover_image.url }}" alt="" class="rounded-lg border border-emerald-100">
+      <img src="{{ article.cover_image.url }}" alt="" class="rounded-xl">
     {% endif %}
 
-    <div class="prose prose-emerald max-w-none rounded-lg border border-emerald-100 bg-white p-5 shadow-sm">
+    <div class="prose prose-emerald max-w-none rounded-xl bg-surface-container-lowest p-5">
       {{ body_html|safe }}
     </div>
 
-    <p class="text-sm">
-      <a href="{% url 'articles:list' %}" class="text-emerald-700 hover:underline">← 一覧に戻る</a>
+    {% if related_species %}
+      <section class="rounded-xl bg-surface-container-lowest p-4">
+        <h2 class="mb-2 text-sm font-bold text-on-surface-variant">関連する品種</h2>
+        <div class="flex flex-wrap gap-2">
+          {% for species in related_species %}
+            <a href="{% url 'bonsai:species_detail' slug=species.slug %}"
+               class="rounded-full bg-surface-container-high px-4 py-2 text-sm font-medium text-on-surface-variant">
+              {{ species.name }}
+            </a>
+          {% endfor %}
+        </div>
+      </section>
+    {% endif %}
+
+    {% if my_related_plants %}
+      <section class="rounded-xl bg-surface-container-lowest p-4">
+        <h2 class="mb-2 text-sm font-bold text-on-surface-variant">この記事が当てはまる自分の盆栽</h2>
+        <ul class="space-y-2">
+          {% for plant in my_related_plants %}
+            <li>
+              <a href="{% url 'bonsai:detail' pk=plant.pk %}"
+                 class="flex items-center justify-between rounded-lg bg-surface-container-low px-3 py-2">
+                <span class="truncate font-medium text-on-surface">{{ plant.name }}</span>
+                <span class="material-symbols-outlined text-outline" aria-hidden="true">chevron_right</span>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endif %}
+
+    {% if related_articles %}
+      <section class="rounded-xl bg-surface-container-lowest p-4">
+        <h2 class="mb-2 text-sm font-bold text-on-surface-variant">関連する記事</h2>
+        <ul class="space-y-2">
+          {% for related in related_articles %}
+            <li>
+              <a href="{% url 'articles:detail' slug=related.slug %}"
+                 class="block rounded-lg bg-surface-container-low px-3 py-2">
+                <span class="block truncate font-medium text-on-surface">{{ related.title }}</span>
+                <span class="block text-xs text-on-surface-variant">{{ related.published_at|date:"Y/m/d" }}</span>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endif %}
+
+    <p class="text-sm font-bold text-primary">
+      <a href="{% url 'articles:list' %}">← 一覧に戻る</a>
     </p>
   </article>
 {% endblock %}
