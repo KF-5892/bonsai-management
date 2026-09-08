@@ -21,5 +21,21 @@ urlpatterns = [
     path("bonsai/<str:pk>/", views.BonsaiPlantDetailView.as_view(), name="detail"),
     path("bonsai/<str:pk>/edit/", views.BonsaiPlantUpdateView.as_view(), name="edit"),
     path("bonsai/<str:pk>/delete/", views.BonsaiPlantDeleteView.as_view(), name="delete"),
+    path("bonsai/<str:pk>/media/", views.BonsaiMediaGalleryView.as_view(), name="media_gallery"),
+    path(
+        "bonsai/<str:pk>/media/upload/",
+        views.BonsaiMediaCreateView.as_view(),
+        name="media_upload",
+    ),
+    path(
+        "bonsai/<str:pk>/media/<str:media_pk>/cover/",
+        views.BonsaiMediaSetCoverView.as_view(),
+        name="media_set_cover",
+    ),
+    path(
+        "bonsai/<str:pk>/media/<str:media_pk>/delete/",
+        views.BonsaiMediaDeleteView.as_view(),
+        name="media_delete",
+    ),
     path("species/<slug:slug>/", views.BonsaiSpeciesDetailView.as_view(), name="species_detail"),
 ]

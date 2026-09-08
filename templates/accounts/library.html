@@ -28,7 +28,7 @@
         <ul class="space-y-2">
           {% for plant in plants %}
             <li>
-              <a href="{% url 'bonsai:detail' pk=plant.pk %}?tab=media"
+              <a href="{% url 'bonsai:media_gallery' pk=plant.pk %}"
                  class="flex items-center justify-between rounded-xl bg-surface-container-lowest px-4 py-3 hover:bg-surface-container-low">
                 <span class="truncate font-medium text-on-surface">{{ plant.name }}</span>
                 <span class="material-symbols-outlined text-outline" aria-hidden="true">chevron_right</span>

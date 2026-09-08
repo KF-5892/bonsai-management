@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}写真を追加 | {{ plant.name }}{% endblock %}
+
+{% block content %}
+  <div class="space-y-4">
+    <header>
+      <a href="{% url 'bonsai:media_gallery' pk=plant.pk %}" class="text-sm font-bold text-primary">← メディア</a>
+      <h1 class="text-xl font-bold text-on-surface">写真を追加</h1>
+    </header>
+    <form method="post" enctype="multipart/form-data" class="space-y-4 rounded-xl bg-surface-container-lowest p-4">
+      {% csrf_token %}
+      {% include "_partials/form_fields.html" %}
+      <div class="flex gap-2 pt-2">
+        <button type="submit" class="rounded-full bg-primary px-6 py-2.5 font-bold text-on-primary">アップロード</button>
+        <a href="{% url 'bonsai:media_gallery' pk=plant.pk %}"
+           class="rounded-full bg-surface-container-high px-6 py-2.5 font-bold text-on-surface-variant">キャンセル</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

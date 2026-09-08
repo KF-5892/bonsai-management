@@ -81,6 +81,14 @@ class CareScheduleCreateView(LoginRequiredMixin, CreateView):
         kwargs["user"] = self.request.user
         return kwargs
 
+    def get_initial(self) -> dict[str, Any]:
+        """盆栽詳細から ``?bonsai=`` 付きで来た場合に対象を初期選択する。"""
+        initial = super().get_initial()
+        bonsai_id = self.request.GET.get("bonsai")
+        if bonsai_id:
+            initial["bonsai"] = bonsai_id
+        return initial
+
     def form_valid(self, form: CareScheduleForm) -> HttpResponse:
         form.instance.user = self.request.user
         response = super().form_valid(form)

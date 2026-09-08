@@ -8,7 +8,7 @@ from django import forms
 
 from apps.common.forms import TailwindFormMixin
 
-from .models import BonsaiPlant, Tag
+from .models import BonsaiMedia, BonsaiPlant, Tag
 
 
 class BonsaiPlantForm(TailwindFormMixin, forms.ModelForm):
@@ -63,3 +63,18 @@ class TagForm(TailwindFormMixin, forms.ModelForm):
         if qs.exists():
             raise forms.ValidationError("同じ名前のタグが既に存在します。")
         return name
+
+
+class BonsaiMediaForm(TailwindFormMixin, forms.ModelForm):
+    """盆栽写真のアップロードフォーム。
+
+    中サイズ・サムネイルは ``BonsaiMedia.save()`` が自動生成するため、
+    ここでは元画像とメタデータのみを受け取る。
+    """
+
+    class Meta:
+        model = BonsaiMedia
+        fields = ["image_original", "taken_at", "caption"]
+        widgets = {
+            "taken_at": forms.DateInput(attrs={"type": "date"}),
+        }

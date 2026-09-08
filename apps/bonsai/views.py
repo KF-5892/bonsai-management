@@ -14,8 +14,10 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count, QuerySet
 from django.http import HttpRequest, HttpResponse
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.utils import timezone
+from django.views import View
 from django.views.generic import (
     CreateView,
     DeleteView,
@@ -27,8 +29,16 @@ from django.views.generic import (
 
 from apps.schedules.services.todos import compose_monthly_todos
 
-from .forms import BonsaiPlantForm, TagForm
-from .models import BonsaiPlant, BonsaiSpecies, HealthStatus, Tag, TaskType
+from .forms import BonsaiMediaForm, BonsaiPlantForm, TagForm
+from .models import (
+    BonsaiMedia,
+    BonsaiPlant,
+    BonsaiSpecies,
+    HealthStatus,
+    SpeciesCategory,
+    Tag,
+    TaskType,
+)
 
 # 盆栽カードの「次の作業」行に出す Material Symbols アイコン（Stitch _2 準拠）
 TASK_TYPE_ICONS: dict[str, str] = {
@@ -45,6 +55,44 @@ TASK_TYPE_ICONS: dict[str, str] = {
     TaskType.UNWIRING.value: "cable",
 }
 DEFAULT_TASK_ICON = "eco"
+
+# 盆栽詳細のタブ構成（docs/サイトマップ.md §1「盆栽 詳細」）
+DETAIL_TABS: list[tuple[str, str]] = [
+    ("overview", "概要"),
+    ("logs", "作業履歴"),
+    ("schedules", "スケジュール"),
+    ("media", "メディア"),
+    ("repotting", "植え替え履歴"),
+    ("compare", "成長比較"),
+]
+DETAIL_TAB_KEYS = {key for key, _label in DETAIL_TABS}
+
+# 植え替えの目安年数（品種カテゴリ別）。品種未設定は広葉樹相当として扱う。
+REPOTTING_INTERVAL_YEARS: dict[str, int] = {
+    SpeciesCategory.CONIFER.value: 3,
+    SpeciesCategory.BROADLEAF.value: 2,
+    SpeciesCategory.FLOWERING.value: 2,
+    SpeciesCategory.FRUITING.value: 2,
+    SpeciesCategory.OTHER.value: 2,
+}
+DEFAULT_REPOTTING_INTERVAL_YEARS = 2
+
+
+def estimate_next_repotting(plant: BonsaiPlant, last_repot: Any) -> date | None:
+    """次回植え替えの目安日を返す（履歴が無ければ ``None``）。
+
+    品種カテゴリ別の目安年数を最終植え替え日に加算する簡易ルール。
+    ``date.replace`` は 2/29 で失敗するため、その場合は 2/28 に丸める。
+    """
+    if last_repot is None:
+        return None
+    category = plant.species.category if plant.species else ""
+    years = REPOTTING_INTERVAL_YEARS.get(category, DEFAULT_REPOTTING_INTERVAL_YEARS)
+    base = timezone.localtime(last_repot.performed_at).date()
+    try:
+        return base.replace(year=base.year + years)
+    except ValueError:  # 2/29
+        return base.replace(year=base.year + years, day=28)
 
 
 class HomeView(LoginRequiredMixin, TemplateView):
@@ -143,11 +191,54 @@ class BonsaiPlantDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         ctx = super().get_context_data(**kwargs)
         plant: BonsaiPlant = ctx["plant"]
-        ctx["tab"] = self.request.GET.get("tab", "overview")
+        tab = self.request.GET.get("tab", "overview")
+        if tab not in DETAIL_TAB_KEYS:
+            tab = "overview"
+        ctx["tab"] = tab
+        ctx["tabs"] = DETAIL_TABS
+
+        # 概要タブ: 当月 ToDo のうちこの個体に紐づくもの
+        today = timezone.localdate()
+        year_month = date(today.year, today.month, 1)
+        ctx["year_month"] = year_month
+        ctx["plant_todos"] = [
+            todo
+            for todo in compose_monthly_todos(self.request.user, year_month)
+            if todo.bonsai_id == plant.id
+        ]
+
         ctx["recent_logs"] = plant.logs.select_related("fertilizer").all()[:10]
         ctx["schedules"] = plant.schedules.filter(is_active=True)
         ctx["media"] = plant.media.all()[:12]
+        ctx["media_count"] = plant.media.count()
+
+        # 植え替え履歴タブ
+        repot_logs = list(plant.logs.filter(task_type=TaskType.REPOTTING)[:20])
+        ctx["repot_logs"] = repot_logs
+        last_repot = repot_logs[0] if repot_logs else None
+        ctx["last_repot"] = last_repot
+        ctx["next_repot_estimate"] = estimate_next_repotting(plant, last_repot)
+
+        # 成長比較タブ: 既定は「最古 × 最新」、?before=&after= で上書き
+        ctx["compare_before"], ctx["compare_after"] = self._resolve_compare_pair(plant)
+        ctx["compare_candidates"] = plant.media.all()[:60]
         return ctx
+
+    def _resolve_compare_pair(
+        self, plant: BonsaiPlant
+    ) -> tuple[BonsaiMedia | None, BonsaiMedia | None]:
+        """成長比較タブで並べる Before / After の 2 枚を決める。"""
+        media_qs = plant.media.all()
+        before_id = self.request.GET.get("before")
+        after_id = self.request.GET.get("after")
+        before = media_qs.filter(pk=before_id).first() if before_id else None
+        after = media_qs.filter(pk=after_id).first() if after_id else None
+        if before is None or after is None:
+            ordered = list(media_qs.order_by("created_at"))
+            if len(ordered) >= 2:
+                before = before or ordered[0]
+                after = after or ordered[-1]
+        return before, after
 
 
 class BonsaiPlantUpdateView(LoginRequiredMixin, UpdateView):
@@ -218,6 +309,104 @@ class BonsaiSpeciesDetailView(DetailView):
             status=ArticleStatus.PUBLISHED,
         ).distinct()[:10]
         return ctx
+
+
+# ---------------------------------------------------------------------------
+# メディア（年別ギャラリー / アップロード / カバー設定 / 削除）
+# ---------------------------------------------------------------------------
+class BonsaiMediaGalleryView(LoginRequiredMixin, DetailView):
+    """盆栽 1 個体の写真を年 → 月でグルーピングして表示する（Stitch _12）。"""
+
+    model = BonsaiPlant
+    template_name = "bonsai/media_gallery.html"
+    context_object_name = "plant"
+
+    def get_queryset(self) -> QuerySet[BonsaiPlant]:
+        return BonsaiPlant.objects.filter(user=self.request.user)
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        ctx = super().get_context_data(**kwargs)
+        plant: BonsaiPlant = ctx["plant"]
+        media = list(plant.media.all())
+
+        # 撮影日（未設定なら登録日）を基準に年・月でまとめる
+        def sort_key(item: BonsaiMedia) -> date:
+            return item.taken_at or timezone.localtime(item.created_at).date()
+
+        years = sorted({sort_key(m).year for m in media}, reverse=True)
+        selected = self.request.GET.get("year")
+        selected_year = int(selected) if selected and selected.isdigit() else None
+        if selected_year not in years:
+            selected_year = years[0] if years else None
+
+        by_month: dict[int, list[BonsaiMedia]] = {}
+        for item in media:
+            key = sort_key(item)
+            if selected_year is not None and key.year != selected_year:
+                continue
+            by_month.setdefault(key.month, []).append(item)
+
+        ctx["years"] = years
+        ctx["selected_year"] = selected_year
+        ctx["media_by_month"] = sorted(by_month.items(), reverse=True)
+        ctx["total_count"] = len(media)
+        return ctx
+
+
+class BonsaiMediaCreateView(LoginRequiredMixin, CreateView):
+    """写真アップロード。最初の 1 枚は自動的にカバー画像にする。"""
+
+    model = BonsaiMedia
+    form_class = BonsaiMediaForm
+    template_name = "bonsai/media_form.html"
+
+    def get_plant(self) -> BonsaiPlant:
+        return get_object_or_404(BonsaiPlant, pk=self.kwargs["pk"], user=self.request.user)
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        ctx = super().get_context_data(**kwargs)
+        ctx["plant"] = self.get_plant()
+        return ctx
+
+    def form_valid(self, form: BonsaiMediaForm) -> HttpResponse:
+        plant = self.get_plant()
+        form.instance.bonsai = plant
+        response = super().form_valid(form)
+        if plant.cover_media_id is None:
+            plant.cover_media = self.object
+            plant.save(update_fields=["cover_media", "updated_at"])
+        messages.success(self.request, "写真をアップロードしました。")
+        return response
+
+    def get_success_url(self) -> str:
+        return reverse_lazy("bonsai:media_gallery", kwargs={"pk": self.kwargs["pk"]})
+
+
+class BonsaiMediaSetCoverView(LoginRequiredMixin, View):
+    """指定した写真をカバー画像に設定する（POST のみ）。"""
+
+    def post(self, request: HttpRequest, pk: str, media_pk: str) -> HttpResponse:
+        plant = get_object_or_404(BonsaiPlant, pk=pk, user=request.user)
+        media = get_object_or_404(BonsaiMedia, pk=media_pk, bonsai=plant)
+        plant.cover_media = media
+        plant.save(update_fields=["cover_media", "updated_at"])
+        messages.success(request, "カバー画像を変更しました。")
+        return redirect("bonsai:media_gallery", pk=plant.pk)
+
+
+class BonsaiMediaDeleteView(LoginRequiredMixin, View):
+    """写真を削除する（POST のみ）。カバーだった場合は別の写真へ付け替える。"""
+
+    def post(self, request: HttpRequest, pk: str, media_pk: str) -> HttpResponse:
+        plant = get_object_or_404(BonsaiPlant, pk=pk, user=request.user)
+        media = get_object_or_404(BonsaiMedia, pk=media_pk, bonsai=plant)
+        was_cover = plant.cover_media_id == media.pk
+        media.delete()
+        if was_cover:
+            plant.cover_media = plant.media.first()
+            plant.save(update_fields=["cover_media", "updated_at"])
+        messages.success(request, "写真を削除しました。")
+        return redirect("bonsai:media_gallery", pk=plant.pk)
 
 
 # ---------------------------------------------------------------------------
