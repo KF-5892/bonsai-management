@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}{{ year }}年の年間スケジュール | 盆栽管理{% endblock %}
+
+{% block content %}
+  <div class="space-y-4">
+    <header class="flex items-center justify-between gap-2">
+      <h1 class="text-xl font-bold text-on-surface">{{ year }}年の年間スケジュール</h1>
+      <a href="{% url 'schedules:list' %}"
+         class="shrink-0 text-sm font-bold text-primary">月別へ</a>
+    </header>
+
+    <nav class="flex items-center justify-between text-sm font-bold text-primary">
+      <a href="?year={{ prev_year }}">← {{ prev_year }}年</a>
+      <a href="?year={{ next_year }}">{{ next_year }}年 →</a>
+    </nav>
+
+    <ul class="space-y-2">
+      {% for summary in summaries %}
+        <li>
+          <a href="{% url 'schedules:list' %}?year={{ year }}&amp;month={{ summary.year_month|date:'n' }}"
+             class="block rounded-xl bg-surface-container-lowest p-4 {% if summary.year_month.month == current_month %}ring-2 ring-primary{% endif %}">
+            <div class="flex items-center justify-between">
+              <span class="text-lg font-bold text-on-surface">{{ summary.year_month|date:"n月" }}</span>
+              <span class="text-sm font-medium text-on-surface-variant">
+                {% if summary.total %}{{ summary.done }} / {{ summary.total }} 件完了{% else %}予定なし{% endif %}
+              </span>
+            </div>
+
+            {% if summary.total %}
+              <div class="mt-2 h-2 w-full overflow-hidden rounded-full bg-surface-container-high">
+                <div class="h-full rounded-full bg-primary" style="width: {{ summary.completion_rate }}%"></div>
+              </div>
+              <div class="mt-2 flex flex-wrap gap-1">
+                {% for label, count in summary.task_type_breakdown %}
+                  <span class="rounded-full bg-surface-container-high px-2 py-0.5 text-[10px] font-bold text-on-surface-variant">
+                    {{ label }} {{ count }}
+                  </span>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}

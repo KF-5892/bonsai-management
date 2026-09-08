@@ -1,14 +1,18 @@
 """schedules アプリのビュー定義。
 
 - 月別スケジュール一覧（year, month クエリで切替、デフォルト: 当月）
+  作業種別 / 盆栽 / 品種 / タグでの絞り込みに対応
+- 年間スケジュール（12 か月の俯瞰）
+- 月末レビュー（対象月の完了率と振り返り）
 - 個別スケジュール CRUD
 - ToDo 完了アクション（``mark_todo_done`` 経由）
 """
 
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, datetime, time
 from typing import Any
+from urllib.parse import quote
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -20,9 +24,17 @@ from django.utils import timezone
 from django.views import View
 from django.views.generic import CreateView, DeleteView, UpdateView
 
+from apps.bonsai.models import BonsaiPlant, BonsaiSpecies, Tag, TaskType
+from apps.logs.models import CareLog
+
 from .forms import CareScheduleForm
 from .models import CareSchedule
-from .services.todos import compose_monthly_todos
+from .services.todos import (
+    Todo,
+    compose_monthly_todos,
+    compose_yearly_summaries,
+    summarize_monthly_todos,
+)
 
 
 def _resolve_year_month(request: HttpRequest) -> date:
@@ -39,8 +51,88 @@ def _resolve_year_month(request: HttpRequest) -> date:
         return date(today.year, today.month, 1)
 
 
+def _prev_month(year_month: date) -> date:
+    """前月の 1 日を返す。"""
+    if year_month.month == 1:
+        return date(year_month.year - 1, 12, 1)
+    return date(year_month.year, year_month.month - 1, 1)
+
+
+def _next_month(year_month: date) -> date:
+    """翌月の 1 日を返す。"""
+    if year_month.month == 12:
+        return date(year_month.year + 1, 1, 1)
+    return date(year_month.year, year_month.month + 1, 1)
+
+
+def _start_of_day(value: date) -> datetime:
+    """その日の 0 時をカレントタイムゾーンの aware な日時にして返す。"""
+    return timezone.make_aware(datetime.combine(value, time.min))
+
+
+def _resolve_review_month(request: HttpRequest) -> date:
+    """月末レビューの対象月を返す（既定は先月）。"""
+    raw_year = request.GET.get("year")
+    raw_month = request.GET.get("month")
+    if raw_year and raw_month and raw_year.isdigit() and raw_month.isdigit():
+        month = min(max(int(raw_month), 1), 12)
+        return date(int(raw_year), month, 1)
+    today = timezone.localdate()
+    return _prev_month(date(today.year, today.month, 1))
+
+
+def _read_filters(request: HttpRequest) -> dict[str, str]:
+    """月別スケジュールの絞り込み条件をクエリから読む。"""
+    return {
+        "task_type": request.GET.get("task_type", ""),
+        "bonsai": request.GET.get("bonsai", ""),
+        "species": request.GET.get("species", ""),
+        "tag": request.GET.get("tag", ""),
+    }
+
+
+def _filter_query(filters: dict[str, str]) -> str:
+    """現在の絞り込みを URL クエリ文字列（先頭の & 付き）に変換する。"""
+    parts = [f"{key}={quote(value)}" for key, value in filters.items() if value]
+    return ("&" + "&".join(parts)) if parts else ""
+
+
+def filter_todos(user: Any, todos: list[Todo], filters: dict[str, str]) -> list[Todo]:
+    """ToDo リストを作業種別 / 盆栽 / 品種 / タグで絞り込む。
+
+    品種・タグは盆栽 ID の集合に展開してから ``bonsai_id`` で突き合わせる
+    （ToDo は品種マスタ由来の仮想タスクを含み、DB クエリで絞れないため）。
+    """
+    task_type = filters.get("task_type")
+    if task_type:
+        todos = [t for t in todos if t.task_type == task_type]
+
+    bonsai_id = filters.get("bonsai")
+    if bonsai_id:
+        todos = [t for t in todos if t.bonsai_id == bonsai_id]
+
+    allowed_ids: set[str] | None = None
+    species_id = filters.get("species")
+    if species_id:
+        allowed_ids = set(
+            BonsaiPlant.objects.filter(user=user, species_id=species_id).values_list(
+                "id", flat=True
+            )
+        )
+    tag_id = filters.get("tag")
+    if tag_id:
+        tag_plant_ids = set(
+            BonsaiPlant.objects.filter(user=user, tags__id=tag_id).values_list("id", flat=True)
+        )
+        allowed_ids = tag_plant_ids if allowed_ids is None else allowed_ids & tag_plant_ids
+
+    if allowed_ids is not None:
+        todos = [t for t in todos if t.bonsai_id in allowed_ids]
+    return todos
+
+
 class ScheduleListView(LoginRequiredMixin, View):
-    """当月の ToDo 一覧。"""
+    """当月の ToDo 一覧（作業種別 / 盆栽 / 品種 / タグで絞り込み可）。"""
 
     template_name = "schedules/list.html"
 
@@ -49,6 +141,9 @@ class ScheduleListView(LoginRequiredMixin, View):
 
         year_month = _resolve_year_month(request)
         todos = compose_monthly_todos(request.user, year_month)
+        filters = _read_filters(request)
+        todos = filter_todos(request.user, todos, filters)
+
         # 前月・次月のリンク
         if year_month.month == 1:
             prev_ym = date(year_month.year - 1, 12, 1)
@@ -66,6 +161,89 @@ class ScheduleListView(LoginRequiredMixin, View):
                 "year_month": year_month,
                 "prev_ym": prev_ym,
                 "next_ym": next_ym,
+                "filters": filters,
+                "filter_query": _filter_query(filters),
+                "task_types": TaskType.choices,
+                "plants": BonsaiPlant.objects.filter(user=request.user),
+                "species_list": BonsaiSpecies.objects.filter(plants__user=request.user).distinct(),
+                "tags": Tag.objects.filter(user=request.user),
+            },
+        )
+
+
+class YearlyScheduleView(LoginRequiredMixin, View):
+    """年間スケジュール（12 か月の月カード縦リスト）。
+
+    docs/サイトマップ.md §9-4 の選択肢 A（月カード縦リスト）を採用する。
+    """
+
+    template_name = "schedules/year.html"
+
+    def get(self, request: HttpRequest) -> HttpResponse:
+        from django.shortcuts import render
+
+        raw_year = request.GET.get("year")
+        year = int(raw_year) if raw_year and raw_year.isdigit() else timezone.localdate().year
+        summaries = compose_yearly_summaries(request.user, year)
+        today = timezone.localdate()
+        return render(
+            request,
+            self.template_name,
+            {
+                "year": year,
+                "prev_year": year - 1,
+                "next_year": year + 1,
+                "summaries": summaries,
+                "current_month": today.month if today.year == year else None,
+                "task_type_labels": dict(TaskType.choices),
+            },
+        )
+
+
+class MonthlyReviewView(LoginRequiredMixin, View):
+    """月末レビュー（既定は先月）。完了率と作業実績の振り返りを表示する。"""
+
+    template_name = "schedules/review.html"
+
+    def get(self, request: HttpRequest) -> HttpResponse:
+        from django.shortcuts import render
+
+        year_month = _resolve_review_month(request)
+        summary = summarize_monthly_todos(request.user, year_month)
+
+        month_end = _next_month(year_month)
+        # performed_at は DateTimeField のため、当月の範囲を aware な日時に変換する
+        start_dt = _start_of_day(year_month)
+        end_dt = _start_of_day(month_end)
+        logs = (
+            CareLog.objects.filter(
+                user=request.user,
+                performed_at__gte=start_dt,
+                performed_at__lt=end_dt,
+            )
+            .select_related("bonsai")
+            .order_by("-performed_at")
+        )
+
+        # 未完了 ToDo（次月へ持ち越す候補）
+        pending_todos = [
+            todo
+            for todo in summary.todos
+            if not (todo.completion and todo.completion.get("status") == "done")
+        ]
+
+        return render(
+            request,
+            self.template_name,
+            {
+                "summary": summary,
+                "year_month": year_month,
+                "prev_ym": _prev_month(year_month),
+                "next_ym": month_end,
+                "pending_todos": pending_todos,
+                "log_count": logs.count(),
+                "logs": logs[:20],
+                "task_type_labels": dict(TaskType.choices),
             },
         )
 

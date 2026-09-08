@@ -29,6 +29,7 @@ from ..models import (
     CompletionSourceType,
     CompletionStatus,
     MonthlyAdvice,
+    TaskType,
 )
 
 if TYPE_CHECKING:
@@ -301,3 +302,84 @@ def mark_todo_done(
         defaults=defaults,
     )
     return completion
+
+
+# ---------------------------------------------------------------------------
+# 月次サマリー / 年間ビュー
+# ---------------------------------------------------------------------------
+@dataclass(slots=True)
+class MonthlySummary:
+    """1 か月分の ToDo 集計（年間スケジュール・月末レビューで共用）。"""
+
+    year_month: date
+    total: int
+    done: int
+    task_type_counts: dict[str, int]
+    todos: list[Todo]
+
+    @property
+    def pending(self) -> int:
+        return self.total - self.done
+
+    @property
+    def task_type_breakdown(self) -> list[tuple[str, int]]:
+        """(作業種別ラベル, 件数) を件数の多い順に返す。
+
+        月次アドバイスの ``category`` など ``TaskType`` に無い値は
+        そのまま値を表示する。
+        """
+        breakdown: list[tuple[str, int]] = []
+        for task_type, count in self.task_type_counts.items():
+            try:
+                label = str(TaskType(task_type).label)
+            except ValueError:
+                label = task_type
+            breakdown.append((label, count))
+        breakdown.sort(key=lambda item: (-item[1], item[0]))
+        return breakdown
+
+    @property
+    def completion_rate(self) -> int:
+        """完了率（0〜100 の整数）。ToDo が 0 件なら 0 を返す。"""
+        if self.total == 0:
+            return 0
+        return round(self.done * 100 / self.total)
+
+
+def summarize_monthly_todos(
+    user: AbstractBaseUser,
+    year_month: date,
+    *,
+    todos: list[Todo] | None = None,
+) -> MonthlySummary:
+    """指定月の ToDo を集計する。
+
+    :param todos: 既に合成済みの ToDo。省略時は ``compose_monthly_todos`` を呼ぶ。
+    """
+    year_month = date(year_month.year, year_month.month, 1)
+    if todos is None:
+        todos = compose_monthly_todos(user, year_month)
+
+    task_type_counts: dict[str, int] = {}
+    done = 0
+    for todo in todos:
+        task_type_counts[todo.task_type] = task_type_counts.get(todo.task_type, 0) + 1
+        if _is_done(todo):
+            done += 1
+
+    return MonthlySummary(
+        year_month=year_month,
+        total=len(todos),
+        done=done,
+        task_type_counts=task_type_counts,
+        todos=todos,
+    )
+
+
+def compose_yearly_summaries(user: AbstractBaseUser, year: int) -> list[MonthlySummary]:
+    """1〜12 月の月次サマリーを返す（年間スケジュール用）。
+
+    実装は月次合成を 12 回呼ぶ素朴なもの。MVP の規模（1 ユーザー数十鉢）では
+    十分だが、鉢数が増えた場合はキャッシュや一括クエリ化を検討する。
+    """
+    return [summarize_monthly_todos(user, date(year, month, 1)) for month in range(1, 13)]

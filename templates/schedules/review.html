@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}{{ year_month|date:"Y年n月" }}のレビュー | 盆栽管理{% endblock %}
+
+{% block content %}
+  <div class="space-y-4">
+    <header class="flex items-center justify-between gap-2">
+      <h1 class="text-xl font-bold text-on-surface">{{ year_month|date:"Y年n月" }}のレビュー</h1>
+      <a href="{% url 'schedules:list' %}?year={{ year_month|date:'Y' }}&amp;month={{ year_month|date:'n' }}"
+         class="shrink-0 text-sm font-bold text-primary">月別へ</a>
+    </header>
+
+    <nav class="flex items-center justify-between text-sm font-bold text-primary">
+      <a href="?year={{ prev_ym|date:'Y' }}&amp;month={{ prev_ym|date:'n' }}">← {{ prev_ym|date:"Y年n月" }}</a>
+      <a href="?year={{ next_ym|date:'Y' }}&amp;month={{ next_ym|date:'n' }}">{{ next_ym|date:"Y年n月" }} →</a>
+    </nav>
+
+    {# 完了率 #}
+    <section class="rounded-xl bg-surface-container-lowest p-4">
+      <div class="flex items-end justify-between">
+        <div>
+          <p class="text-sm font-medium text-on-surface-variant">達成率</p>
+          <p class="text-3xl font-bold text-primary">{{ summary.completion_rate }}%</p>
+        </div>
+        <p class="text-sm text-on-surface-variant">{{ summary.done }} / {{ summary.total }} 件完了</p>
+      </div>
+      <div class="mt-3 h-2 w-full overflow-hidden rounded-full bg-surface-container-high">
+        <div class="h-full rounded-full bg-primary" style="width: {{ summary.completion_rate }}%"></div>
+      </div>
+      <div class="mt-4 grid grid-cols-3 gap-2 text-center">
+        <div class="rounded-lg bg-surface-container-low p-3">
+          <p class="text-lg font-bold text-on-surface">{{ summary.total }}</p>
+          <p class="text-[10px] font-bold text-on-surface-variant">やること</p>
+        </div>
+        <div class="rounded-lg bg-surface-container-low p-3">
+          <p class="text-lg font-bold text-on-surface">{{ summary.pending }}</p>
+          <p class="text-[10px] font-bold text-on-surface-variant">未完了</p>
+        </div>
+        <div class="rounded-lg bg-surface-container-low p-3">
+          <p class="text-lg font-bold text-on-surface">{{ log_count }}</p>
+          <p class="text-[10px] font-bold text-on-surface-variant">記録した作業</p>
+        </div>
+      </div>
+    </section>
+
+    {# 作業種別の内訳 #}
+    {% if summary.task_type_breakdown %}
+      <section class="rounded-xl bg-surface-container-lowest p-4">
+        <h2 class="mb-2 text-sm font-bold text-on-surface-variant">作業種別の内訳</h2>
+        <ul class="space-y-1 text-sm">
+          {% for label, count in summary.task_type_breakdown %}
+            <li class="flex justify-between">
+              <span class="text-on-surface">{{ label }}</span>
+              <span class="font-bold text-on-surface-variant">{{ count }} 件</span>
+            </li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endif %}
+
+    {# 未完了の持ち越し候補 #}
+    <section class="rounded-xl bg-surface-container-lowest p-4">
+      <h2 class="mb-2 text-sm font-bold text-on-surface-variant">やり残し（{{ summary.pending }} 件）</h2>
+      {% if pending_todos %}
+        <ul class="space-y-2">
+          {% for todo in pending_todos %}
+            <li class="rounded-lg bg-surface-container-low p-3">
+              <p class="text-xs text-on-surface-variant">
+                {% if todo.bonsai_name %}{{ todo.bonsai_name }}{% else %}全体{% endif %}
+                {% if todo.period %}・{{ todo.period }}{% endif %}
+              </p>
+              <p class="font-bold text-on-surface">{{ todo.title }}</p>
+              <form method="post" class="mt-2"
+                    action="{% url 'schedules:todo_complete' source_type=todo.source_type source_ref=todo.source_ref %}">
+                {% csrf_token %}
+                <input type="hidden" name="year" value="{{ year_month|date:'Y' }}">
+                <input type="hidden" name="month" value="{{ year_month|date:'n' }}">
+                {% if todo.bonsai_id %}<input type="hidden" name="bonsai" value="{{ todo.bonsai_id }}">{% endif %}
+                <input type="hidden" name="task_type" value="{{ todo.task_type }}">
+                <button type="submit" class="rounded-full bg-primary px-4 py-1.5 text-xs font-bold text-on-primary">
+                  いま記録する
+                </button>
+              </form>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="text-sm text-on-surface-variant">やり残しはありません。お見事です。</p>
+      {% endif %}
+    </section>
+
+    {# 実施した作業 #}
+    <section class="rounded-xl bg-surface-container-lowest p-4">
+      <h2 class="mb-2 text-sm font-bold text-on-surface-variant">この月に記録した作業</h2>
+      {% if logs %}
+        <ul class="divide-y divide-surface-container-high">
+          {% for log in logs %}
+            <li class="py-2">
+              <a href="{% url 'logs:detail' pk=log.pk %}" class="block">
+                <span class="font-medium text-on-surface">{{ log.get_task_type_display }}</span>
+                <span class="text-sm text-on-surface-variant">・{{ log.bonsai.name }}・{{ log.performed_at|date:"n/j" }}</span>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="text-sm text-on-surface-variant">記録がありません。</p>
+      {% endif %}
+    </section>
+  </div>
+{% endblock %}
