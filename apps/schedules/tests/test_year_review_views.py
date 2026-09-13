@@ -137,3 +137,20 @@ def test_todo_export_supports_custom_range(client, user, bonsai_species):
     res = client.get(reverse("schedules:export"), {"from": "2026-04-01", "to": "2026-04-05"})
     body = res.content.decode("utf-8-sig")
     assert "4/15 の作業" not in body
+
+
+def test_breakdown_merges_same_label_sources(user, bonsai_species):
+    """生値が異なっても同じ作業種別ラベルになる ToDo は 1 チップに合算される。"""
+    from apps.schedules.models import MonthlyAdvice
+
+    plant = BonsaiPlant.objects.create(user=user, species=bonsai_species, name="黒松 太郎")
+    _schedule(user, plant, title="植え替え", run_at=date(2026, 4, 5), task_type="repotting")
+    # アドバイスの category には日本語ラベルが入ることがある
+    MonthlyAdvice.objects.create(
+        month=4, title="春の植え替え", advice_text="適期です。", category="repotting"
+    )
+
+    summary = summarize_monthly_todos(user, date(2026, 4, 1))
+    labels = [label for label, _count in summary.task_type_breakdown]
+    assert labels.count("植え替え") == 1
+    assert dict(summary.task_type_breakdown)["植え替え"] == 2

@@ -365,13 +365,15 @@ class MonthlySummary:
         月次アドバイスの ``category`` など ``TaskType`` に無い値は
         そのまま値を表示する。
         """
-        breakdown: list[tuple[str, int]] = []
+        merged: dict[str, int] = {}
         for task_type, count in self.task_type_counts.items():
             try:
                 label = str(TaskType(task_type).label)
             except ValueError:
                 label = task_type
-            breakdown.append((label, count))
+            # 生値が違っても同じラベルになるもの（例: "repotting" と "植え替え"）は合算する
+            merged[label] = merged.get(label, 0) + count
+        breakdown = list(merged.items())
         breakdown.sort(key=lambda item: (-item[1], item[0]))
         return breakdown
 
