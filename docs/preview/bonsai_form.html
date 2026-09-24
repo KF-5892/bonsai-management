@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="5RHSXkSTs0gIfZRArOSSSIFj9YiYDbyPZZzQiNc5tTjEtFYtVmuhFztH11nejs89">
+    <meta name="csrf-token" content="T5anBx1P9yf6Ye4HHC5UnHt3Ud5kq4GmAIHAe6D9AQbOG8iyZsJIsX1PlvnYkD8x">
     <title>盆栽を登録 | 盆栽管理</title>
 
     
@@ -84,7 +84,7 @@
   </head>
   <body
     class="min-h-screen bg-background font-body text-on-background antialiased"
-    hx-headers='{"X-CSRFToken": "5RHSXkSTs0gIfZRArOSSSIFj9YiYDbyPZZzQiNc5tTjEtFYtVmuhFztH11nejs89"}'
+    hx-headers='{"X-CSRFToken": "T5anBx1P9yf6Ye4HHC5UnHt3Ud5kq4GmAIHAe6D9AQbOG8iyZsJIsX1PlvnYkD8x"}'
   >
     
 <header class="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between bg-[#f6faf6]/80 px-4 backdrop-blur-md">
@@ -113,14 +113,16 @@
     
 
     
-    <button
-      type="button"
-      class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
-      aria-label="通知"
-      title="通知（Phase 3 で実装予定）"
-    >
-      <span class="material-symbols-outlined text-green-800">notifications</span>
-    </button>
+      
+      <a
+        href="settings_notifications.html"
+        class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
+        aria-label="通知設定"
+        title="通知設定"
+      >
+        <span class="material-symbols-outlined text-green-800">notifications</span>
+      </a>
+    
 
     
   </div>
@@ -132,31 +134,42 @@
       
 
       
-  <div class="mx-auto max-w-md space-y-4">
-    <h1 class="text-xl font-bold text-emerald-900">
-      盆栽を登録
-    </h1>
-    <form method="post" enctype="multipart/form-data"
-          class="space-y-4 rounded-lg border border-emerald-100 bg-white p-5 shadow-sm">
-      <input type="hidden" name="csrfmiddlewaretoken" value="5RHSXkSTs0gIfZRArOSSSIFj9YiYDbyPZZzQiNc5tTjEtFYtVmuhFztH11nejs89">
+  <div class="space-y-4">
+    <header>
+      <a href="home.html" class="text-sm font-bold text-primary">← 戻る</a>
+      <h1 class="text-xl font-bold text-on-surface">盆栽を登録</h1>
       
+        <p class="mt-1 text-sm text-on-surface-variant">品種を選ぶと、その品種の月別の推奨作業が「やること」に自動で並びます。</p>
       
-        <div>
-          <label for="id_name" class="mb-1 block text-sm font-medium text-gray-700">
-            個体名<span class="text-red-500"> *</span>
-          </label>
-          <input type="text" name="name" maxlength="80" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500" required aria-describedby="id_name_helptext" id="id_name">
-          
-            <p class="mt-1 text-xs text-gray-500">ユーザーが付ける名前（例: 太郎）</p>
-          
-          
-        </div>
+    </header>
+    <form method="post" enctype="multipart/form-data" class="space-y-4 rounded-xl bg-surface-container-lowest p-4">
+      <input type="hidden" name="csrfmiddlewaretoken" value="T5anBx1P9yf6Ye4HHC5UnHt3Ud5kq4GmAIHAe6D9AQbOG8iyZsJIsX1PlvnYkD8x">
       
-        <div>
-          <label for="id_species" class="mb-1 block text-sm font-medium text-gray-700">
-            品種
-          </label>
-          <select name="species" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 bg-white" aria-describedby="id_species_helptext" id="id_species">
+
+
+  
+    
+<div>
+  
+    <label for="id_name" class="mb-1 block text-sm font-medium text-on-surface-variant">
+      個体名 <span class="text-error">*</span>
+    </label>
+    <input type="text" name="name" maxlength="80" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" required aria-describedby="id_name_helptext" id="id_name">
+  
+  <p class="mt-1 text-xs text-on-surface-variant">ユーザーが付ける名前（例: 太郎）</p>
+  
+</div>
+
+  
+
+  
+    
+<div>
+  
+    <label for="id_species" class="mb-1 block text-sm font-medium text-on-surface-variant">
+      品種
+    </label>
+    <select name="species" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" aria-describedby="id_species_helptext" id="id_species">
   <option value="" selected>---------</option>
 
   <option value="01900000-0000-7000-8000-000000000005">ケヤキ</option>
@@ -176,26 +189,36 @@
   <option value="01900000-0000-7000-8000-000000000001">黒松</option>
 
 </select>
-          
-            <p class="mt-1 text-xs text-gray-500">マスタにない品種は空欄でも登録可能</p>
-          
-          
-        </div>
-      
-        <div>
-          <label for="id_acquired_at" class="mb-1 block text-sm font-medium text-gray-700">
-            入手日
-          </label>
-          <input type="date" name="acquired_at" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500" id="id_acquired_at">
-          
-          
-        </div>
-      
-        <div>
-          <label for="id_health_status" class="mb-1 block text-sm font-medium text-gray-700">
-            健康状態<span class="text-red-500"> *</span>
-          </label>
-          <select name="health_status" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 bg-white" id="id_health_status">
+  
+  <p class="mt-1 text-xs text-on-surface-variant">マスタにない品種は空欄でも登録可能</p>
+  
+</div>
+
+  
+
+  
+    
+<div>
+  
+    <label for="id_acquired_at" class="mb-1 block text-sm font-medium text-on-surface-variant">
+      入手日
+    </label>
+    <input type="date" name="acquired_at" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" id="id_acquired_at">
+  
+  
+  
+</div>
+
+  
+
+  
+    
+<div>
+  
+    <label for="id_health_status" class="mb-1 block text-sm font-medium text-on-surface-variant">
+      健康状態 <span class="text-error">*</span>
+    </label>
+    <select name="health_status" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" id="id_health_status">
   <option value="good" selected>良好</option>
 
   <option value="watch">要注意</option>
@@ -203,46 +226,64 @@
   <option value="poor">不調</option>
 
 </select>
-          
-          
-        </div>
-      
-        <div>
-          <label for="" class="mb-1 block text-sm font-medium text-gray-700">
-            タグ
-          </label>
-          <div id="id_tags" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"><div>
-    <label for="id_tags_0"><input type="checkbox" name="tags" value="06aa5fd4-99c5-7e4b-8000-45f2e1072321" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500" id="id_tags_0">
- ベランダ</label>
-
-</div><div>
-    <label for="id_tags_1"><input type="checkbox" name="tags" value="06aa5fd4-99cd-7328-8000-f1ca198eb705" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500" id="id_tags_1">
- 棚上</label>
-
+  
+  
+  
 </div>
-</div>
-          
-          
-        </div>
+
+  
+
+  
+    
+<div>
+  
+    <p class="mb-1 block text-sm font-medium text-on-surface-variant" id="id_tags_label">
+      タグ
+    </p>
+    <div class="grid gap-2 sm:grid-cols-2" role="group" aria-labelledby="id_tags_label">
       
-        <div>
-          <label for="id_notes" class="mb-1 block text-sm font-medium text-gray-700">
-            メモ
-          </label>
-          <textarea name="notes" cols="40" rows="4" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 min-h-[6rem]" id="id_notes">
+        <label for="id_tags_0"
+               class="flex cursor-pointer items-center gap-3 rounded-lg bg-surface-container-low px-3 py-2.5 text-sm text-on-surface">
+          <input type="checkbox" name="tags" value="06ab514e-cb35-7be2-8000-997c24cf993c" class="h-5 w-5 rounded-sm border-outline-variant text-primary focus:ring-primary" id="id_tags_0"><span>ベランダ</span>
+        </label>
+      
+        <label for="id_tags_1"
+               class="flex cursor-pointer items-center gap-3 rounded-lg bg-surface-container-low px-3 py-2.5 text-sm text-on-surface">
+          <input type="checkbox" name="tags" value="06ab514e-cb3a-7fe5-8000-424a67d6efe5" class="h-5 w-5 rounded-sm border-outline-variant text-primary focus:ring-primary" id="id_tags_1"><span>棚上</span>
+        </label>
+      
+    </div>
+  
+  
+  
+</div>
+
+  
+
+  
+    
+<div>
+  
+    <label for="id_notes" class="mb-1 block text-sm font-medium text-on-surface-variant">
+      メモ
+    </label>
+    <textarea name="notes" cols="40" rows="4" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40 min-h-[6rem]" id="id_notes">
 </textarea>
-          
-          
-        </div>
-      
-      <div class="flex items-center justify-between">
-        <a href="home.html" class="text-sm text-gray-600 hover:underline">キャンセル</a>
-        <button type="submit"
-                class="rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-emerald-700">
-          保存
-        </button>
+  
+  
+  
+</div>
+
+  
+
+
+      <div class="flex gap-2 pt-2">
+        <button type="submit" class="rounded-full bg-primary px-6 py-2.5 font-bold text-on-primary">保存</button>
+        <a href="home.html"
+           class="rounded-full bg-surface-container-high px-6 py-2.5 font-bold text-on-surface-variant">キャンセル</a>
       </div>
     </form>
+    
   </div>
 
     </main>

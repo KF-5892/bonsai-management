@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="rREowWONIibWaiTMC0gYE9cWmNUipnHtlZwmRp8ZJbeSoY0F6ySnr00keQZy5EhN">
+    <meta name="csrf-token" content="6KTvlnMpeWbPUXqzJk9Zz5pAWLyHd6ttNnqIYWoJFe7xCREq1aNNElXmn3Ql7FVE">
     <title>梅 | 品種マスタ</title>
 
     
@@ -84,7 +84,7 @@
   </head>
   <body
     class="min-h-screen bg-background font-body text-on-background antialiased"
-    hx-headers='{"X-CSRFToken": "rREowWONIibWaiTMC0gYE9cWmNUipnHtlZwmRp8ZJbeSoY0F6ySnr00keQZy5EhN"}'
+    hx-headers='{"X-CSRFToken": "6KTvlnMpeWbPUXqzJk9Zz5pAWLyHd6ttNnqIYWoJFe7xCREq1aNNElXmn3Ql7FVE"}'
   >
     
 <header class="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between bg-[#f6faf6]/80 px-4 backdrop-blur-md">
@@ -113,14 +113,16 @@
     
 
     
-    <button
-      type="button"
-      class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
-      aria-label="通知"
-      title="通知（Phase 3 で実装予定）"
-    >
-      <span class="material-symbols-outlined text-green-800">notifications</span>
-    </button>
+      
+      <a
+        href="settings_notifications.html"
+        class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
+        aria-label="通知設定"
+        title="通知設定"
+      >
+        <span class="material-symbols-outlined text-green-800">notifications</span>
+      </a>
+    
 
     
   </div>
@@ -133,86 +135,99 @@
 
       
   <div class="space-y-4">
-    <header>
-      <h1 class="text-xl font-bold text-emerald-900">梅</h1>
-      <p class="text-sm text-gray-600">
+    <header class="rounded-xl bg-surface-container-lowest p-4">
+      <p class="text-xs font-bold uppercase tracking-wider text-primary">品種ガイド</p>
+      <h1 class="text-xl font-bold text-on-surface">梅</h1>
+      <p class="mt-0.5 text-sm text-on-surface-variant">
         花物
         ・<i>Prunus mume</i>
       </p>
+      
+        <p class="mt-3 whitespace-pre-line text-sm text-on-surface">早春に芳香のある花を咲かせる花物盆栽。古木感のある幹肌が魅力。強剪定にも耐える。</p>
+      
     </header>
 
-    
-      <section class="rounded-lg border border-emerald-100 bg-white p-4 shadow-sm">
-        <p class="whitespace-pre-line text-sm text-gray-800">早春に芳香のある花を咲かせる花物盆栽。古木感のある幹肌が魅力。強剪定にも耐える。</p>
-      </section>
-    
-
-    <section class="rounded-lg border border-emerald-100 bg-white p-4 shadow-sm">
-      <h2 class="mb-2 text-sm font-semibold text-emerald-800">月別作業カレンダー</h2>
+    <section class="rounded-xl bg-surface-container-lowest p-4">
+      <h2 class="mb-3 text-sm font-bold text-on-surface-variant">月別作業カレンダー</h2>
       
-        <ul class="divide-y divide-emerald-50">
+        <ol class="space-y-3">
           
-            <li class="py-2">
-              <p class="text-sm font-semibold text-emerald-900">2月</p>
-              <ul class="mt-1 space-y-1 text-sm text-gray-700">
+            <li class="flex gap-3 ">
+              <span class="w-10 shrink-0 text-sm font-bold text-on-surface-variant">
+                2月
+              </span>
+              <ul class="min-w-0 flex-1 space-y-1.5">
                 
-                  <li>
-                    <span class="text-xs text-emerald-600">[中旬]</span>
-                    observation: 開花期。花を楽しんだあとは花柄を摘む。
+                  <li class="text-sm text-on-surface">
+                    <span class="mr-1 rounded-full bg-secondary-container px-2 py-0.5 text-xs font-bold text-on-secondary-container">観察</span>
+                    <span class="text-xs text-on-surface-variant">中旬</span>
+                    <span class="block text-on-surface-variant">開花期。花を楽しんだあとは花柄を摘む。</span>
                   </li>
                 
               </ul>
             </li>
           
-            <li class="py-2">
-              <p class="text-sm font-semibold text-emerald-900">3月</p>
-              <ul class="mt-1 space-y-1 text-sm text-gray-700">
+            <li class="flex gap-3 ">
+              <span class="w-10 shrink-0 text-sm font-bold text-on-surface-variant">
+                3月
+              </span>
+              <ul class="min-w-0 flex-1 space-y-1.5">
                 
-                  <li>
-                    <span class="text-xs text-emerald-600">[中旬]</span>
-                    repotting: 花後すぐに植え替え。根詰まりしやすいので毎年〜2年に一度。
+                  <li class="text-sm text-on-surface">
+                    <span class="mr-1 rounded-full bg-secondary-container px-2 py-0.5 text-xs font-bold text-on-secondary-container">植え替え</span>
+                    <span class="text-xs text-on-surface-variant">中旬</span>
+                    <span class="block text-on-surface-variant">花後すぐに植え替え。根詰まりしやすいので毎年〜2年に一度。</span>
                   </li>
                 
               </ul>
             </li>
           
-            <li class="py-2">
-              <p class="text-sm font-semibold text-emerald-900">4月</p>
-              <ul class="mt-1 space-y-1 text-sm text-gray-700">
+            <li class="flex gap-3 ">
+              <span class="w-10 shrink-0 text-sm font-bold text-on-surface-variant">
+                4月
+              </span>
+              <ul class="min-w-0 flex-1 space-y-1.5">
                 
-                  <li>
-                    <span class="text-xs text-emerald-600">[上旬]</span>
-                    pruning: 新芽が伸びたら2芽残して切り戻し。短枝に花芽がつく。
+                  <li class="text-sm text-on-surface">
+                    <span class="mr-1 rounded-full bg-secondary-container px-2 py-0.5 text-xs font-bold text-on-secondary-container">剪定</span>
+                    <span class="text-xs text-on-surface-variant">上旬</span>
+                    <span class="block text-on-surface-variant">新芽が伸びたら2芽残して切り戻し。短枝に花芽がつく。</span>
                   </li>
                 
               </ul>
             </li>
           
-            <li class="py-2">
-              <p class="text-sm font-semibold text-emerald-900">6月</p>
-              <ul class="mt-1 space-y-1 text-sm text-gray-700">
+            <li class="flex gap-3 ">
+              <span class="w-10 shrink-0 text-sm font-bold text-on-surface-variant">
+                6月
+              </span>
+              <ul class="min-w-0 flex-1 space-y-1.5">
                 
-                  <li>
-                    <span class="text-xs text-emerald-600">[中旬]</span>
-                    fertilizing: 花芽分化前の追肥。リン酸分の多い肥料を施す。
+                  <li class="text-sm text-on-surface">
+                    <span class="mr-1 rounded-full bg-secondary-container px-2 py-0.5 text-xs font-bold text-on-secondary-container">施肥</span>
+                    <span class="text-xs text-on-surface-variant">中旬</span>
+                    <span class="block text-on-surface-variant">花芽分化前の追肥。リン酸分の多い肥料を施す。</span>
                   </li>
                 
               </ul>
             </li>
           
-            <li class="py-2">
-              <p class="text-sm font-semibold text-emerald-900">11月</p>
-              <ul class="mt-1 space-y-1 text-sm text-gray-700">
+            <li class="flex gap-3 ">
+              <span class="w-10 shrink-0 text-sm font-bold text-on-surface-variant">
+                11月
+              </span>
+              <ul class="min-w-0 flex-1 space-y-1.5">
                 
-                  <li>
-                    <span class="text-xs text-emerald-600">[下旬]</span>
-                    wiring: 落葉後の針金かけ。枝が硬く折れやすいので慎重に。
+                  <li class="text-sm text-on-surface">
+                    <span class="mr-1 rounded-full bg-secondary-container px-2 py-0.5 text-xs font-bold text-on-secondary-container">針金かけ</span>
+                    <span class="text-xs text-on-surface-variant">下旬</span>
+                    <span class="block text-on-surface-variant">落葉後の針金かけ。枝が硬く折れやすいので慎重に。</span>
                   </li>
                 
               </ul>
             </li>
           
-        </ul>
+        </ol>
       
     </section>
 

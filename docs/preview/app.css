@@ -23,3 +23,8 @@
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+/* Alpine.js が初期化するまで x-show 要素を隠す（フィルタ欄などのチラつき防止） */
+[x-cloak] {
+  display: none !important;
+}

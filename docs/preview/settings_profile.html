@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="dxhHl3bX6ICVtv2dxbn7yE0ObygJ2nAp7F9FGwv97BFRHb961JZwlvOc3BlZIEaJ">
+    <meta name="csrf-token" content="vDdF50HtIXeHLbxRwWHknXKQMwA1tQYjcgKSIzjN9fapt5LIOMl8sdiCdOSFnpqu">
     <title>プロフィール | 盆栽管理</title>
 
     
@@ -84,7 +84,7 @@
   </head>
   <body
     class="min-h-screen bg-background font-body text-on-background antialiased"
-    hx-headers='{"X-CSRFToken": "dxhHl3bX6ICVtv2dxbn7yE0ObygJ2nAp7F9FGwv97BFRHb961JZwlvOc3BlZIEaJ"}'
+    hx-headers='{"X-CSRFToken": "vDdF50HtIXeHLbxRwWHknXKQMwA1tQYjcgKSIzjN9fapt5LIOMl8sdiCdOSFnpqu"}'
   >
     
 <header class="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between bg-[#f6faf6]/80 px-4 backdrop-blur-md">
@@ -113,14 +113,16 @@
     
 
     
-    <button
-      type="button"
-      class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
-      aria-label="通知"
-      title="通知（Phase 3 で実装予定）"
-    >
-      <span class="material-symbols-outlined text-green-800">notifications</span>
-    </button>
+      
+      <a
+        href="settings_notifications.html"
+        class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
+        aria-label="通知設定"
+        title="通知設定"
+      >
+        <span class="material-symbols-outlined text-green-800">notifications</span>
+      </a>
+    
 
     
   </div>
@@ -135,14 +137,14 @@
   <div class="space-y-4">
     <h1 class="text-xl font-bold text-on-surface">プロフィール</h1>
     <form method="post" class="space-y-4 rounded-xl bg-surface-container-lowest p-4">
-      <input type="hidden" name="csrfmiddlewaretoken" value="dxhHl3bX6ICVtv2dxbn7yE0ObygJ2nAp7F9FGwv97BFRHb961JZwlvOc3BlZIEaJ">
+      <input type="hidden" name="csrfmiddlewaretoken" value="vDdF50HtIXeHLbxRwWHknXKQMwA1tQYjcgKSIzjN9fapt5LIOMl8sdiCdOSFnpqu">
       
       
         <div>
           <label for="id_display_name" class="mb-1 block text-sm font-medium text-on-surface-variant">
             表示名
           </label>
-          <input type="text" name="display_name" value="デモ太郎" maxlength="80" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500" id="id_display_name">
+          <input type="text" name="display_name" value="デモ太郎" maxlength="80" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" id="id_display_name">
           
           
         </div>
@@ -151,7 +153,7 @@
           <label for="id_language" class="mb-1 block text-sm font-medium text-on-surface-variant">
             言語
           </label>
-          <input type="text" name="language" value="ja" maxlength="8" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500" required id="id_language">
+          <input type="text" name="language" value="ja" maxlength="8" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" required id="id_language">
           
           
         </div>

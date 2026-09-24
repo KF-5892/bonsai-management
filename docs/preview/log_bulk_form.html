@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="tPXCd2bLOkqV7yMmRLmJfA6ybLNXhXiCnXPAyvvXPdtRleTfljY82rUW3OSdXeSW">
+    <meta name="csrf-token" content="aZll5JSWX3YXN8BZpmODgBjq6SXZ9IEfRCSyIiugolUFv2PQHcsrlRRcxafD3h6q">
     <title>一括でログを記録 | 盆栽管理</title>
 
     
@@ -84,7 +84,7 @@
   </head>
   <body
     class="min-h-screen bg-background font-body text-on-background antialiased"
-    hx-headers='{"X-CSRFToken": "tPXCd2bLOkqV7yMmRLmJfA6ybLNXhXiCnXPAyvvXPdtRleTfljY82rUW3OSdXeSW"}'
+    hx-headers='{"X-CSRFToken": "aZll5JSWX3YXN8BZpmODgBjq6SXZ9IEfRCSyIiugolUFv2PQHcsrlRRcxafD3h6q"}'
   >
     
 <header class="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between bg-[#f6faf6]/80 px-4 backdrop-blur-md">
@@ -113,14 +113,16 @@
     
 
     
-    <button
-      type="button"
-      class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
-      aria-label="通知"
-      title="通知（Phase 3 で実装予定）"
-    >
-      <span class="material-symbols-outlined text-green-800">notifications</span>
-    </button>
+      
+      <a
+        href="settings_notifications.html"
+        class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
+        aria-label="通知設定"
+        title="通知設定"
+      >
+        <span class="material-symbols-outlined text-green-800">notifications</span>
+      </a>
+    
 
     
   </div>
@@ -139,38 +141,122 @@
       <p class="mt-1 text-sm text-on-surface-variant">選んだ盆栽すべてに同じ作業を記録します。</p>
     </header>
 
-    <form method="post" class="space-y-4 rounded-xl bg-surface-container-lowest p-4">
-      <input type="hidden" name="csrfmiddlewaretoken" value="tPXCd2bLOkqV7yMmRLmJfA6ybLNXhXiCnXPAyvvXPdtRleTfljY82rUW3OSdXeSW">
+    <form method="post" class="space-y-4 rounded-xl bg-surface-container-lowest p-4"
+          x-data="{
+            count: 0,
+            refresh() { this.count = this.$root.querySelectorAll('input[name=bonsai]:checked').length },
+            setAll(checked, scope) {
+              (scope || this.$root).querySelectorAll('input[name=bonsai]').forEach(el => { el.checked = checked });
+              this.refresh();
+            }
+          }"
+          x-init="refresh()">
+      <input type="hidden" name="csrfmiddlewaretoken" value="aZll5JSWX3YXN8BZpmODgBjq6SXZ9IEfRCSyIiugolUFv2PQHcsrlRRcxafD3h6q">
       
 
+      
+      <fieldset>
+        <div class="mb-2 flex items-center justify-between gap-2">
+          <legend class="text-sm font-medium text-on-surface-variant">
+            対象の盆栽 <span class="text-error">*</span>
+            <span class="ml-1 rounded-full bg-secondary-container px-2 py-0.5 text-xs font-bold text-on-secondary-container" x-text="count + ' / 3 選択'"></span>
+          </legend>
+          <span class="flex shrink-0 gap-2 text-xs font-bold text-primary">
+            <button type="button" @click="setAll(true)">すべて選択</button>
+            <button type="button" @click="setAll(false)">解除</button>
+          </span>
+        </div>
+        
 
-  <div>
-    <label for="" class="mb-1 block text-sm font-medium text-on-surface-variant">
-      対象の盆栽 <span class="text-error">*</span>
-    </label>
-    <div id="id_bonsai" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"><div>
-    <label for="id_bonsai_0"><input type="checkbox" name="bonsai" value="06aa5fd4-99bd-7d37-8000-a2d523db35d2" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500" id="id_bonsai_0">
- 五葉松 次郎</label>
+        
+          <div class="space-y-3">
+            
+              <div x-ref="group1">
+                <div class="mb-1 flex items-center justify-between">
+                  <p class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">五葉松（2）</p>
+                  <button type="button" class="text-xs font-bold text-primary"
+                          @click="setAll(true, $refs.group1)">この品種を選択</button>
+                </div>
+                <div class="grid gap-2 sm:grid-cols-2">
+                  
+                    <label for="bonsai_06ab514e-cb2a-70a4-8000-7381381d46d0"
+                           class="flex cursor-pointer items-center gap-3 rounded-lg bg-surface-container-low px-3 py-2.5 text-sm text-on-surface">
+                      <input type="checkbox" name="bonsai" value="06ab514e-cb2a-70a4-8000-7381381d46d0" id="bonsai_06ab514e-cb2a-70a4-8000-7381381d46d0"
+                             @change="refresh()"
+                             
+                             class="h-5 w-5 rounded-sm border-outline-variant text-primary focus:ring-primary">
+                      <span class="min-w-0">
+                        <span class="block truncate font-medium">もみじ 花子</span>
+                        
+                          <span class="block truncate text-xs text-on-surface-variant">
+                            ベランダ
+                          </span>
+                        
+                      </span>
+                    </label>
+                  
+                    <label for="bonsai_06ab514e-cb30-706a-8000-eba77f157319"
+                           class="flex cursor-pointer items-center gap-3 rounded-lg bg-surface-container-low px-3 py-2.5 text-sm text-on-surface">
+                      <input type="checkbox" name="bonsai" value="06ab514e-cb30-706a-8000-eba77f157319" id="bonsai_06ab514e-cb30-706a-8000-eba77f157319"
+                             @change="refresh()"
+                             
+                             class="h-5 w-5 rounded-sm border-outline-variant text-primary focus:ring-primary">
+                      <span class="min-w-0">
+                        <span class="block truncate font-medium">五葉松 次郎</span>
+                        
+                          <span class="block truncate text-xs text-on-surface-variant">
+                            棚上
+                          </span>
+                        
+                      </span>
+                    </label>
+                  
+                </div>
+              </div>
+            
+              <div x-ref="group2">
+                <div class="mb-1 flex items-center justify-between">
+                  <p class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">黒松（1）</p>
+                  <button type="button" class="text-xs font-bold text-primary"
+                          @click="setAll(true, $refs.group2)">この品種を選択</button>
+                </div>
+                <div class="grid gap-2 sm:grid-cols-2">
+                  
+                    <label for="bonsai_06ab514e-cb1e-7949-8000-b81db9a9ba21"
+                           class="flex cursor-pointer items-center gap-3 rounded-lg bg-surface-container-low px-3 py-2.5 text-sm text-on-surface">
+                      <input type="checkbox" name="bonsai" value="06ab514e-cb1e-7949-8000-b81db9a9ba21" id="bonsai_06ab514e-cb1e-7949-8000-b81db9a9ba21"
+                             @change="refresh()"
+                             
+                             class="h-5 w-5 rounded-sm border-outline-variant text-primary focus:ring-primary">
+                      <span class="min-w-0">
+                        <span class="block truncate font-medium">黒松 太郎</span>
+                        
+                          <span class="block truncate text-xs text-on-surface-variant">
+                            ベランダ
+                          </span>
+                        
+                      </span>
+                    </label>
+                  
+                </div>
+              </div>
+            
+          </div>
+        
+      </fieldset>
 
-</div><div>
-    <label for="id_bonsai_1"><input type="checkbox" name="bonsai" value="06aa5fd4-99b5-750f-8000-462765579f7d" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500" id="id_bonsai_1">
- もみじ 花子</label>
-
-</div><div>
-    <label for="id_bonsai_2"><input type="checkbox" name="bonsai" value="06aa5fd4-99ab-76e0-8000-184a9a6d5a21" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500" id="id_bonsai_2">
- 黒松 太郎</label>
-
-</div>
-</div>
-    
-    
-  </div>
-
-  <div>
+      
+      
+        
+      
+        
+          
+<div>
+  
     <label for="id_task_type" class="mb-1 block text-sm font-medium text-on-surface-variant">
       作業種別 <span class="text-error">*</span>
     </label>
-    <select name="task_type" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 bg-white" id="id_task_type">
+    <select name="task_type" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" id="id_task_type">
   <option value="watering">潅水</option>
 
   <option value="fertilizing">施肥</option>
@@ -202,24 +288,38 @@
   <option value="other">その他</option>
 
 </select>
-    
-    
-  </div>
+  
+  
+  
+</div>
 
-  <div>
+        
+      
+        
+          
+<div>
+  
     <label for="id_performed_at" class="mb-1 block text-sm font-medium text-on-surface-variant">
       実施日時 <span class="text-error">*</span>
     </label>
-    <input type="datetime-local" name="performed_at" value="2026-09-13 10:32:00" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500" required id="id_performed_at">
-    
-    
-  </div>
+    <input type="datetime-local" name="performed_at" value="2026-09-24T21:17" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" required id="id_performed_at">
+  
+  
+  
+</div>
 
-  <div>
+        
+      
+        
+          
+<div>
+  
     <label for="id_weather" class="mb-1 block text-sm font-medium text-on-surface-variant">
       天候
     </label>
-    <select name="weather" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 bg-white" id="id_weather">
+    <select name="weather" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" id="id_weather">
+  <option value="" selected>未設定</option>
+
   <option value="sunny">晴れ</option>
 
   <option value="cloudy">曇り</option>
@@ -231,49 +331,75 @@
   <option value="other">その他</option>
 
 </select>
-    
-    
-  </div>
+  
+  
+  
+</div>
 
-  <div>
+        
+      
+        
+          
+<div>
+  
     <label for="id_temperature_c" class="mb-1 block text-sm font-medium text-on-surface-variant">
       気温 (℃)
     </label>
-    <input type="number" name="temperature_c" step="0.1" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500" id="id_temperature_c">
-    
-    
-  </div>
+    <input type="number" name="temperature_c" step="0.1" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" id="id_temperature_c">
+  
+  
+  
+</div>
 
-  <div>
+        
+      
+        
+          
+<div>
+  
     <label for="id_fertilizer" class="mb-1 block text-sm font-medium text-on-surface-variant">
       使用した肥料
     </label>
-    <select name="fertilizer" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 bg-white" id="id_fertilizer">
+    <select name="fertilizer" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" id="id_fertilizer">
   <option value="" selected>---------</option>
 
-  <option value="06aa5fd4-99f6-709f-8000-c84fdb592a2a">標準固形肥料（共通）</option>
+  <option value="06ab514e-cb58-78bd-8000-8918ad302f15">標準固形肥料（共通）</option>
 
-  <option value="06aa5fd4-99fe-7e04-8000-c70afe7a4111">自家製油かす</option>
+  <option value="06ab514e-cb5e-78ed-8000-d2a0ce99d7bc">自家製油かす</option>
 
 </select>
-    
-    
-  </div>
+  
+  
+  
+</div>
 
-  <div>
+        
+      
+        
+          
+<div>
+  
     <label for="id_fertilizer_amount" class="mb-1 block text-sm font-medium text-on-surface-variant">
       肥料の量
     </label>
-    <input type="text" name="fertilizer_amount" maxlength="40" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500" id="id_fertilizer_amount">
-    
-    
-  </div>
+    <input type="text" name="fertilizer_amount" maxlength="40" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" id="id_fertilizer_amount">
+  
+  
+  
+</div>
 
-  <div>
+        
+      
+        
+          
+<div>
+  
     <label for="id_health_evaluation" class="mb-1 block text-sm font-medium text-on-surface-variant">
       状態評価
     </label>
-    <select name="health_evaluation" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 bg-white" id="id_health_evaluation">
+    <select name="health_evaluation" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" id="id_health_evaluation">
+  <option value="" selected>未設定</option>
+
   <option value="1">1: 非常に悪い</option>
 
   <option value="2">2: 悪い</option>
@@ -285,20 +411,29 @@
   <option value="5">5: 非常に良い</option>
 
 </select>
-    
-    
-  </div>
+  
+  
+  
+</div>
 
-  <div>
+        
+      
+        
+          
+<div>
+  
     <label for="id_notes" class="mb-1 block text-sm font-medium text-on-surface-variant">
       メモ
     </label>
-    <textarea name="notes" cols="40" rows="3" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 min-h-[6rem]" id="id_notes">
+    <textarea name="notes" cols="40" rows="3" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40 min-h-[6rem]" id="id_notes">
 </textarea>
-    
-    
-  </div>
+  
+  
+  
+</div>
 
+        
+      
 
       <div class="flex gap-2 pt-2">
         <button type="submit" class="rounded-full bg-primary px-6 py-2.5 font-bold text-on-primary">まとめて記録</button>

@@ -10,9 +10,80 @@
       <p class="mt-1 text-sm text-on-surface-variant">選んだ盆栽すべてに同じ作業を記録します。</p>
     </header>
 
-    <form method="post" class="space-y-4 rounded-xl bg-surface-container-lowest p-4">
+    <form method="post" class="space-y-4 rounded-xl bg-surface-container-lowest p-4"
+          x-data="{
+            count: 0,
+            refresh() { this.count = this.$root.querySelectorAll('input[name=bonsai]:checked').length },
+            setAll(checked, scope) {
+              (scope || this.$root).querySelectorAll('input[name=bonsai]').forEach(el => { el.checked = checked });
+              this.refresh();
+            }
+          }"
+          x-init="refresh()">
       {% csrf_token %}
-      {% include "_partials/form_fields.html" %}
+      {% if form.non_field_errors %}
+        <div class="rounded-lg bg-error-container px-3 py-2 text-sm text-on-error-container" role="alert">
+          {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+        </div>
+      {% endif %}
+
+      {# ----- 対象の盆栽（品種ごと・すべて選択つき） ----- #}
+      <fieldset>
+        <div class="mb-2 flex items-center justify-between gap-2">
+          <legend class="text-sm font-medium text-on-surface-variant">
+            対象の盆栽 <span class="text-error">*</span>
+            <span class="ml-1 rounded-full bg-secondary-container px-2 py-0.5 text-xs font-bold text-on-secondary-container" x-text="count + ' / {{ plant_count }} 選択'"></span>
+          </legend>
+          <span class="flex shrink-0 gap-2 text-xs font-bold text-primary">
+            <button type="button" @click="setAll(true)">すべて選択</button>
+            <button type="button" @click="setAll(false)">解除</button>
+          </span>
+        </div>
+        {% for error in form.bonsai.errors %}<p class="mb-2 text-xs text-error">{{ error }}</p>{% endfor %}
+
+        {% if plant_groups %}
+          <div class="space-y-3">
+            {% for species_name, group in plant_groups %}
+              <div x-ref="group{{ forloop.counter }}">
+                <div class="mb-1 flex items-center justify-between">
+                  <p class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">{{ species_name }}（{{ group|length }}）</p>
+                  <button type="button" class="text-xs font-bold text-primary"
+                          @click="setAll(true, $refs.group{{ forloop.counter }})">この品種を選択</button>
+                </div>
+                <div class="grid gap-2 sm:grid-cols-2">
+                  {% for plant in group %}
+                    <label for="bonsai_{{ plant.pk }}"
+                           class="flex cursor-pointer items-center gap-3 rounded-lg bg-surface-container-low px-3 py-2.5 text-sm text-on-surface">
+                      <input type="checkbox" name="bonsai" value="{{ plant.pk }}" id="bonsai_{{ plant.pk }}"
+                             @change="refresh()"
+                             {% if plant.pk|stringformat:"s" in selected_ids %}checked{% endif %}
+                             class="h-5 w-5 rounded-sm border-outline-variant text-primary focus:ring-primary">
+                      <span class="min-w-0">
+                        <span class="block truncate font-medium">{{ plant.name }}</span>
+                        {% if plant.tags.all %}
+                          <span class="block truncate text-xs text-on-surface-variant">
+                            {% for tag in plant.tags.all %}{{ tag.name }}{% if not forloop.last %}・{% endif %}{% endfor %}
+                          </span>
+                        {% endif %}
+                      </span>
+                    </label>
+                  {% endfor %}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="text-sm text-on-surface-variant">盆栽が登録されていません。</p>
+        {% endif %}
+      </fieldset>
+
+      {# ----- 共通項目 ----- #}
+      {% for field in form %}
+        {% if field.name != "bonsai" %}
+          {% include "_partials/form_field.html" with field=field %}
+        {% endif %}
+      {% endfor %}
+
       <div class="flex gap-2 pt-2">
         <button type="submit" class="rounded-full bg-primary px-6 py-2.5 font-bold text-on-primary">まとめて記録</button>
         <a href="{% url 'logs:list' %}" class="rounded-full bg-surface-container-high px-6 py-2.5 font-bold text-on-surface-variant">キャンセル</a>

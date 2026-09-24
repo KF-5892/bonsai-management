@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="wWZNPAmTH0awid0lwYjiuo3d7SsdRhnVq4RLa3G5ITdswT7e0wVHhfRBZVxtxyXf">
+    <meta name="csrf-token" content="IyjazDSOmsgWsrNcfdoNCz5rfn3jWECSpbQnccu8NKcEal13x32BHPDdGFlXQd43">
     <title>真柏 | 品種マスタ</title>
 
     
@@ -84,7 +84,7 @@
   </head>
   <body
     class="min-h-screen bg-background font-body text-on-background antialiased"
-    hx-headers='{"X-CSRFToken": "wWZNPAmTH0awid0lwYjiuo3d7SsdRhnVq4RLa3G5ITdswT7e0wVHhfRBZVxtxyXf"}'
+    hx-headers='{"X-CSRFToken": "IyjazDSOmsgWsrNcfdoNCz5rfn3jWECSpbQnccu8NKcEal13x32BHPDdGFlXQd43"}'
   >
     
 <header class="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between bg-[#f6faf6]/80 px-4 backdrop-blur-md">
@@ -113,14 +113,16 @@
     
 
     
-    <button
-      type="button"
-      class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
-      aria-label="通知"
-      title="通知（Phase 3 で実装予定）"
-    >
-      <span class="material-symbols-outlined text-green-800">notifications</span>
-    </button>
+      
+      <a
+        href="settings_notifications.html"
+        class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
+        aria-label="通知設定"
+        title="通知設定"
+      >
+        <span class="material-symbols-outlined text-green-800">notifications</span>
+      </a>
+    
 
     
   </div>
@@ -133,86 +135,99 @@
 
       
   <div class="space-y-4">
-    <header>
-      <h1 class="text-xl font-bold text-emerald-900">真柏</h1>
-      <p class="text-sm text-gray-600">
+    <header class="rounded-xl bg-surface-container-lowest p-4">
+      <p class="text-xs font-bold uppercase tracking-wider text-primary">品種ガイド</p>
+      <h1 class="text-xl font-bold text-on-surface">真柏</h1>
+      <p class="mt-0.5 text-sm text-on-surface-variant">
         針葉樹
         ・<i>Juniperus chinensis</i>
       </p>
+      
+        <p class="mt-3 whitespace-pre-line text-sm text-on-surface">ジン・シャリの白骨美が魅力のヒノキ科。丈夫で初心者にも扱いやすい。乾燥に強く、葉水を好む。</p>
+      
     </header>
 
-    
-      <section class="rounded-lg border border-emerald-100 bg-white p-4 shadow-sm">
-        <p class="whitespace-pre-line text-sm text-gray-800">ジン・シャリの白骨美が魅力のヒノキ科。丈夫で初心者にも扱いやすい。乾燥に強く、葉水を好む。</p>
-      </section>
-    
-
-    <section class="rounded-lg border border-emerald-100 bg-white p-4 shadow-sm">
-      <h2 class="mb-2 text-sm font-semibold text-emerald-800">月別作業カレンダー</h2>
+    <section class="rounded-xl bg-surface-container-lowest p-4">
+      <h2 class="mb-3 text-sm font-bold text-on-surface-variant">月別作業カレンダー</h2>
       
-        <ul class="divide-y divide-emerald-50">
+        <ol class="space-y-3">
           
-            <li class="py-2">
-              <p class="text-sm font-semibold text-emerald-900">3月</p>
-              <ul class="mt-1 space-y-1 text-sm text-gray-700">
+            <li class="flex gap-3 ">
+              <span class="w-10 shrink-0 text-sm font-bold text-on-surface-variant">
+                3月
+              </span>
+              <ul class="min-w-0 flex-1 space-y-1.5">
                 
-                  <li>
-                    <span class="text-xs text-emerald-600">[中旬]</span>
-                    repotting: 芽動き前に植え替え。2〜3年に一度が目安。
+                  <li class="text-sm text-on-surface">
+                    <span class="mr-1 rounded-full bg-secondary-container px-2 py-0.5 text-xs font-bold text-on-secondary-container">植え替え</span>
+                    <span class="text-xs text-on-surface-variant">中旬</span>
+                    <span class="block text-on-surface-variant">芽動き前に植え替え。2〜3年に一度が目安。</span>
                   </li>
                 
               </ul>
             </li>
           
-            <li class="py-2">
-              <p class="text-sm font-semibold text-emerald-900">5月</p>
-              <ul class="mt-1 space-y-1 text-sm text-gray-700">
+            <li class="flex gap-3 ">
+              <span class="w-10 shrink-0 text-sm font-bold text-on-surface-variant">
+                5月
+              </span>
+              <ul class="min-w-0 flex-1 space-y-1.5">
                 
-                  <li>
-                    <span class="text-xs text-emerald-600">[上旬]</span>
-                    pruning: 伸びた新芽を指で摘み取る。鋏は葉先が褐色になるため避ける。
+                  <li class="text-sm text-on-surface">
+                    <span class="mr-1 rounded-full bg-secondary-container px-2 py-0.5 text-xs font-bold text-on-secondary-container">剪定</span>
+                    <span class="text-xs text-on-surface-variant">上旬</span>
+                    <span class="block text-on-surface-variant">伸びた新芽を指で摘み取る。鋏は葉先が褐色になるため避ける。</span>
                   </li>
                 
               </ul>
             </li>
           
-            <li class="py-2">
-              <p class="text-sm font-semibold text-emerald-900">7月</p>
-              <ul class="mt-1 space-y-1 text-sm text-gray-700">
+            <li class="flex gap-3 ">
+              <span class="w-10 shrink-0 text-sm font-bold text-on-surface-variant">
+                7月
+              </span>
+              <ul class="min-w-0 flex-1 space-y-1.5">
                 
-                  <li>
-                    <span class="text-xs text-emerald-600">[中旬]</span>
-                    leaf_misting: 高温期は朝夕の葉水で葉色を保つ。
+                  <li class="text-sm text-on-surface">
+                    <span class="mr-1 rounded-full bg-secondary-container px-2 py-0.5 text-xs font-bold text-on-secondary-container">葉水</span>
+                    <span class="text-xs text-on-surface-variant">中旬</span>
+                    <span class="block text-on-surface-variant">高温期は朝夕の葉水で葉色を保つ。</span>
                   </li>
                 
               </ul>
             </li>
           
-            <li class="py-2">
-              <p class="text-sm font-semibold text-emerald-900">9月</p>
-              <ul class="mt-1 space-y-1 text-sm text-gray-700">
+            <li class="flex gap-3 rounded-lg bg-primary-fixed/30 p-2 -mx-2">
+              <span class="w-10 shrink-0 text-sm font-bold text-primary">
+                9月
+              </span>
+              <ul class="min-w-0 flex-1 space-y-1.5">
                 
-                  <li>
-                    <span class="text-xs text-emerald-600">[上旬]</span>
-                    wiring: 枝の動きをつける針金かけの適期。古枝は折れやすいので注意。
+                  <li class="text-sm text-on-surface">
+                    <span class="mr-1 rounded-full bg-secondary-container px-2 py-0.5 text-xs font-bold text-on-secondary-container">針金かけ</span>
+                    <span class="text-xs text-on-surface-variant">上旬</span>
+                    <span class="block text-on-surface-variant">枝の動きをつける針金かけの適期。古枝は折れやすいので注意。</span>
                   </li>
                 
               </ul>
             </li>
           
-            <li class="py-2">
-              <p class="text-sm font-semibold text-emerald-900">10月</p>
-              <ul class="mt-1 space-y-1 text-sm text-gray-700">
+            <li class="flex gap-3 ">
+              <span class="w-10 shrink-0 text-sm font-bold text-on-surface-variant">
+                10月
+              </span>
+              <ul class="min-w-0 flex-1 space-y-1.5">
                 
-                  <li>
-                    <span class="text-xs text-emerald-600">[下旬]</span>
-                    jin_shari: ジン・シャリの彫刻作業。樹液の動きが穏やかになる時期に行う。
+                  <li class="text-sm text-on-surface">
+                    <span class="mr-1 rounded-full bg-secondary-container px-2 py-0.5 text-xs font-bold text-on-secondary-container">ジン・シャリ作り</span>
+                    <span class="text-xs text-on-surface-variant">下旬</span>
+                    <span class="block text-on-surface-variant">ジン・シャリの彫刻作業。樹液の動きが穏やかになる時期に行う。</span>
                   </li>
                 
               </ul>
             </li>
           
-        </ul>
+        </ol>
       
     </section>
 

@@ -37,13 +37,32 @@
               </div>
             {% endif %}
           </div>
-          <div class="mt-3 flex gap-3 text-sm font-bold">
+          <div class="mt-3 text-sm font-bold">
             <a href="{% url 'bonsai:edit' pk=plant.pk %}" class="text-primary">編集</a>
-            <a href="{% url 'bonsai:delete' pk=plant.pk %}" class="text-error">削除</a>
           </div>
         </div>
       </div>
     </header>
+
+    {# ----- クイック記録（潅水など高頻度作業をフォームなしで 1 タップ） ----- #}
+    <section aria-label="クイック記録" class="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+      {% for value, label, icon in quick_tasks %}
+        <form method="post" action="{% url 'logs:quick_create' %}" class="flex-none">
+          {% csrf_token %}
+          <input type="hidden" name="bonsai" value="{{ plant.pk }}">
+          <input type="hidden" name="task_type" value="{{ value }}">
+          <input type="hidden" name="next" value="{{ request.get_full_path }}">
+          <button type="submit"
+                  class="flex items-center gap-1 rounded-full bg-secondary-container px-4 py-2 text-sm font-bold text-on-secondary-container transition-transform active:scale-95">
+            <span class="material-symbols-outlined text-lg" aria-hidden="true">{{ icon }}</span>{{ label }}を記録
+          </button>
+        </form>
+      {% endfor %}
+      <a href="{% url 'logs:create' %}?bonsai={{ plant.pk }}"
+         class="flex flex-none items-center gap-1 rounded-full bg-surface-container-high px-4 py-2 text-sm font-bold text-on-surface-variant">
+        <span class="material-symbols-outlined text-lg" aria-hidden="true">edit_note</span>詳しく記録
+      </a>
+    </section>
 
     {# ----- タブ ----- #}
     <nav class="flex gap-2 overflow-x-auto pb-1 scrollbar-hide" aria-label="盆栽詳細タブ">
@@ -101,7 +120,7 @@
     {% elif tab == "logs" %}
       <section class="rounded-xl bg-surface-container-lowest p-4">
         <header class="mb-2 flex items-center justify-between">
-          <h2 class="text-sm font-bold text-on-surface-variant">作業履歴</h2>
+          <h2 class="text-sm font-bold text-on-surface-variant">作業履歴（{{ log_count }} 件）</h2>
           <a href="{% url 'logs:create' %}?bonsai={{ plant.pk }}" class="text-sm font-bold text-primary">+ 記録</a>
         </header>
         {% if recent_logs %}
@@ -115,8 +134,13 @@
               </li>
             {% endfor %}
           </ul>
+          {% if log_count > 10 %}
+            <a href="{% url 'logs:list' %}?bonsai={{ plant.pk }}" class="mt-3 inline-block text-sm font-bold text-primary">
+              この盆栽のログをすべて見る →
+            </a>
+          {% endif %}
         {% else %}
-          <p class="text-sm text-on-surface-variant">まだログがありません。</p>
+          <p class="text-sm text-on-surface-variant">まだログがありません。上のボタンから 1 タップで記録できます。</p>
         {% endif %}
       </section>
 

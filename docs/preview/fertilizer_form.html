@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="r42T0ZR2datiKVbHB0V5jnFXgCtWmYpqlcURlsbee3weYBiA5yxu6etl8Fyc2fZK">
+    <meta name="csrf-token" content="U1HbMMOeLAUzN0lanE3KmMh0rDgOCEinBEeoplqycSQhvUz1FuHyr2PMSVyswdKy">
     <title>肥料を登録 | 盆栽管理</title>
 
     
@@ -84,7 +84,7 @@
   </head>
   <body
     class="min-h-screen bg-background font-body text-on-background antialiased"
-    hx-headers='{"X-CSRFToken": "r42T0ZR2datiKVbHB0V5jnFXgCtWmYpqlcURlsbee3weYBiA5yxu6etl8Fyc2fZK"}'
+    hx-headers='{"X-CSRFToken": "U1HbMMOeLAUzN0lanE3KmMh0rDgOCEinBEeoplqycSQhvUz1FuHyr2PMSVyswdKy"}'
   >
     
 <header class="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between bg-[#f6faf6]/80 px-4 backdrop-blur-md">
@@ -113,14 +113,16 @@
     
 
     
-    <button
-      type="button"
-      class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
-      aria-label="通知"
-      title="通知（Phase 3 で実装予定）"
-    >
-      <span class="material-symbols-outlined text-green-800">notifications</span>
-    </button>
+      
+      <a
+        href="settings_notifications.html"
+        class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
+        aria-label="通知設定"
+        title="通知設定"
+      >
+        <span class="material-symbols-outlined text-green-800">notifications</span>
+      </a>
+    
 
     
   </div>
@@ -137,24 +139,33 @@
       肥料を登録
     </h1>
     <form method="post" class="space-y-4 rounded-xl bg-surface-container-lowest p-4">
-      <input type="hidden" name="csrfmiddlewaretoken" value="r42T0ZR2datiKVbHB0V5jnFXgCtWmYpqlcURlsbee3weYBiA5yxu6etl8Fyc2fZK">
+      <input type="hidden" name="csrfmiddlewaretoken" value="U1HbMMOeLAUzN0lanE3KmMh0rDgOCEinBEeoplqycSQhvUz1FuHyr2PMSVyswdKy">
       
 
 
-  <div>
+  
+    
+<div>
+  
     <label for="id_name" class="mb-1 block text-sm font-medium text-on-surface-variant">
       肥料名 <span class="text-error">*</span>
     </label>
-    <input type="text" name="name" maxlength="100" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500" required id="id_name">
-    
-    
-  </div>
+    <input type="text" name="name" maxlength="100" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" required id="id_name">
+  
+  
+  
+</div>
 
-  <div>
+  
+
+  
+    
+<div>
+  
     <label for="id_form_type" class="mb-1 block text-sm font-medium text-on-surface-variant">
       形状 <span class="text-error">*</span>
     </label>
-    <select name="form_type" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 bg-white" id="id_form_type">
+    <select name="form_type" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" id="id_form_type">
   <option value="solid" selected>固形</option>
 
   <option value="liquid">液体</option>
@@ -162,55 +173,88 @@
   <option value="other">その他</option>
 
 </select>
-    
-    
-  </div>
+  
+  
+  
+</div>
 
-  <div>
+  
+
+  
+    
+<div>
+  
     <label for="id_n" class="mb-1 block text-sm font-medium text-on-surface-variant">
       窒素 (N) %
     </label>
-    <input type="number" name="n" step="0.01" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500" id="id_n">
-    
-    
-  </div>
+    <input type="number" name="n" step="0.01" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" id="id_n">
+  
+  
+  
+</div>
 
-  <div>
+  
+
+  
+    
+<div>
+  
     <label for="id_p" class="mb-1 block text-sm font-medium text-on-surface-variant">
       リン酸 (P) %
     </label>
-    <input type="number" name="p" step="0.01" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500" id="id_p">
-    
-    
-  </div>
+    <input type="number" name="p" step="0.01" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" id="id_p">
+  
+  
+  
+</div>
 
-  <div>
+  
+
+  
+    
+<div>
+  
     <label for="id_k" class="mb-1 block text-sm font-medium text-on-surface-variant">
       カリウム (K) %
     </label>
-    <input type="number" name="k" step="0.01" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500" id="id_k">
-    
-    
-  </div>
+    <input type="number" name="k" step="0.01" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" id="id_k">
+  
+  
+  
+</div>
 
-  <div>
-    <label for="id_is_organic" class="mb-1 block text-sm font-medium text-on-surface-variant">
-      有機肥料
+  
+
+  
+    
+<div>
+  
+    <label for="id_is_organic"
+           class="flex cursor-pointer items-center gap-3 rounded-lg bg-surface-container-low px-3 py-2.5 text-sm font-medium text-on-surface">
+      <input type="checkbox" name="is_organic" class="h-5 w-5 rounded-sm border-outline-variant text-primary focus:ring-primary" id="id_is_organic"><span>有機肥料</span>
     </label>
-    <input type="checkbox" name="is_organic" class="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500" id="id_is_organic">
-    
-    
-  </div>
+  
+  
+  
+</div>
 
-  <div>
+  
+
+  
+    
+<div>
+  
     <label for="id_note" class="mb-1 block text-sm font-medium text-on-surface-variant">
       メモ
     </label>
-    <textarea name="note" cols="40" rows="3" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 min-h-[6rem]" id="id_note">
+    <textarea name="note" cols="40" rows="3" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40 min-h-[6rem]" id="id_note">
 </textarea>
-    
-    
-  </div>
+  
+  
+  
+</div>
+
+  
 
 
       <div class="flex gap-2 pt-2">

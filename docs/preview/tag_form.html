@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="AuyDkoZn6xq6bpJQBbvoYSNgOwq1gpjtuCqBFRjz7qt2p5QJ5J7NLJBEGzvhWGTN">
+    <meta name="csrf-token" content="Xj5bcnrxRxfy3UvWkByhkimiKOYOto8mEWCoPW3RiPbgLOJNCrc5pyU4b6gsnXAx">
     <title>タグを作成 | 盆栽管理</title>
 
     
@@ -84,7 +84,7 @@
   </head>
   <body
     class="min-h-screen bg-background font-body text-on-background antialiased"
-    hx-headers='{"X-CSRFToken": "AuyDkoZn6xq6bpJQBbvoYSNgOwq1gpjtuCqBFRjz7qt2p5QJ5J7NLJBEGzvhWGTN"}'
+    hx-headers='{"X-CSRFToken": "Xj5bcnrxRxfy3UvWkByhkimiKOYOto8mEWCoPW3RiPbgLOJNCrc5pyU4b6gsnXAx"}'
   >
     
 <header class="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between bg-[#f6faf6]/80 px-4 backdrop-blur-md">
@@ -113,14 +113,16 @@
     
 
     
-    <button
-      type="button"
-      class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
-      aria-label="通知"
-      title="通知（Phase 3 で実装予定）"
-    >
-      <span class="material-symbols-outlined text-green-800">notifications</span>
-    </button>
+      
+      <a
+        href="settings_notifications.html"
+        class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
+        aria-label="通知設定"
+        title="通知設定"
+      >
+        <span class="material-symbols-outlined text-green-800">notifications</span>
+      </a>
+    
 
     
   </div>
@@ -137,27 +139,39 @@
       タグを作成
     </h1>
     <form method="post" class="space-y-4 rounded-xl bg-surface-container-lowest p-4">
-      <input type="hidden" name="csrfmiddlewaretoken" value="AuyDkoZn6xq6bpJQBbvoYSNgOwq1gpjtuCqBFRjz7qt2p5QJ5J7NLJBEGzvhWGTN">
+      <input type="hidden" name="csrfmiddlewaretoken" value="Xj5bcnrxRxfy3UvWkByhkimiKOYOto8mEWCoPW3RiPbgLOJNCrc5pyU4b6gsnXAx">
       
 
 
-  <div>
+  
+    
+<div>
+  
     <label for="id_name" class="mb-1 block text-sm font-medium text-on-surface-variant">
       タグ名 <span class="text-error">*</span>
     </label>
-    <input type="text" name="name" maxlength="32" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500" required id="id_name">
-    
-    
-  </div>
+    <input type="text" name="name" maxlength="32" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" required id="id_name">
+  
+  
+  
+</div>
 
-  <div>
+  
+
+  
+    
+<div>
+  
     <label for="id_color" class="mb-1 block text-sm font-medium text-on-surface-variant">
       カラー
     </label>
-    <input type="text" name="color" placeholder="#4CAF50" maxlength="16" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500" aria-describedby="id_color_helptext" id="id_color">
-    <p class="mt-1 text-xs text-on-surface-variant">Hex カラー（例: #4CAF50）</p>
-    
-  </div>
+    <input type="text" name="color" placeholder="#4CAF50" maxlength="16" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" aria-describedby="id_color_helptext" id="id_color">
+  
+  <p class="mt-1 text-xs text-on-surface-variant">Hex カラー（例: #4CAF50）</p>
+  
+</div>
+
+  
 
 
       <div class="flex gap-2 pt-2">

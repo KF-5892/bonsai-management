@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="ZFlTirzxn9sDE0QCjH1qQELSPZlZDcvSTNdRDUTJo2vzSGXvNfDPDvzgH2qfjt5c">
+    <meta name="csrf-token" content="h86vvJuU1Sp23iZ4erghs5mVh8qzcs8dYLDI8i6esalKLcdVwhU5xlUHIqId61Ao">
     <title>ログを記録 | 盆栽管理</title>
 
     
@@ -84,7 +84,7 @@
   </head>
   <body
     class="min-h-screen bg-background font-body text-on-background antialiased"
-    hx-headers='{"X-CSRFToken": "ZFlTirzxn9sDE0QCjH1qQELSPZlZDcvSTNdRDUTJo2vzSGXvNfDPDvzgH2qfjt5c"}'
+    hx-headers='{"X-CSRFToken": "h86vvJuU1Sp23iZ4erghs5mVh8qzcs8dYLDI8i6esalKLcdVwhU5xlUHIqId61Ao"}'
   >
     
 <header class="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between bg-[#f6faf6]/80 px-4 backdrop-blur-md">
@@ -113,14 +113,16 @@
     
 
     
-    <button
-      type="button"
-      class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
-      aria-label="通知"
-      title="通知（Phase 3 で実装予定）"
-    >
-      <span class="material-symbols-outlined text-green-800">notifications</span>
-    </button>
+      
+      <a
+        href="settings_notifications.html"
+        class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
+        aria-label="通知設定"
+        title="通知設定"
+      >
+        <span class="material-symbols-outlined text-green-800">notifications</span>
+      </a>
+    
 
     
   </div>
@@ -132,15 +134,16 @@
       
 
       
-  <div class="mx-auto max-w-md space-y-4">
-    <h1 class="text-xl font-bold text-emerald-900">
-      ログを記録
-    </h1>
+  <div class="space-y-4">
+    <header>
+      <a href="logs.html" class="text-sm font-bold text-primary">← 戻る</a>
+      <h1 class="text-xl font-bold text-on-surface">ログを記録</h1>
+    </header>
 
     <form method="post" enctype="multipart/form-data"
           x-data="{ task: 'observation' }"
-          class="space-y-4 rounded-lg border border-emerald-100 bg-white p-5 shadow-sm">
-      <input type="hidden" name="csrfmiddlewaretoken" value="ZFlTirzxn9sDE0QCjH1qQELSPZlZDcvSTNdRDUTJo2vzSGXvNfDPDvzgH2qfjt5c">
+          class="space-y-4 rounded-xl bg-surface-container-lowest p-4">
+      <input type="hidden" name="csrfmiddlewaretoken" value="h86vvJuU1Sp23iZ4erghs5mVh8qzcs8dYLDI8i6esalKLcdVwhU5xlUHIqId61Ao">
 
       
 
@@ -152,34 +155,37 @@
       
         
         
-          <div>
-            <label for="id_bonsai" class="mb-1 block text-sm font-medium text-gray-700">
-              盆栽<span class="text-red-500"> *</span>
-            </label>
-            <select name="bonsai" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 bg-white" required id="id_bonsai">
-  <option value="" selected>---------</option>
+          
+<div>
+  
+    <label for="id_bonsai" class="mb-1 block text-sm font-medium text-on-surface-variant">
+      盆栽 <span class="text-error">*</span>
+    </label>
+    <select name="bonsai" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" required id="id_bonsai">
+  <option value="" selected>選択してください</option>
 
-  <option value="06aa5fd4-99bd-7d37-8000-a2d523db35d2">五葉松 次郎</option>
+  <option value="06ab514e-cb30-706a-8000-eba77f157319">五葉松 次郎</option>
 
-  <option value="06aa5fd4-99b5-750f-8000-462765579f7d">もみじ 花子</option>
+  <option value="06ab514e-cb2a-70a4-8000-7381381d46d0">もみじ 花子</option>
 
-  <option value="06aa5fd4-99ab-76e0-8000-184a9a6d5a21">黒松 太郎</option>
+  <option value="06ab514e-cb1e-7949-8000-b81db9a9ba21">黒松 太郎</option>
 
 </select>
-            
-            
-          </div>
+  
+  
+  
+</div>
+
         
       
         
         
           <div>
-            <label for="id_task_type" class="mb-1 block text-sm font-medium text-gray-700">
-              作業種別<span class="text-red-500"> *</span>
+            <label for="id_task_type" class="mb-1 block text-sm font-medium text-on-surface-variant">
+              作業種別 <span class="text-error">*</span>
             </label>
-            <select name="task_type" id="id_task_type"
-                    x-model="task"
-                    class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500">
+            <select name="task_type" id="id_task_type" x-model="task"
+                    class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40">
               
                 <option value="watering" >潅水</option>
               
@@ -219,36 +225,47 @@
         
         
           <template x-if="task === 'other'">
-            <div>
-              <label for="id_task_type_other" class="mb-1 block text-sm font-medium text-gray-700">
-                作業種別（その他）
-              </label>
-              <input type="text" name="task_type_other" maxlength="80" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500" aria-describedby="id_task_type_other_helptext" id="id_task_type_other">
-              
-            </div>
+            
+<div>
+  
+    <label for="id_task_type_other" class="mb-1 block text-sm font-medium text-on-surface-variant">
+      作業種別（その他）
+    </label>
+    <input type="text" name="task_type_other" maxlength="80" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" aria-describedby="id_task_type_other_helptext" id="id_task_type_other">
+  
+  <p class="mt-1 text-xs text-on-surface-variant">task_type が「その他」のときの自由入力</p>
+  
+</div>
+
           </template>
         
       
         
         
-          <div>
-            <label for="id_performed_at" class="mb-1 block text-sm font-medium text-gray-700">
-              実施日時<span class="text-red-500"> *</span>
-            </label>
-            <input type="datetime-local" name="performed_at" value="2026-09-13 10:32:58" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500" required id="id_performed_at"><input type="hidden" name="initial-performed_at" value="2026-09-13 10:32:58" id="initial-id_performed_at">
-            
-            
-          </div>
+          
+<div>
+  
+    <label for="id_performed_at" class="mb-1 block text-sm font-medium text-on-surface-variant">
+      実施日時 <span class="text-error">*</span>
+    </label>
+    <input type="datetime-local" name="performed_at" value="2026-09-24T21:17" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" required id="id_performed_at"><input type="hidden" name="initial-performed_at" value="2026-09-24 21:17:49" id="initial-id_performed_at">
+  
+  
+  
+</div>
+
         
       
         
         
-          <div>
-            <label for="id_weather" class="mb-1 block text-sm font-medium text-gray-700">
-              天候
-            </label>
-            <select name="weather" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 bg-white" id="id_weather">
-  <option value="" selected>---------</option>
+          
+<div>
+  
+    <label for="id_weather" class="mb-1 block text-sm font-medium text-on-surface-variant">
+      天候
+    </label>
+    <select name="weather" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" id="id_weather">
+  <option value="" selected>未設定</option>
 
   <option value="sunny">晴れ</option>
 
@@ -261,42 +278,52 @@
   <option value="other">その他</option>
 
 </select>
-            
-            
-          </div>
+  
+  
+  
+</div>
+
         
       
         
         
-          <div>
-            <label for="id_temperature_c" class="mb-1 block text-sm font-medium text-gray-700">
-              気温 (℃)
-            </label>
-            <input type="number" name="temperature_c" step="0.1" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500" id="id_temperature_c">
-            
-            
-          </div>
+          
+<div>
+  
+    <label for="id_temperature_c" class="mb-1 block text-sm font-medium text-on-surface-variant">
+      気温 (℃)
+    </label>
+    <input type="number" name="temperature_c" step="0.1" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" id="id_temperature_c">
+  
+  
+  
+</div>
+
         
       
         
         
           
           <template x-if="task === 'fertilizing'">
-            <div>
-              <label for="id_fertilizer" class="mb-1 block text-sm font-medium text-gray-700">
-                使用した肥料
-              </label>
-              <select name="fertilizer" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 bg-white" aria-describedby="id_fertilizer_helptext" id="id_fertilizer">
-  <option value="" selected>---------</option>
+            
+<div>
+  
+    <label for="id_fertilizer" class="mb-1 block text-sm font-medium text-on-surface-variant">
+      使用した肥料
+    </label>
+    <select name="fertilizer" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" aria-describedby="id_fertilizer_helptext" id="id_fertilizer">
+  <option value="" selected>未設定</option>
 
-  <option value="06aa5fd4-99f6-709f-8000-c84fdb592a2a">標準固形肥料（共通）</option>
+  <option value="06ab514e-cb58-78bd-8000-8918ad302f15">標準固形肥料（共通）</option>
 
-  <option value="06aa5fd4-99fe-7e04-8000-c70afe7a4111">自家製油かす</option>
+  <option value="06ab514e-cb5e-78ed-8000-d2a0ce99d7bc">自家製油かす</option>
 
 </select>
-              <p class="mt-1 text-xs text-gray-500">施肥時のみ指定する</p>
-              
-            </div>
+  
+  <p class="mt-1 text-xs text-on-surface-variant">施肥時のみ指定する</p>
+  
+</div>
+
           </template>
         
       
@@ -304,25 +331,31 @@
         
           
           <template x-if="task === 'fertilizing'">
-            <div>
-              <label for="id_fertilizer_amount" class="mb-1 block text-sm font-medium text-gray-700">
-                肥料の量
-              </label>
-              <input type="text" name="fertilizer_amount" maxlength="40" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500" aria-describedby="id_fertilizer_amount_helptext" id="id_fertilizer_amount">
-              <p class="mt-1 text-xs text-gray-500">自由入力（例: 1g、3粒）</p>
-              
-            </div>
+            
+<div>
+  
+    <label for="id_fertilizer_amount" class="mb-1 block text-sm font-medium text-on-surface-variant">
+      肥料の量
+    </label>
+    <input type="text" name="fertilizer_amount" maxlength="40" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" aria-describedby="id_fertilizer_amount_helptext" id="id_fertilizer_amount">
+  
+  <p class="mt-1 text-xs text-on-surface-variant">自由入力（例: 1g、3粒）</p>
+  
+</div>
+
           </template>
         
       
         
         
-          <div>
-            <label for="id_health_evaluation" class="mb-1 block text-sm font-medium text-gray-700">
-              状態評価
-            </label>
-            <select name="health_evaluation" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 bg-white" aria-describedby="id_health_evaluation_helptext" id="id_health_evaluation">
-  <option value="" selected>---------</option>
+          
+<div>
+  
+    <label for="id_health_evaluation" class="mb-1 block text-sm font-medium text-on-surface-variant">
+      状態評価
+    </label>
+    <select name="health_evaluation" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" aria-describedby="id_health_evaluation_helptext" id="id_health_evaluation">
+  <option value="" selected>未設定</option>
 
   <option value="1">1: 非常に悪い</option>
 
@@ -335,43 +368,51 @@
   <option value="5">5: 非常に良い</option>
 
 </select>
-            <p class="mt-1 text-xs text-gray-500">1〜5 の 5 段階評価</p>
-            
-          </div>
+  
+  <p class="mt-1 text-xs text-on-surface-variant">1〜5 の 5 段階評価</p>
+  
+</div>
+
         
       
         
         
-          <div>
-            <label for="id_notes" class="mb-1 block text-sm font-medium text-gray-700">
-              メモ
-            </label>
-            <textarea name="notes" cols="40" rows="3" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 min-h-[6rem]" id="id_notes">
+          
+<div>
+  
+    <label for="id_notes" class="mb-1 block text-sm font-medium text-on-surface-variant">
+      メモ
+    </label>
+    <textarea name="notes" cols="40" rows="3" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40 min-h-[6rem]" id="id_notes">
 </textarea>
-            
-            
-          </div>
+  
+  
+  
+</div>
+
         
       
         
         
-          <div>
-            <label for="id_photo" class="mb-1 block text-sm font-medium text-gray-700">
-              写真
-            </label>
-            <input type="file" name="photo" accept="image/*" class="block w-full text-sm" id="id_photo">
-            
-            
-          </div>
+          
+<div>
+  
+    <label for="id_photo" class="mb-1 block text-sm font-medium text-on-surface-variant">
+      写真
+    </label>
+    <input type="file" name="photo" accept="image/*" class="block w-full text-sm text-on-surface-variant file:mr-3 file:rounded-full file:border-0 file:bg-secondary-container file:px-4 file:py-2 file:text-sm file:font-bold file:text-on-secondary-container" id="id_photo">
+  
+  
+  
+</div>
+
         
       
 
-      <div class="flex items-center justify-between">
-        <a href="logs.html" class="text-sm text-gray-600 hover:underline">キャンセル</a>
-        <button type="submit"
-                class="rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-emerald-700">
-          保存
-        </button>
+      <div class="flex gap-2 pt-2">
+        <button type="submit" class="rounded-full bg-primary px-6 py-2.5 font-bold text-on-primary">保存</button>
+        <a href="logs.html"
+           class="rounded-full bg-surface-container-high px-6 py-2.5 font-bold text-on-surface-variant">キャンセル</a>
       </div>
     </form>
   </div>

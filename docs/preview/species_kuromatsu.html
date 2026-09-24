@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="lG773SZvQ5N0YEtDN08t3D40ty76FlJdfOZ5oljHRYQWckAwhyKSQuSolBcmlCjx">
+    <meta name="csrf-token" content="hWvJkXmU6C9GCwE9AuAgmDK46ihYjFA5Yz2WXwYexU5okqS0Ske4rTiQxAzCde2g">
     <title>黒松 | 品種マスタ</title>
 
     
@@ -84,7 +84,7 @@
   </head>
   <body
     class="min-h-screen bg-background font-body text-on-background antialiased"
-    hx-headers='{"X-CSRFToken": "lG773SZvQ5N0YEtDN08t3D40ty76FlJdfOZ5oljHRYQWckAwhyKSQuSolBcmlCjx"}'
+    hx-headers='{"X-CSRFToken": "hWvJkXmU6C9GCwE9AuAgmDK46ihYjFA5Yz2WXwYexU5okqS0Ske4rTiQxAzCde2g"}'
   >
     
 <header class="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between bg-[#f6faf6]/80 px-4 backdrop-blur-md">
@@ -113,14 +113,16 @@
     
 
     
-    <button
-      type="button"
-      class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
-      aria-label="通知"
-      title="通知（Phase 3 で実装予定）"
-    >
-      <span class="material-symbols-outlined text-green-800">notifications</span>
-    </button>
+      
+      <a
+        href="settings_notifications.html"
+        class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
+        aria-label="通知設定"
+        title="通知設定"
+      >
+        <span class="material-symbols-outlined text-green-800">notifications</span>
+      </a>
+    
 
     
   </div>
@@ -133,104 +135,120 @@
 
       
   <div class="space-y-4">
-    <header>
-      <h1 class="text-xl font-bold text-emerald-900">黒松</h1>
-      <p class="text-sm text-gray-600">
+    <header class="rounded-xl bg-surface-container-lowest p-4">
+      <p class="text-xs font-bold uppercase tracking-wider text-primary">品種ガイド</p>
+      <h1 class="text-xl font-bold text-on-surface">黒松</h1>
+      <p class="mt-0.5 text-sm text-on-surface-variant">
         針葉樹
         ・<i>Pinus thunbergii</i>
       </p>
+      
+        <p class="mt-3 whitespace-pre-line text-sm text-on-surface">日本を代表する松柏盆栽。荒々しい樹皮と力強い枝振りが特徴。日当たりと風通しを好み、芽摘み・葉抜きで樹勢をコントロールする。</p>
+      
     </header>
 
-    
-      <section class="rounded-lg border border-emerald-100 bg-white p-4 shadow-sm">
-        <p class="whitespace-pre-line text-sm text-gray-800">日本を代表する松柏盆栽。荒々しい樹皮と力強い枝振りが特徴。日当たりと風通しを好み、芽摘み・葉抜きで樹勢をコントロールする。</p>
-      </section>
-    
-
-    <section class="rounded-lg border border-emerald-100 bg-white p-4 shadow-sm">
-      <h2 class="mb-2 text-sm font-semibold text-emerald-800">月別作業カレンダー</h2>
+    <section class="rounded-xl bg-surface-container-lowest p-4">
+      <h2 class="mb-3 text-sm font-bold text-on-surface-variant">月別作業カレンダー</h2>
       
-        <ul class="divide-y divide-emerald-50">
+        <ol class="space-y-3">
           
-            <li class="py-2">
-              <p class="text-sm font-semibold text-emerald-900">3月</p>
-              <ul class="mt-1 space-y-1 text-sm text-gray-700">
+            <li class="flex gap-3 ">
+              <span class="w-10 shrink-0 text-sm font-bold text-on-surface-variant">
+                3月
+              </span>
+              <ul class="min-w-0 flex-1 space-y-1.5">
                 
-                  <li>
-                    <span class="text-xs text-emerald-600">[中旬]</span>
-                    repotting: 新芽が動き出す前に植え替え。2〜4年に一度が目安。
+                  <li class="text-sm text-on-surface">
+                    <span class="mr-1 rounded-full bg-secondary-container px-2 py-0.5 text-xs font-bold text-on-secondary-container">植え替え</span>
+                    <span class="text-xs text-on-surface-variant">中旬</span>
+                    <span class="block text-on-surface-variant">新芽が動き出す前に植え替え。2〜4年に一度が目安。</span>
                   </li>
                 
               </ul>
             </li>
           
-            <li class="py-2">
-              <p class="text-sm font-semibold text-emerald-900">4月</p>
-              <ul class="mt-1 space-y-1 text-sm text-gray-700">
+            <li class="flex gap-3 ">
+              <span class="w-10 shrink-0 text-sm font-bold text-on-surface-variant">
+                4月
+              </span>
+              <ul class="min-w-0 flex-1 space-y-1.5">
                 
-                  <li>
-                    <span class="text-xs text-emerald-600">[上旬]</span>
-                    fertilizing: 玉肥を置き肥。新芽が伸びる前の元肥として施す。
+                  <li class="text-sm text-on-surface">
+                    <span class="mr-1 rounded-full bg-secondary-container px-2 py-0.5 text-xs font-bold text-on-secondary-container">施肥</span>
+                    <span class="text-xs text-on-surface-variant">上旬</span>
+                    <span class="block text-on-surface-variant">玉肥を置き肥。新芽が伸びる前の元肥として施す。</span>
                   </li>
                 
               </ul>
             </li>
           
-            <li class="py-2">
-              <p class="text-sm font-semibold text-emerald-900">5月</p>
-              <ul class="mt-1 space-y-1 text-sm text-gray-700">
+            <li class="flex gap-3 ">
+              <span class="w-10 shrink-0 text-sm font-bold text-on-surface-variant">
+                5月
+              </span>
+              <ul class="min-w-0 flex-1 space-y-1.5">
                 
-                  <li>
-                    <span class="text-xs text-emerald-600">[中旬]</span>
-                    bud_pinching: 新芽（みどり）の長さが揃ったら、強い芽は元から、弱い芽は半分残してつまむ。
+                  <li class="text-sm text-on-surface">
+                    <span class="mr-1 rounded-full bg-secondary-container px-2 py-0.5 text-xs font-bold text-on-secondary-container">芽摘み</span>
+                    <span class="text-xs text-on-surface-variant">中旬</span>
+                    <span class="block text-on-surface-variant">新芽（みどり）の長さが揃ったら、強い芽は元から、弱い芽は半分残してつまむ。</span>
                   </li>
                 
               </ul>
             </li>
           
-            <li class="py-2">
-              <p class="text-sm font-semibold text-emerald-900">6月</p>
-              <ul class="mt-1 space-y-1 text-sm text-gray-700">
+            <li class="flex gap-3 ">
+              <span class="w-10 shrink-0 text-sm font-bold text-on-surface-variant">
+                6月
+              </span>
+              <ul class="min-w-0 flex-1 space-y-1.5">
                 
-                  <li>
-                    <span class="text-xs text-emerald-600">[下旬]</span>
-                    fertilizing: 肥料止め。梅雨明けまでに施肥を控え、徒長を抑える。
+                  <li class="text-sm text-on-surface">
+                    <span class="mr-1 rounded-full bg-secondary-container px-2 py-0.5 text-xs font-bold text-on-secondary-container">施肥</span>
+                    <span class="text-xs text-on-surface-variant">下旬</span>
+                    <span class="block text-on-surface-variant">肥料止め。梅雨明けまでに施肥を控え、徒長を抑える。</span>
                   </li>
                 
               </ul>
             </li>
           
-            <li class="py-2">
-              <p class="text-sm font-semibold text-emerald-900">11月</p>
-              <ul class="mt-1 space-y-1 text-sm text-gray-700">
+            <li class="flex gap-3 ">
+              <span class="w-10 shrink-0 text-sm font-bold text-on-surface-variant">
+                11月
+              </span>
+              <ul class="min-w-0 flex-1 space-y-1.5">
                 
-                  <li>
-                    <span class="text-xs text-emerald-600">[中旬]</span>
-                    defoliation: 古葉抜き。前年の古い葉を手で引き抜き、内部の日当たりと風通しを確保する。
+                  <li class="text-sm text-on-surface">
+                    <span class="mr-1 rounded-full bg-secondary-container px-2 py-0.5 text-xs font-bold text-on-secondary-container">葉刈り</span>
+                    <span class="text-xs text-on-surface-variant">中旬</span>
+                    <span class="block text-on-surface-variant">古葉抜き。前年の古い葉を手で引き抜き、内部の日当たりと風通しを確保する。</span>
                   </li>
                 
               </ul>
             </li>
           
-            <li class="py-2">
-              <p class="text-sm font-semibold text-emerald-900">12月</p>
-              <ul class="mt-1 space-y-1 text-sm text-gray-700">
+            <li class="flex gap-3 ">
+              <span class="w-10 shrink-0 text-sm font-bold text-on-surface-variant">
+                12月
+              </span>
+              <ul class="min-w-0 flex-1 space-y-1.5">
                 
-                  <li>
-                    <span class="text-xs text-emerald-600">[上旬]</span>
-                    wiring: 休眠期に入ったら針金かけ。樹液の動きが少なく形が決まりやすい。
+                  <li class="text-sm text-on-surface">
+                    <span class="mr-1 rounded-full bg-secondary-container px-2 py-0.5 text-xs font-bold text-on-secondary-container">針金かけ</span>
+                    <span class="text-xs text-on-surface-variant">上旬</span>
+                    <span class="block text-on-surface-variant">休眠期に入ったら針金かけ。樹液の動きが少なく形が決まりやすい。</span>
                   </li>
                 
               </ul>
             </li>
           
-        </ul>
+        </ol>
       
     </section>
 
     
-      <section class="rounded-lg border border-emerald-100 bg-white p-4 shadow-sm">
-        <h2 class="mb-2 text-sm font-semibold text-emerald-800">この品種の自分の盆栽</h2>
+      <section class="rounded-xl bg-surface-container-lowest p-4">
+        <h2 class="mb-2 text-sm font-bold text-on-surface-variant">この品種の自分の盆栽</h2>
         <ul class="space-y-2">
           
             <li>
@@ -246,14 +264,12 @@
     
 
     
-      <section class="rounded-lg border border-emerald-100 bg-white p-4 shadow-sm">
-        <h2 class="mb-2 text-sm font-semibold text-emerald-800">関連お役立ち記事</h2>
-        <ul class="divide-y divide-emerald-50">
+      <section class="rounded-xl bg-surface-container-lowest p-4">
+        <h2 class="mb-2 text-sm font-bold text-on-surface-variant">関連お役立ち記事</h2>
+        <ul class="divide-y divide-surface-container-high">
           
             <li class="py-2 text-sm">
-              <a href="article_bonsai-watering-basics.html" class="text-emerald-700 hover:underline">
-                盆栽の水やり入門
-              </a>
+              <a href="article_bonsai-watering-basics.html" class="font-medium text-primary">盆栽の水やり入門</a>
             </li>
           
         </ul>

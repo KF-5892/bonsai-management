@@ -12,6 +12,8 @@ urlpatterns = [
     path("", views.CareLogListView.as_view(), name="list"),
     path("new/", views.CareLogCreateView.as_view(), name="create"),
     path("bulk/", views.BulkCareLogCreateView.as_view(), name="bulk_create"),
+    path("quick/", views.QuickCareLogCreateView.as_view(), name="quick_create"),
+    path("export/", views.CareLogExportView.as_view(), name="export"),
     # 肥料マスタ（``<str:pk>`` パターンより前に置いて誤マッチを防ぐ）
     path("fertilizers/", views.FertilizerListView.as_view(), name="fertilizer_list"),
     path("fertilizers/new/", views.FertilizerCreateView.as_view(), name="fertilizer_create"),

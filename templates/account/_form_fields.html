@@ -1,0 +1,29 @@
+{# allauth のフォームをアプリ共通の見た目で描画する（login / signup 共用） #}
+{% if form.non_field_errors %}
+  <div class="rounded-lg bg-error-container px-3 py-2 text-sm text-on-error-container" role="alert">
+    {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+  </div>
+{% endif %}
+{% for field in form %}
+  {% if field.is_hidden %}
+    {{ field }}
+  {% elif field.field.widget.input_type == "checkbox" %}
+    <label for="{{ field.id_for_label }}" class="flex cursor-pointer items-center gap-3 text-sm font-medium text-on-surface">
+      <input type="checkbox" name="{{ field.html_name }}" id="{{ field.id_for_label }}" {% if field.value %}checked{% endif %}
+             class="h-5 w-5 rounded-sm border-outline-variant text-primary focus:ring-primary">
+      <span>{{ field.label }}</span>
+    </label>
+  {% else %}
+    <div>
+      <label for="{{ field.id_for_label }}" class="mb-1 block text-sm font-medium text-on-surface-variant">{{ field.label }}</label>
+      <input type="{{ field.field.widget.input_type }}" name="{{ field.html_name }}" id="{{ field.id_for_label }}"
+             value="{{ field.value|default_if_none:'' }}"
+             {% if field.field.widget.attrs.placeholder %}placeholder="{{ field.field.widget.attrs.placeholder }}"{% endif %}
+             {% if field.field.widget.attrs.autocomplete %}autocomplete="{{ field.field.widget.attrs.autocomplete }}"{% endif %}
+             {% if field.field.required %}required{% endif %}
+             class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40">
+      {# allauth の password には再設定リンク入りの help_text が付くが、ログイン画面側で明示リンクを出すため描画しない #}
+      {% for error in field.errors %}<p class="mt-1 text-xs text-error">{{ error }}</p>{% endfor %}
+    </div>
+  {% endif %}
+{% endfor %}

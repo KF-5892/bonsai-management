@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="ftQOTuuyWnIvs8H2mv2Aww13klMdr7vo9BIMeXOKXgLrGOOVQ3EZjnPrcoRt7o5I">
+    <meta name="csrf-token" content="JOIB1MXJwErvEnsjdY5HX113wiEFQEd6qrfOElz3XWndmhGavOJv2hzPXAWjKdFh">
     <title>楓 | 品種マスタ</title>
 
     
@@ -84,7 +84,7 @@
   </head>
   <body
     class="min-h-screen bg-background font-body text-on-background antialiased"
-    hx-headers='{"X-CSRFToken": "ftQOTuuyWnIvs8H2mv2Aww13klMdr7vo9BIMeXOKXgLrGOOVQ3EZjnPrcoRt7o5I"}'
+    hx-headers='{"X-CSRFToken": "JOIB1MXJwErvEnsjdY5HX113wiEFQEd6qrfOElz3XWndmhGavOJv2hzPXAWjKdFh"}'
   >
     
 <header class="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between bg-[#f6faf6]/80 px-4 backdrop-blur-md">
@@ -113,14 +113,16 @@
     
 
     
-    <button
-      type="button"
-      class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
-      aria-label="通知"
-      title="通知（Phase 3 で実装予定）"
-    >
-      <span class="material-symbols-outlined text-green-800">notifications</span>
-    </button>
+      
+      <a
+        href="settings_notifications.html"
+        class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
+        aria-label="通知設定"
+        title="通知設定"
+      >
+        <span class="material-symbols-outlined text-green-800">notifications</span>
+      </a>
+    
 
     
   </div>
@@ -133,86 +135,99 @@
 
       
   <div class="space-y-4">
-    <header>
-      <h1 class="text-xl font-bold text-emerald-900">楓</h1>
-      <p class="text-sm text-gray-600">
+    <header class="rounded-xl bg-surface-container-lowest p-4">
+      <p class="text-xs font-bold uppercase tracking-wider text-primary">品種ガイド</p>
+      <h1 class="text-xl font-bold text-on-surface">楓</h1>
+      <p class="mt-0.5 text-sm text-on-surface-variant">
         広葉樹
         ・<i>Acer palmatum</i>
       </p>
+      
+        <p class="mt-3 whitespace-pre-line text-sm text-on-surface">新緑・紅葉・寒樹姿と四季を通じて楽しめる雑木盆栽の代表格。水切れに弱く、夏は葉焼け対策が必要。</p>
+      
     </header>
 
-    
-      <section class="rounded-lg border border-emerald-100 bg-white p-4 shadow-sm">
-        <p class="whitespace-pre-line text-sm text-gray-800">新緑・紅葉・寒樹姿と四季を通じて楽しめる雑木盆栽の代表格。水切れに弱く、夏は葉焼け対策が必要。</p>
-      </section>
-    
-
-    <section class="rounded-lg border border-emerald-100 bg-white p-4 shadow-sm">
-      <h2 class="mb-2 text-sm font-semibold text-emerald-800">月別作業カレンダー</h2>
+    <section class="rounded-xl bg-surface-container-lowest p-4">
+      <h2 class="mb-3 text-sm font-bold text-on-surface-variant">月別作業カレンダー</h2>
       
-        <ul class="divide-y divide-emerald-50">
+        <ol class="space-y-3">
           
-            <li class="py-2">
-              <p class="text-sm font-semibold text-emerald-900">2月</p>
-              <ul class="mt-1 space-y-1 text-sm text-gray-700">
+            <li class="flex gap-3 ">
+              <span class="w-10 shrink-0 text-sm font-bold text-on-surface-variant">
+                2月
+              </span>
+              <ul class="min-w-0 flex-1 space-y-1.5">
                 
-                  <li>
-                    <span class="text-xs text-emerald-600">[下旬]</span>
-                    repotting: 芽出し直前に植え替え。毎年〜2年に一度が目安。
+                  <li class="text-sm text-on-surface">
+                    <span class="mr-1 rounded-full bg-secondary-container px-2 py-0.5 text-xs font-bold text-on-secondary-container">植え替え</span>
+                    <span class="text-xs text-on-surface-variant">下旬</span>
+                    <span class="block text-on-surface-variant">芽出し直前に植え替え。毎年〜2年に一度が目安。</span>
                   </li>
                 
               </ul>
             </li>
           
-            <li class="py-2">
-              <p class="text-sm font-semibold text-emerald-900">4月</p>
-              <ul class="mt-1 space-y-1 text-sm text-gray-700">
+            <li class="flex gap-3 ">
+              <span class="w-10 shrink-0 text-sm font-bold text-on-surface-variant">
+                4月
+              </span>
+              <ul class="min-w-0 flex-1 space-y-1.5">
                 
-                  <li>
-                    <span class="text-xs text-emerald-600">[上旬]</span>
-                    pruning: 新芽が開いたら芽摘み。2葉を残して先を摘む。
+                  <li class="text-sm text-on-surface">
+                    <span class="mr-1 rounded-full bg-secondary-container px-2 py-0.5 text-xs font-bold text-on-secondary-container">剪定</span>
+                    <span class="text-xs text-on-surface-variant">上旬</span>
+                    <span class="block text-on-surface-variant">新芽が開いたら芽摘み。2葉を残して先を摘む。</span>
                   </li>
                 
               </ul>
             </li>
           
-            <li class="py-2">
-              <p class="text-sm font-semibold text-emerald-900">6月</p>
-              <ul class="mt-1 space-y-1 text-sm text-gray-700">
+            <li class="flex gap-3 ">
+              <span class="w-10 shrink-0 text-sm font-bold text-on-surface-variant">
+                6月
+              </span>
+              <ul class="min-w-0 flex-1 space-y-1.5">
                 
-                  <li>
-                    <span class="text-xs text-emerald-600">[中旬]</span>
-                    defoliation: 葉刈りで二番芽を出し、葉を小型化する。樹勢のあるものに限る。
+                  <li class="text-sm text-on-surface">
+                    <span class="mr-1 rounded-full bg-secondary-container px-2 py-0.5 text-xs font-bold text-on-secondary-container">葉刈り</span>
+                    <span class="text-xs text-on-surface-variant">中旬</span>
+                    <span class="block text-on-surface-variant">葉刈りで二番芽を出し、葉を小型化する。樹勢のあるものに限る。</span>
                   </li>
                 
               </ul>
             </li>
           
-            <li class="py-2">
-              <p class="text-sm font-semibold text-emerald-900">7月</p>
-              <ul class="mt-1 space-y-1 text-sm text-gray-700">
+            <li class="flex gap-3 ">
+              <span class="w-10 shrink-0 text-sm font-bold text-on-surface-variant">
+                7月
+              </span>
+              <ul class="min-w-0 flex-1 space-y-1.5">
                 
-                  <li>
-                    <span class="text-xs text-emerald-600">[上旬]</span>
-                    leaf_misting: 真夏は半日陰に移動。朝夕の葉水で葉焼けを防ぐ。
+                  <li class="text-sm text-on-surface">
+                    <span class="mr-1 rounded-full bg-secondary-container px-2 py-0.5 text-xs font-bold text-on-secondary-container">葉水</span>
+                    <span class="text-xs text-on-surface-variant">上旬</span>
+                    <span class="block text-on-surface-variant">真夏は半日陰に移動。朝夕の葉水で葉焼けを防ぐ。</span>
                   </li>
                 
               </ul>
             </li>
           
-            <li class="py-2">
-              <p class="text-sm font-semibold text-emerald-900">11月</p>
-              <ul class="mt-1 space-y-1 text-sm text-gray-700">
+            <li class="flex gap-3 ">
+              <span class="w-10 shrink-0 text-sm font-bold text-on-surface-variant">
+                11月
+              </span>
+              <ul class="min-w-0 flex-1 space-y-1.5">
                 
-                  <li>
-                    <span class="text-xs text-emerald-600">[中旬]</span>
-                    observation: 紅葉の鑑賞期。落葉したら寒樹姿を楽しむ。
+                  <li class="text-sm text-on-surface">
+                    <span class="mr-1 rounded-full bg-secondary-container px-2 py-0.5 text-xs font-bold text-on-secondary-container">観察</span>
+                    <span class="text-xs text-on-surface-variant">中旬</span>
+                    <span class="block text-on-surface-variant">紅葉の鑑賞期。落葉したら寒樹姿を楽しむ。</span>
                   </li>
                 
               </ul>
             </li>
           
-        </ul>
+        </ol>
       
     </section>
 

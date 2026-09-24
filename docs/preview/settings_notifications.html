@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="tyYX7OWZPaaMpyAa33ry6Jt40InpkcR6nGQVshgbQ3dIDeH3xB3XTAhsSLsF0trq">
+    <meta name="csrf-token" content="JMueB0xOAp9zc4t67CtsGzZHedMfjNOaqp1rez981H5hUYHXps7gLPxtFv4Tdmgl">
     <title>通知設定 | 盆栽管理</title>
 
     
@@ -84,7 +84,7 @@
   </head>
   <body
     class="min-h-screen bg-background font-body text-on-background antialiased"
-    hx-headers='{"X-CSRFToken": "tyYX7OWZPaaMpyAa33ry6Jt40InpkcR6nGQVshgbQ3dIDeH3xB3XTAhsSLsF0trq"}'
+    hx-headers='{"X-CSRFToken": "JMueB0xOAp9zc4t67CtsGzZHedMfjNOaqp1rez981H5hUYHXps7gLPxtFv4Tdmgl"}'
   >
     
 <header class="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between bg-[#f6faf6]/80 px-4 backdrop-blur-md">
@@ -113,14 +113,16 @@
     
 
     
-    <button
-      type="button"
-      class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
-      aria-label="通知"
-      title="通知（Phase 3 で実装予定）"
-    >
-      <span class="material-symbols-outlined text-green-800">notifications</span>
-    </button>
+      
+      <a
+        href="settings_notifications.html"
+        class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
+        aria-label="通知設定"
+        title="通知設定"
+      >
+        <span class="material-symbols-outlined text-green-800">notifications</span>
+      </a>
+    
 
     
   </div>
@@ -135,7 +137,7 @@
   <div class="space-y-4">
     <h1 class="text-xl font-bold text-on-surface">通知設定</h1>
     <form method="post" class="space-y-4 rounded-xl bg-surface-container-lowest p-4">
-      <input type="hidden" name="csrfmiddlewaretoken" value="tyYX7OWZPaaMpyAa33ry6Jt40InpkcR6nGQVshgbQ3dIDeH3xB3XTAhsSLsF0trq">
+      <input type="hidden" name="csrfmiddlewaretoken" value="JMueB0xOAp9zc4t67CtsGzZHedMfjNOaqp1rez981H5hUYHXps7gLPxtFv4Tdmgl">
       <p class="rounded-lg bg-surface-container-low p-3 text-xs text-on-surface-variant">
         通知の配信は Phase 3 で提供予定です。ここでの設定は配信開始時に適用されます。
       </p>
@@ -145,7 +147,7 @@
           <label for="id_notification_enabled" class="mb-1 block text-sm font-medium text-on-surface-variant">
             通知を有効化
           </label>
-          <input type="checkbox" name="notification_enabled" class="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500" id="id_notification_enabled" checked>
+          <input type="checkbox" name="notification_enabled" class="h-5 w-5 rounded-sm border-outline-variant text-primary focus:ring-primary" id="id_notification_enabled" checked>
           
           
         </div>
@@ -154,7 +156,7 @@
           <label for="id_notify_start_time" class="mb-1 block text-sm font-medium text-on-surface-variant">
             通知開始時刻
           </label>
-          <input type="time" name="notify_start_time" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500" id="id_notify_start_time">
+          <input type="time" name="notify_start_time" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" id="id_notify_start_time">
           
           
         </div>
@@ -163,7 +165,7 @@
           <label for="id_notify_end_time" class="mb-1 block text-sm font-medium text-on-surface-variant">
             通知終了時刻
           </label>
-          <input type="time" name="notify_end_time" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500" id="id_notify_end_time">
+          <input type="time" name="notify_end_time" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" id="id_notify_end_time">
           
           
         </div>

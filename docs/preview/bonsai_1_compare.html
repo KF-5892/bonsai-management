@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="dxRDMQdYYIcUGafrnPgVLhfYOor2E1oh7FJB7jxaZBfQUQmkRnSky83mGrwikiYB">
+    <meta name="csrf-token" content="nyy8eKc4QovJHSQ85CeCXyjhmsnVyd8Z4b5lRjOohGrrpM4ZnsSq2OR3NKFzsMAa">
     <title>黒松 太郎 | 盆栽管理</title>
 
     
@@ -84,7 +84,7 @@
   </head>
   <body
     class="min-h-screen bg-background font-body text-on-background antialiased"
-    hx-headers='{"X-CSRFToken": "dxRDMQdYYIcUGafrnPgVLhfYOor2E1oh7FJB7jxaZBfQUQmkRnSky83mGrwikiYB"}'
+    hx-headers='{"X-CSRFToken": "nyy8eKc4QovJHSQ85CeCXyjhmsnVyd8Z4b5lRjOohGrrpM4ZnsSq2OR3NKFzsMAa"}'
   >
     
 <header class="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between bg-[#f6faf6]/80 px-4 backdrop-blur-md">
@@ -113,14 +113,16 @@
     
 
     
-    <button
-      type="button"
-      class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
-      aria-label="通知"
-      title="通知（Phase 3 で実装予定）"
-    >
-      <span class="material-symbols-outlined text-green-800">notifications</span>
-    </button>
+      
+      <a
+        href="settings_notifications.html"
+        class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
+        aria-label="通知設定"
+        title="通知設定"
+      >
+        <span class="material-symbols-outlined text-green-800">notifications</span>
+      </a>
+    
 
     
   </div>
@@ -138,7 +140,7 @@
       <div class="flex">
         <div class="aspect-square w-1/3 max-w-[140px] bg-surface-container-low">
           
-            <img src="/media/bonsai/medium/2026/09/demo_medium_7fuIYvm.jpg" alt="黒松 太郎" class="h-full w-full object-cover">
+            <img src="/media/bonsai/medium/2026/09/demo_medium_WCBEe4l.jpg" alt="黒松 太郎" class="h-full w-full object-cover">
           
         </div>
         <div class="flex flex-1 flex-col justify-between p-4">
@@ -162,13 +164,54 @@
               </div>
             
           </div>
-          <div class="mt-3 flex gap-3 text-sm font-bold">
+          <div class="mt-3 text-sm font-bold">
             <a href="#" class="text-primary">編集</a>
-            <a href="#" class="text-error">削除</a>
           </div>
         </div>
       </div>
     </header>
+
+    
+    <section aria-label="クイック記録" class="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+      
+        <form method="post" action="#" class="flex-none">
+          <input type="hidden" name="csrfmiddlewaretoken" value="nyy8eKc4QovJHSQ85CeCXyjhmsnVyd8Z4b5lRjOohGrrpM4ZnsSq2OR3NKFzsMAa">
+          <input type="hidden" name="bonsai" value="06ab514e-cb1e-7949-8000-b81db9a9ba21">
+          <input type="hidden" name="task_type" value="watering">
+          <input type="hidden" name="next" value="bonsai_1_compare.html">
+          <button type="submit"
+                  class="flex items-center gap-1 rounded-full bg-secondary-container px-4 py-2 text-sm font-bold text-on-secondary-container transition-transform active:scale-95">
+            <span class="material-symbols-outlined text-lg" aria-hidden="true">water_drop</span>潅水を記録
+          </button>
+        </form>
+      
+        <form method="post" action="#" class="flex-none">
+          <input type="hidden" name="csrfmiddlewaretoken" value="nyy8eKc4QovJHSQ85CeCXyjhmsnVyd8Z4b5lRjOohGrrpM4ZnsSq2OR3NKFzsMAa">
+          <input type="hidden" name="bonsai" value="06ab514e-cb1e-7949-8000-b81db9a9ba21">
+          <input type="hidden" name="task_type" value="leaf_misting">
+          <input type="hidden" name="next" value="bonsai_1_compare.html">
+          <button type="submit"
+                  class="flex items-center gap-1 rounded-full bg-secondary-container px-4 py-2 text-sm font-bold text-on-secondary-container transition-transform active:scale-95">
+            <span class="material-symbols-outlined text-lg" aria-hidden="true">water_drop</span>葉水を記録
+          </button>
+        </form>
+      
+        <form method="post" action="#" class="flex-none">
+          <input type="hidden" name="csrfmiddlewaretoken" value="nyy8eKc4QovJHSQ85CeCXyjhmsnVyd8Z4b5lRjOohGrrpM4ZnsSq2OR3NKFzsMAa">
+          <input type="hidden" name="bonsai" value="06ab514e-cb1e-7949-8000-b81db9a9ba21">
+          <input type="hidden" name="task_type" value="observation">
+          <input type="hidden" name="next" value="bonsai_1_compare.html">
+          <button type="submit"
+                  class="flex items-center gap-1 rounded-full bg-secondary-container px-4 py-2 text-sm font-bold text-on-secondary-container transition-transform active:scale-95">
+            <span class="material-symbols-outlined text-lg" aria-hidden="true">visibility</span>観察を記録
+          </button>
+        </form>
+      
+      <a href="log_form.html"
+         class="flex flex-none items-center gap-1 rounded-full bg-surface-container-high px-4 py-2 text-sm font-bold text-on-surface-variant">
+        <span class="material-symbols-outlined text-lg" aria-hidden="true">edit_note</span>詳しく記録
+      </a>
+    </section>
 
     
     <nav class="flex gap-2 overflow-x-auto pb-1 scrollbar-hide" aria-label="盆栽詳細タブ">
@@ -220,21 +263,21 @@
             <figure>
               <div class="aspect-square overflow-hidden rounded-lg bg-surface-container-low">
                 
-                  <img src="/media/bonsai/medium/2026/09/demo_medium_gQ766SC.jpg" alt="Before" class="h-full w-full object-cover">
+                  <img src="/media/bonsai/medium/2026/09/demo_medium_wv4gGFa.jpg" alt="Before" class="h-full w-full object-cover">
                 
               </div>
               <figcaption class="mt-1 text-xs text-on-surface-variant">
-                Before・2025/03/22
+                Before・2025/04/02
               </figcaption>
             </figure>
             <figure>
               <div class="aspect-square overflow-hidden rounded-lg bg-surface-container-low">
                 
-                  <img src="/media/bonsai/medium/2026/09/demo_medium_7fuIYvm.jpg" alt="After" class="h-full w-full object-cover">
+                  <img src="/media/bonsai/medium/2026/09/demo_medium_WCBEe4l.jpg" alt="After" class="h-full w-full object-cover">
                 
               </div>
               <figcaption class="mt-1 text-xs text-on-surface-variant">
-                After・2026/08/24
+                After・2026/09/04
               </figcaption>
             </figure>
           </div>
@@ -245,16 +288,16 @@
               <label class="block text-xs font-bold text-on-surface-variant">Before
                 <select name="before" class="mt-1 w-full rounded-md border border-outline-variant bg-surface-container-lowest px-2 py-2 text-sm">
                   
-                    <option value="06aa5fd4-9bf6-715c-8000-3ebe2aa3ed4f" >
-                      2026/08/24
+                    <option value="06ab514e-cd0d-7b6d-8000-d82b504cb8d8" >
+                      2026/09/04
                     </option>
                   
-                    <option value="06aa5fd4-9b30-716d-8000-7efe66c1ba32" >
-                      2026/01/16
+                    <option value="06ab514e-cc6c-72f2-8000-4dca74d33642" >
+                      2026/01/27
                     </option>
                   
-                    <option value="06aa5fd4-9a73-7c72-8000-3dd34054b28e" selected>
-                      2025/03/22
+                    <option value="06ab514e-cbdd-73bf-8000-e5998f75f9d9" selected>
+                      2025/04/02
                     </option>
                   
                 </select>
@@ -262,16 +305,16 @@
               <label class="block text-xs font-bold text-on-surface-variant">After
                 <select name="after" class="mt-1 w-full rounded-md border border-outline-variant bg-surface-container-lowest px-2 py-2 text-sm">
                   
-                    <option value="06aa5fd4-9bf6-715c-8000-3ebe2aa3ed4f" selected>
-                      2026/08/24
+                    <option value="06ab514e-cd0d-7b6d-8000-d82b504cb8d8" selected>
+                      2026/09/04
                     </option>
                   
-                    <option value="06aa5fd4-9b30-716d-8000-7efe66c1ba32" >
-                      2026/01/16
+                    <option value="06ab514e-cc6c-72f2-8000-4dca74d33642" >
+                      2026/01/27
                     </option>
                   
-                    <option value="06aa5fd4-9a73-7c72-8000-3dd34054b28e" >
-                      2025/03/22
+                    <option value="06ab514e-cbdd-73bf-8000-e5998f75f9d9" >
+                      2025/04/02
                     </option>
                   
                 </select>

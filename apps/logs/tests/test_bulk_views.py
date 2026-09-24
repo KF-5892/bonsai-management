@@ -49,3 +49,21 @@ def test_bulk_create_rejects_other_users_plant(client, user, other_user, bonsai_
     # 選択肢に無い盆栽が含まれるためフォームエラーで再描画される
     assert res.status_code == 200
     assert CareLog.objects.count() == 0
+
+
+def test_bulk_optional_choices_default_to_unset(client, user, bonsai_species):
+    """天候・状態評価を選ばずに送ると空のまま保存される（先頭の値が勝手に入らない）。"""
+    plant = BonsaiPlant.objects.create(user=user, species=bonsai_species, name="黒松 太郎")
+    client.force_login(user)
+    res = client.get(reverse("logs:bulk_create"))
+    html = res.content.decode()
+    assert '<option value="" selected>未設定</option>' in html
+
+    res = client.post(
+        reverse("logs:bulk_create"),
+        {"bonsai": [plant.pk], "task_type": "watering", "performed_at": "2026-04-10T09:00"},
+    )
+    assert res.status_code == 302
+    log = CareLog.objects.get(user=user)
+    assert log.weather == ""
+    assert log.health_evaluation is None

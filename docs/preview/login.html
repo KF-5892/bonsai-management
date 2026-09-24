@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="6nbZhBUVPEZZpfFWq401Z6alZEXrl7wzfJmzQGNbQYunQt82jMjVIBgAmofwYWn2">
+    <meta name="csrf-token" content="wp7Ddn2bTSH36DXDblMA61foTP2xultZjmdDnyk6Tx2ziSosHfkj0R1vEvXsRnas">
     <title>ログイン | 盆栽管理</title>
 
     
@@ -84,7 +84,7 @@
   </head>
   <body
     class="min-h-screen bg-background font-body text-on-background antialiased"
-    hx-headers='{"X-CSRFToken": "6nbZhBUVPEZZpfFWq401Z6alZEXrl7wzfJmzQGNbQYunQt82jMjVIBgAmofwYWn2"}'
+    hx-headers='{"X-CSRFToken": "wp7Ddn2bTSH36DXDblMA61foTP2xultZjmdDnyk6Tx2ziSosHfkj0R1vEvXsRnas"}'
   >
     
 <header class="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between bg-[#f6faf6]/80 px-4 backdrop-blur-md">
@@ -97,14 +97,6 @@
     
 
     
-    <button
-      type="button"
-      class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
-      aria-label="通知"
-      title="通知（Phase 3 で実装予定）"
-    >
-      <span class="material-symbols-outlined text-green-800">notifications</span>
-    </button>
 
     
       <a
@@ -124,70 +116,76 @@
 
       
   <div class="mx-auto max-w-sm space-y-6">
-    <h1 class="text-center text-2xl font-bold text-emerald-900">ログイン</h1>
+    <header class="text-center">
+      <span class="material-symbols-outlined text-5xl text-primary" aria-hidden="true">potted_plant</span>
+      <h1 class="text-2xl font-bold text-on-surface">ログイン</h1>
+      <p class="mt-1 text-sm text-on-surface-variant">今月のやることと、盆栽の記録を続けましょう。</p>
+    </header>
 
-    <form method="post" action="login.html" class="space-y-4 rounded-lg border border-emerald-100 bg-white p-5 shadow-sm">
-      <input type="hidden" name="csrfmiddlewaretoken" value="6nbZhBUVPEZZpfFWq401Z6alZEXrl7wzfJmzQGNbQYunQt82jMjVIBgAmofwYWn2">
+    <form method="post" action="login.html" class="space-y-4 rounded-xl bg-surface-container-lowest p-4">
+      <input type="hidden" name="csrfmiddlewaretoken" value="wp7Ddn2bTSH36DXDblMA61foTP2xultZjmdDnyk6Tx2ziSosHfkj0R1vEvXsRnas">
       
-      <div class="space-y-3 [&_input:not([type=checkbox])]:w-full [&_input:not([type=checkbox])]:rounded-md [&_input:not([type=checkbox])]:border [&_input:not([type=checkbox])]:border-gray-300 [&_input:not([type=checkbox])]:px-3 [&_input:not([type=checkbox])]:py-2 [&_input:not([type=checkbox])]:text-sm [&_input:not([type=checkbox]):focus]:border-emerald-500 [&_input:not([type=checkbox]):focus]:outline-none [&_input:not([type=checkbox]):focus]:ring-1 [&_input:not([type=checkbox]):focus]:ring-emerald-500 [&_input[type=checkbox]]:text-emerald-600 [&_label]:mb-1 [&_label]:block [&_label]:text-sm [&_label]:font-medium [&_label]:text-gray-700">
-        <p>
-    <label for="id_login">メールアドレス:</label>
-    <input type="email" name="login" autocomplete="email" placeholder="メールアドレス" maxlength="320" required id="id_login">
-    
-    
-  </p>
+
 
   
-  <p>
-    <label for="id_password">パスワード:</label>
-    <input type="password" name="password" placeholder="パスワード" autocomplete="current-password" required aria-describedby="id_password_helptext" id="id_password">
-    
-      <span class="helptext" id="id_password_helptext"><a href="#">パスワードをお忘れですか?</a></span>
-    
-    
-  </p>
+    <div>
+      <label for="id_login" class="mb-1 block text-sm font-medium text-on-surface-variant">メールアドレス</label>
+      <input type="email" name="login" id="id_login"
+             value=""
+             placeholder="メールアドレス"
+             autocomplete="email"
+             required
+             class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40">
+      
+      
+    </div>
+  
 
   
-  <p>
-    <label for="id_remember">ログインしたままにする:</label>
-    <input type="checkbox" name="remember" id="id_remember">
-    
-    
+    <div>
+      <label for="id_password" class="mb-1 block text-sm font-medium text-on-surface-variant">パスワード</label>
+      <input type="password" name="password" id="id_password"
+             value=""
+             placeholder="パスワード"
+             autocomplete="current-password"
+             required
+             class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40">
+      <p class="mt-1 text-xs text-on-surface-variant"><a href="#">パスワードをお忘れですか?</a></p>
       
-    
-  </p>
-      </div>
+    </div>
+  
+
+  
+    <label for="id_remember" class="flex cursor-pointer items-center gap-3 text-sm font-medium text-on-surface">
+      <input type="checkbox" name="remember" id="id_remember" 
+             class="h-5 w-5 rounded-sm border-outline-variant text-primary focus:ring-primary">
+      <span>ログインしたままにする</span>
+    </label>
+  
+
 
       
-
-      <button
-        type="submit"
-        class="w-full rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-emerald-700"
-      >
-        ログイン
-      </button>
+      <button type="submit" class="w-full rounded-full bg-primary px-6 py-3 font-bold text-on-primary">ログイン</button>
+      <p class="text-center text-sm">
+        <a href="#" class="font-medium text-primary">パスワードをお忘れですか？</a>
+      </p>
     </form>
 
-    <div class="relative">
-      <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-200"></div></div>
-      <div class="relative flex justify-center"><span class="bg-background px-2 text-xs text-gray-500">または</span></div>
-    </div>
-
     
     
-    
-      <a
-        href="#"
-        class="flex w-full items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
-      >
-        <span aria-hidden="true">G</span>
-        <span>Google でログイン</span>
+      <div class="relative">
+        <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-outline-variant"></div></div>
+        <div class="relative flex justify-center"><span class="bg-background px-2 text-xs text-on-surface-variant">または</span></div>
+      </div>
+      <a href="#"
+         class="flex w-full items-center justify-center gap-2 rounded-full bg-surface-container-lowest px-6 py-3 text-sm font-bold text-on-surface ring-1 ring-outline-variant">
+        <span aria-hidden="true">G</span><span>Google でログイン</span>
       </a>
     
 
-    <p class="text-center text-sm text-gray-600">
+    <p class="text-center text-sm text-on-surface-variant">
       アカウントをお持ちでない方は
-      <a href="signup.html" class="font-medium text-emerald-700 hover:underline">新規登録</a>
+      <a href="signup.html" class="font-bold text-primary">新規登録</a>
     </p>
   </div>
 

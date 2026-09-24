@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="LQmH6oYBskQyy7vTr0bS77nWZ5kdCy7EFYeFrRiNtdTuMNCMVyNhUYbkR8ptiPHY">
+    <meta name="csrf-token" content="Hs8ZNnZtLVcVnqjSrxqbSmvV429sGA9eo5FcqWBNcd8D5kxJJn4ZXC3Hvkr6A9Bp">
     <title>ホーム | 盆栽管理</title>
 
     
@@ -84,7 +84,7 @@
   </head>
   <body
     class="min-h-screen bg-background font-body text-on-background antialiased"
-    hx-headers='{"X-CSRFToken": "LQmH6oYBskQyy7vTr0bS77nWZ5kdCy7EFYeFrRiNtdTuMNCMVyNhUYbkR8ptiPHY"}'
+    hx-headers='{"X-CSRFToken": "Hs8ZNnZtLVcVnqjSrxqbSmvV429sGA9eo5FcqWBNcd8D5kxJJn4ZXC3Hvkr6A9Bp"}'
   >
     
 <header class="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between bg-[#f6faf6]/80 px-4 backdrop-blur-md">
@@ -113,14 +113,16 @@
     
 
     
-    <button
-      type="button"
-      class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
-      aria-label="通知"
-      title="通知（Phase 3 で実装予定）"
-    >
-      <span class="material-symbols-outlined text-green-800">notifications</span>
-    </button>
+      
+      <a
+        href="settings_notifications.html"
+        class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
+        aria-label="通知設定"
+        title="通知設定"
+      >
+        <span class="material-symbols-outlined text-green-800">notifications</span>
+      </a>
+    
 
     
   </div>
@@ -134,7 +136,7 @@
       
   <div class="space-y-6">
     
-    <section>
+    <section id="todos">
       <header class="mb-3 flex items-end justify-between">
         <div>
           <h1 class="text-xl font-bold text-on-surface">
@@ -199,7 +201,7 @@
                   
                     <form method="post"
                           action="#">
-                      <input type="hidden" name="csrfmiddlewaretoken" value="LQmH6oYBskQyy7vTr0bS77nWZ5kdCy7EFYeFrRiNtdTuMNCMVyNhUYbkR8ptiPHY">
+                      <input type="hidden" name="csrfmiddlewaretoken" value="Hs8ZNnZtLVcVnqjSrxqbSmvV429sGA9eo5FcqWBNcd8D5kxJJn4ZXC3Hvkr6A9Bp">
                       <input type="hidden" name="year" value="2026">
                       <input type="hidden" name="month" value="9">
                       
@@ -229,11 +231,11 @@
                   
                     <form method="post"
                           action="#">
-                      <input type="hidden" name="csrfmiddlewaretoken" value="LQmH6oYBskQyy7vTr0bS77nWZ5kdCy7EFYeFrRiNtdTuMNCMVyNhUYbkR8ptiPHY">
+                      <input type="hidden" name="csrfmiddlewaretoken" value="Hs8ZNnZtLVcVnqjSrxqbSmvV429sGA9eo5FcqWBNcd8D5kxJJn4ZXC3Hvkr6A9Bp">
                       <input type="hidden" name="year" value="2026">
                       <input type="hidden" name="month" value="9">
                       
-                        <input type="hidden" name="bonsai" value="06aa5fd4-99b5-750f-8000-462765579f7d">
+                        <input type="hidden" name="bonsai" value="06ab514e-cb2a-70a4-8000-7381381d46d0">
                       
                       <input type="hidden" name="task_type" value="fertilizing">
                       <button type="submit"
@@ -270,6 +272,7 @@
             </li>
           
         </ul>
+        
       
     </section>
 
@@ -294,7 +297,7 @@
                 </span>
                 <span class="min-w-0 flex-1">
                   <span class="block truncate text-xs font-medium text-on-surface-variant">
-                    黒松 太郎・9/12
+                    黒松 太郎・9/23
                   </span>
                   <span class="block truncate font-bold text-on-surface">潅水</span>
                   
@@ -316,7 +319,7 @@
                 </span>
                 <span class="min-w-0 flex-1">
                   <span class="block truncate text-xs font-medium text-on-surface-variant">
-                    もみじ 花子・9/10
+                    もみじ 花子・9/21
                   </span>
                   <span class="block truncate font-bold text-on-surface">施肥</span>
                   
@@ -338,7 +341,7 @@
                 </span>
                 <span class="min-w-0 flex-1">
                   <span class="block truncate text-xs font-medium text-on-surface-variant">
-                    黒松 太郎・9/8
+                    黒松 太郎・9/19
                   </span>
                   <span class="block truncate font-bold text-on-surface">芽摘み</span>
                   
@@ -360,7 +363,7 @@
                 </span>
                 <span class="min-w-0 flex-1">
                   <span class="block truncate text-xs font-medium text-on-surface-variant">
-                    もみじ 花子・9/5
+                    もみじ 花子・9/16
                   </span>
                   <span class="block truncate font-bold text-on-surface">観察</span>
                   
@@ -382,7 +385,7 @@
                 </span>
                 <span class="min-w-0 flex-1">
                   <span class="block truncate text-xs font-medium text-on-surface-variant">
-                    五葉松 次郎・9/1
+                    五葉松 次郎・9/12
                   </span>
                   <span class="block truncate font-bold text-on-surface">針金かけ</span>
                   
@@ -463,7 +466,12 @@
             
               <div>
                 
-                  <h3 class="mb-2 text-sm font-bold text-on-surface-variant">ベランダ（2）</h3>
+                  <div class="mb-2 flex items-center justify-between">
+                    <h3 class="text-sm font-bold text-on-surface-variant">ベランダ（2）</h3>
+                    
+                    <a href="log_bulk_form.html"
+                       class="text-xs font-bold text-primary">この2鉢に一括記録</a>
+                  </div>
                 
                 <div class="space-y-4">
                   
@@ -508,7 +516,7 @@
     <div class="absolute left-0 top-0 h-full w-1 bg-green-600"></div>
     <div class="aspect-square w-1/3 max-w-[120px] bg-surface-container-low">
       
-        <img src="/media/bonsai/thumb/2026/09/demo_thumb_ICobT3M.jpg"
+        <img src="/media/bonsai/thumb/2026/09/demo_thumb_GgmP5zw.jpg"
              alt="黒松 太郎"
              class="h-full w-full object-cover">
       
@@ -537,7 +545,12 @@
             
               <div>
                 
-                  <h3 class="mb-2 text-sm font-bold text-on-surface-variant">棚上（1）</h3>
+                  <div class="mb-2 flex items-center justify-between">
+                    <h3 class="text-sm font-bold text-on-surface-variant">棚上（1）</h3>
+                    
+                    <a href="log_bulk_form.html"
+                       class="text-xs font-bold text-primary">この1鉢に一括記録</a>
+                  </div>
                 
                 <div class="space-y-4">
                   

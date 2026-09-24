@@ -8,7 +8,7 @@ from django import forms
 from django.utils import timezone
 
 from apps.bonsai.models import BonsaiPlant, TaskType
-from apps.common.forms import TailwindFormMixin
+from apps.common.forms import DateTimeLocalInput, TailwindFormMixin
 
 from .models import CareLog, Fertilizer, HealthEvaluation, Weather
 
@@ -36,7 +36,7 @@ class CareLogForm(TailwindFormMixin, forms.ModelForm):
             "photo",
         ]
         widgets = {
-            "performed_at": forms.DateTimeInput(attrs={"type": "datetime-local"}),
+            "performed_at": DateTimeLocalInput(),
             "notes": forms.Textarea(attrs={"rows": 3}),
         }
 
@@ -45,8 +45,16 @@ class CareLogForm(TailwindFormMixin, forms.ModelForm):
         if user is not None:
             self.fields["bonsai"].queryset = BonsaiPlant.objects.filter(user=user)
             self.fields["fertilizer"].queryset = Fertilizer.objects.visible_to(user)
-        # 任意項目を表現するため empty_label を上書き
+        # 任意項目は「未設定」を明示し、必須の選択肢は "---------" ではなく促す文言にする
+        self.fields["bonsai"].empty_label = "選択してください"
         self.fields["fertilizer"].required = False
+        self.fields["fertilizer"].empty_label = "未設定"
+        self.fields["weather"].choices = [("", "未設定"), *Weather.choices]
+        self.fields["health_evaluation"].choices = [("", "未設定"), *HealthEvaluation.choices]
+        if not self.instance.pk and not self.is_bound:
+            self.initial.setdefault(
+                "performed_at", timezone.localtime().replace(second=0, microsecond=0)
+            )
 
 
 class FertilizerMasterForm(TailwindFormMixin, forms.ModelForm):
@@ -77,11 +85,11 @@ class BulkCareLogForm(TailwindFormMixin, forms.Form):
         widget=forms.CheckboxSelectMultiple,
     )
     task_type = forms.ChoiceField(label="作業種別", choices=TaskType.choices)
-    performed_at = forms.DateTimeField(
-        label="実施日時",
-        widget=forms.DateTimeInput(attrs={"type": "datetime-local"}),
+    performed_at = forms.DateTimeField(label="実施日時", widget=DateTimeLocalInput())
+    # 任意項目は空の選択肢を先頭に置く（無いと先頭の値が常に送信されてしまう）
+    weather = forms.ChoiceField(
+        label="天候", choices=[("", "未設定"), *Weather.choices], required=False
     )
-    weather = forms.ChoiceField(label="天候", choices=Weather.choices, required=False)
     temperature_c = forms.DecimalField(
         label="気温 (℃)", max_digits=4, decimal_places=1, required=False
     )
@@ -90,7 +98,7 @@ class BulkCareLogForm(TailwindFormMixin, forms.Form):
     )
     fertilizer_amount = forms.CharField(label="肥料の量", max_length=40, required=False)
     health_evaluation = forms.ChoiceField(
-        label="状態評価", choices=HealthEvaluation.choices, required=False
+        label="状態評価", choices=[("", "未設定"), *HealthEvaluation.choices], required=False
     )
     notes = forms.CharField(label="メモ", widget=forms.Textarea(attrs={"rows": 3}), required=False)
 

@@ -83,6 +83,16 @@ REPOTTING_INTERVAL_YEARS: dict[str, int] = {
 }
 DEFAULT_REPOTTING_INTERVAL_YEARS = 2
 
+# ホームの「やること」に最初から表示する件数（残りは「すべて表示」で展開）
+HOME_TODO_LIMIT = 5
+
+# 盆栽詳細のワンタップ記録（付帯情報なしで成立する高頻度作業）
+QUICK_TASKS: list[tuple[str, str, str]] = [
+    (TaskType.WATERING.value, "潅水", "water_drop"),
+    (TaskType.LEAF_MISTING.value, "葉水", "water_drop"),
+    (TaskType.OBSERVATION.value, "観察", "visibility"),
+]
+
 # マイ盆栽一覧の表示切替（docs/サイトマップ.md §11-4）
 VIEW_MODES: list[tuple[str, str]] = [
     ("card", "カード"),
@@ -235,8 +245,13 @@ class HomeView(LoginRequiredMixin, TemplateView):
         done = sum(
             1 for todo in todos if todo.completion and todo.completion.get("status") == "done"
         )
+        # 多鉢だと ToDo が数十件になるため、先頭だけ見せて残りは展開リンクで表示する
+        show_all = self.request.GET.get("todos") == "all"
+        visible_todos = todos if show_all else todos[:HOME_TODO_LIMIT]
         return {
-            "todos": todos,
+            "todos": visible_todos,
+            "hidden_todo_count": len(todos) - len(visible_todos),
+            "todos_expanded": show_all,
             "monthly_todos": monthly_todos,
             "range_mode": range_mode,
             "range_start": range_start,
@@ -299,6 +314,8 @@ class BonsaiPlantDetailView(LoginRequiredMixin, DetailView):
         ]
 
         ctx["recent_logs"] = plant.logs.select_related("fertilizer").all()[:10]
+        ctx["log_count"] = plant.logs.count()
+        ctx["quick_tasks"] = QUICK_TASKS
         ctx["schedules"] = plant.schedules.filter(is_active=True)
         ctx["media"] = plant.media.all()[:12]
         ctx["media_count"] = plant.media.count()
@@ -390,8 +407,15 @@ class BonsaiSpeciesDetailView(DetailView):
                 m = int(task.get("month"))
             except (TypeError, ValueError):
                 continue
-            tasks_by_month.setdefault(m, []).append(task)
+            # 生値（"bud_pinching" 等）ではなく表示ラベルを併せて渡す
+            task_type = str(task.get("task_type", "") or "")
+            try:
+                label = str(TaskType(task_type).label)
+            except ValueError:
+                label = task_type or "作業"
+            tasks_by_month.setdefault(m, []).append({**task, "label": label})
         ctx["tasks_by_month"] = sorted(tasks_by_month.items())
+        ctx["current_month"] = timezone.localdate().month
         # 関連記事
         from apps.articles.models import ArticleStatus, HelpArticle
 

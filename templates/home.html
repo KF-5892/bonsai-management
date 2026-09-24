@@ -5,7 +5,7 @@
 {% block content %}
   <div class="space-y-6">
     {# ----- 今月のやること（実装独自機能。Stitch トーンで再スタイル） ----- #}
-    <section>
+    <section id="todos">
       <header class="mb-3 flex items-end justify-between">
         <div>
           <h1 class="text-xl font-bold text-on-surface">
@@ -93,6 +93,12 @@
             </li>
           {% endfor %}
         </ul>
+        {% if hidden_todo_count %}
+          <a href="?todos=all{% if range_mode != 'month' %}&amp;range={{ range_mode }}{% endif %}{% if range_start and range_mode == 'custom' %}&amp;from={{ range_start|date:'Y-m-d' }}&amp;to={{ range_end|date:'Y-m-d' }}{% endif %}{% if view_mode != 'card' %}&amp;view={{ view_mode }}{% endif %}#todos"
+             class="mt-2 block rounded-xl bg-surface-container-low px-4 py-3 text-center text-sm font-bold text-primary">
+            残り {{ hidden_todo_count }} 件を表示
+          </a>
+        {% endif %}
       {% else %}
         <p class="rounded-xl bg-surface-container-low p-4 text-center text-sm text-on-surface-variant">
           この期間のやることはまだありません。
@@ -196,7 +202,12 @@
             {% for group_name, group_plants in plant_groups %}
               <div>
                 {% if group_name %}
-                  <h3 class="mb-2 text-sm font-bold text-on-surface-variant">{{ group_name }}（{{ group_plants|length }}）</h3>
+                  <div class="mb-2 flex items-center justify-between">
+                    <h3 class="text-sm font-bold text-on-surface-variant">{{ group_name }}（{{ group_plants|length }}）</h3>
+                    {# 品種別 / タグ別のグループをそのまま一括記録の対象にする（多鉢運用） #}
+                    <a href="{% url 'logs:bulk_create' %}?{% for p in group_plants %}bonsai={{ p.pk }}{% if not forloop.last %}&amp;{% endif %}{% endfor %}"
+                       class="text-xs font-bold text-primary">この{{ group_plants|length }}鉢に一括記録</a>
+                  </div>
                 {% endif %}
                 <div class="space-y-4">
                   {% for plant in group_plants %}

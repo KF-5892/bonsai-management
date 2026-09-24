@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="E3wHzbpOIRLxkygxjUrUxP6Jal5sMzc4yboFUEJ0JKOtyenqNs3jkGU72oaIsQMo">
+    <meta name="csrf-token" content="weSCfHtdWHmvgZWNXSwfl2f5Oz9dsNbRdRpPSg5xnZidYTaEfIa3qiNRfRrRmmD2">
     <title>2026年9月のスケジュール | 盆栽管理</title>
 
     
@@ -84,7 +84,7 @@
   </head>
   <body
     class="min-h-screen bg-background font-body text-on-background antialiased"
-    hx-headers='{"X-CSRFToken": "E3wHzbpOIRLxkygxjUrUxP6Jal5sMzc4yboFUEJ0JKOtyenqNs3jkGU72oaIsQMo"}'
+    hx-headers='{"X-CSRFToken": "weSCfHtdWHmvgZWNXSwfl2f5Oz9dsNbRdRpPSg5xnZidYTaEfIa3qiNRfRrRmmD2"}'
   >
     
 <header class="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between bg-[#f6faf6]/80 px-4 backdrop-blur-md">
@@ -113,14 +113,16 @@
     
 
     
-    <button
-      type="button"
-      class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
-      aria-label="通知"
-      title="通知（Phase 3 で実装予定）"
-    >
-      <span class="material-symbols-outlined text-green-800">notifications</span>
-    </button>
+      
+      <a
+        href="settings_notifications.html"
+        class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
+        aria-label="通知設定"
+        title="通知設定"
+      >
+        <span class="material-symbols-outlined text-green-800">notifications</span>
+      </a>
+    
 
     
   </div>
@@ -198,11 +200,11 @@
           <select name="bonsai" class="mt-1 w-full rounded-md border border-outline-variant bg-surface-container-lowest px-2 py-2 text-sm">
             <option value="">すべて</option>
             
-              <option value="06aa5fd4-99bd-7d37-8000-a2d523db35d2" >五葉松 次郎</option>
+              <option value="06ab514e-cb30-706a-8000-eba77f157319" >五葉松 次郎</option>
             
-              <option value="06aa5fd4-99b5-750f-8000-462765579f7d" >もみじ 花子</option>
+              <option value="06ab514e-cb2a-70a4-8000-7381381d46d0" >もみじ 花子</option>
             
-              <option value="06aa5fd4-99ab-76e0-8000-184a9a6d5a21" >黒松 太郎</option>
+              <option value="06ab514e-cb1e-7949-8000-b81db9a9ba21" >黒松 太郎</option>
             
           </select>
         </label>
@@ -220,9 +222,9 @@
           <select name="tag" class="mt-1 w-full rounded-md border border-outline-variant bg-surface-container-lowest px-2 py-2 text-sm">
             <option value="">すべて</option>
             
-              <option value="06aa5fd4-99c5-7e4b-8000-45f2e1072321" >ベランダ</option>
+              <option value="06ab514e-cb35-7be2-8000-997c24cf993c" >ベランダ</option>
             
-              <option value="06aa5fd4-99cd-7328-8000-f1ca198eb705" >棚上</option>
+              <option value="06ab514e-cb3a-7fe5-8000-424a67d6efe5" >棚上</option>
             
           </select>
         </label>
@@ -254,7 +256,7 @@
                 
                   <form method="post"
                         action="#">
-                    <input type="hidden" name="csrfmiddlewaretoken" value="E3wHzbpOIRLxkygxjUrUxP6Jal5sMzc4yboFUEJ0JKOtyenqNs3jkGU72oaIsQMo">
+                    <input type="hidden" name="csrfmiddlewaretoken" value="weSCfHtdWHmvgZWNXSwfl2f5Oz9dsNbRdRpPSg5xnZidYTaEfIa3qiNRfRrRmmD2">
                     <input type="hidden" name="year" value="2026">
                     <input type="hidden" name="month" value="9">
                     
@@ -282,11 +284,11 @@
                 
                   <form method="post"
                         action="#">
-                    <input type="hidden" name="csrfmiddlewaretoken" value="E3wHzbpOIRLxkygxjUrUxP6Jal5sMzc4yboFUEJ0JKOtyenqNs3jkGU72oaIsQMo">
+                    <input type="hidden" name="csrfmiddlewaretoken" value="weSCfHtdWHmvgZWNXSwfl2f5Oz9dsNbRdRpPSg5xnZidYTaEfIa3qiNRfRrRmmD2">
                     <input type="hidden" name="year" value="2026">
                     <input type="hidden" name="month" value="9">
                     
-                      <input type="hidden" name="bonsai" value="06aa5fd4-99b5-750f-8000-462765579f7d">
+                      <input type="hidden" name="bonsai" value="06ab514e-cb2a-70a4-8000-7381381d46d0">
                     
                     <input type="hidden" name="task_type" value="fertilizing">
                     <button type="submit"

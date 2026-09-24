@@ -24,15 +24,17 @@
       </a>
     {% endif %}
 
-    {# Phase 3: 通知機能を実装予定 #}
-    <button
-      type="button"
-      class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
-      aria-label="通知"
-      title="通知（Phase 3 で実装予定）"
-    >
-      <span class="material-symbols-outlined text-green-800">notifications</span>
-    </button>
+    {% if user.is_authenticated %}
+      {# 通知の配信は Phase 3。押しても何も起きないボタンにはせず、通知設定へ案内する #}
+      <a
+        href="{% url 'accounts:notifications' %}"
+        class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
+        aria-label="通知設定"
+        title="通知設定"
+      >
+        <span class="material-symbols-outlined text-green-800">notifications</span>
+      </a>
+    {% endif %}
 
     {% if not user.is_authenticated %}
       <a
