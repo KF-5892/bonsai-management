@@ -42,6 +42,16 @@ from django.utils import timezone  # noqa: E402
 BASE_DIR = Path(__file__).resolve().parent.parent
 OUT_DIR = BASE_DIR / "docs" / "preview"
 
+# 盆栽詳細のタブ（apps.bonsai.views.DETAIL_TABS と同じ順）
+DETAIL_TAB_KEYS_ORDERED = [
+    "overview",
+    "logs",
+    "schedules",
+    "media",
+    "repotting",
+    "compare",
+]
+
 
 def reset_db() -> None:
     db = BASE_DIR / "db.sqlite3"
@@ -53,17 +63,48 @@ def reset_db() -> None:
     call_command("loaddata", "monthly_advices_seed", verbosity=0)
 
 
+def _dummy_photo(rgb: tuple[int, int, int]):
+    """プレビュー用のダミー写真（単色 + 樹形のような図形）を生成する。"""
+    from io import BytesIO
+
+    from django.core.files.base import ContentFile
+    from PIL import Image, ImageDraw
+
+    image = Image.new("RGB", (960, 960), rgb)
+    draw = ImageDraw.Draw(image)
+    draw.rectangle((0, 780, 960, 960), fill=(196, 180, 160))  # 鉢
+    draw.rectangle((440, 420, 520, 800), fill=(92, 68, 48))  # 幹
+    for cx, cy, r in [(480, 360, 210), (330, 470, 130), (640, 470, 140)]:
+        draw.ellipse((cx - r, cy - r, cx + r, cy + r), fill=(58, 110, 62))
+    buf = BytesIO()
+    image.save(buf, format="JPEG", quality=85)
+    return ContentFile(buf.getvalue(), name="demo.jpg")
+
+
 def seed_demo_data():
     from django.contrib.auth import get_user_model
 
     from apps.articles.models import (
+        ArticleCategory,
         ArticleSpeciesRelation,
         ArticleStatus,
         HelpArticle,
     )
-    from apps.bonsai.models import BonsaiPlant, BonsaiSpecies, HealthStatus
-    from apps.logs.models import CareLog, HealthEvaluation, Weather
-    from apps.schedules.models import CareSchedule, RepeatType, TaskType
+    from apps.bonsai.models import (
+        BonsaiMedia,
+        BonsaiPlant,
+        BonsaiSpecies,
+        HealthStatus,
+        Tag,
+    )
+    from apps.logs.models import CareLog, Fertilizer, FertilizerForm, HealthEvaluation, Weather
+    from apps.schedules.models import (
+        CareSchedule,
+        CompletionSourceType,
+        RepeatType,
+        TaskType,
+    )
+    from apps.schedules.services import mark_todo_done
 
     User = get_user_model()
     user = User.objects.create_user(
@@ -116,8 +157,52 @@ def seed_demo_data():
             )
         )
 
+    # タグ（ライブラリ / 表示切替の確認用）
+    tags = {
+        name: Tag.objects.create(user=user, name=name, color=color)
+        for name, color in [("ベランダ", "#4CAF50"), ("棚上", "#8D6E63")]
+    }
+    plants[0].tags.add(tags["ベランダ"])
+    plants[1].tags.add(tags["ベランダ"])
+    plants[2].tags.add(tags["棚上"])
+
+    # 肥料マスタ（共通 + 個別）
+    Fertilizer.objects.create(
+        name="標準固形肥料（共通）",
+        form_type=FertilizerForm.SOLID,
+        n=5,
+        p=5,
+        k=5,
+        note="共通マスタの例。",
+    )
+    fertilizer = Fertilizer.objects.create(
+        user=user,
+        name="自家製油かす",
+        form_type=FertilizerForm.SOLID,
+        n=6,
+        p=3,
+        k=1,
+        is_organic=True,
+        note="春と秋に置き肥。",
+    )
+
+    # 写真（成長比較・ギャラリー確認用にダミー画像を生成）
+    for offset_days, caption, rgb in [
+        (540, "入手直後", (120, 150, 110)),
+        (240, "半年後の姿", (90, 140, 95)),
+        (20, "芽摘み後", (60, 120, 80)),
+    ]:
+        media = BonsaiMedia.objects.create(
+            bonsai=plants[0],
+            image_original=_dummy_photo(rgb),
+            taken_at=today - timedelta(days=offset_days),
+            caption=caption,
+        )
+    plants[0].cover_media = media
+    plants[0].save(update_fields=["cover_media"])
+
     # スケジュール（当月に次回予定が来るもの）
-    CareSchedule.objects.create(
+    watering_schedule = CareSchedule.objects.create(
         bonsai=plants[0],
         user=user,
         task_type=TaskType.WATERING,
@@ -194,6 +279,31 @@ def seed_demo_data():
         )
         first_log = first_log or log
 
+    # 施肥ログ（肥料参照あり）
+    CareLog.objects.create(
+        bonsai=plants[1],
+        user=user,
+        task_type=TaskType.FERTILIZING,
+        weather=Weather.CLOUDY,
+        temperature_c=21.0,
+        fertilizer=fertilizer,
+        fertilizer_amount="3粒",
+        notes="置き肥を交換。",
+        health_evaluation=HealthEvaluation.GOOD,
+        performed_at=timezone.now() - timedelta(days=3),
+    )
+
+    # ToDo の完了実績（月末レビューの達成率を 0% にしないため）
+    month_start = date(today.year, today.month, 1)
+    mark_todo_done(
+        user,
+        CompletionSourceType.SCHEDULE,
+        f"schedule:{watering_schedule.id}",
+        month_start,
+        bonsai=plants[0],
+        log=first_log,
+    )
+
     # お役立ち記事（公開）
     article_specs = [
         (
@@ -218,12 +328,21 @@ def seed_demo_data():
             momiji,
         ),
     ]
+    # (カテゴリ, 特集フラグ) を記事ごとに割り当てる
+    article_meta = {
+        "bonsai-watering-basics": (ArticleCategory.TIPS, True),
+        "repotting-guide": (ArticleCategory.TIPS, False),
+        "pest-control": (ArticleCategory.PEST, False),
+    }
     for slug, title, summary, body, rel_sp in article_specs:
+        category, featured = article_meta.get(slug, (ArticleCategory.OTHER, False))
         art = HelpArticle.objects.create(
             title=title,
             slug=slug,
             summary=summary,
             body=body,
+            category=category,
+            is_featured=featured,
             status=ArticleStatus.PUBLISHED,
             author=user,
             published_at=timezone.now() - timedelta(days=5),
@@ -246,16 +365,36 @@ def main() -> None:
     # path -> 出力ファイル名 のマップ
     pages: dict[str, str] = {
         "/": "home.html",
+        "/?view=species": "home_species.html",
+        "/?view=tag": "home_tag.html",
+        "/?range=week": "home_week.html",
         "/schedules/": "schedules.html",
+        "/schedules/year/": "schedules_year.html",
+        "/schedules/review/": "schedules_review.html",
         "/logs/": "logs.html",
+        "/logs/bulk/": "log_bulk_form.html",
+        "/logs/fertilizers/": "fertilizers.html",
+        "/logs/fertilizers/new/": "fertilizer_form.html",
         "/articles/": "articles.html",
+        "/articles/?category=tips": "articles_tips.html",
         "/bonsai/new/": "bonsai_form.html",
         "/schedules/new/": "schedule_form.html",
         "/logs/new/": "log_form.html",
+        "/search/?q=松": "search.html",
+        "/settings/": "settings.html",
+        "/settings/profile/": "settings_profile.html",
+        "/settings/notifications/": "settings_notifications.html",
+        "/settings/library/": "library.html",
+        "/tags/": "tags.html",
+        "/tags/new/": "tag_form.html",
     }
     # 詳細ページのファイル名は連番にする（UUID は毎回変わり差分が荒れるため）。
     for i, p in enumerate(plants, start=1):
         pages[f"/bonsai/{p.pk}/"] = f"bonsai_{i}.html"
+        # 6 タブそれぞれを個別ファイルに（?tab= は静的化時にファイル名へ書き換える）
+        for tab in DETAIL_TAB_KEYS_ORDERED[1:]:
+            pages[f"/bonsai/{p.pk}/?tab={tab}"] = f"bonsai_{i}_{tab}.html"
+        pages[f"/bonsai/{p.pk}/media/"] = f"bonsai_{i}_gallery.html"
     for s in all_species:
         pages[f"/species/{s.slug}/"] = f"species_{s.slug}.html"
     for a in HelpArticle.objects.all():
@@ -294,6 +433,31 @@ def main() -> None:
     # CSS をコピー
     shutil.copyfile(BASE_DIR / "static" / "css" / "app.css", OUT_DIR / "app.css")
 
+    # 相対クエリリンク（?tab=logs 等）-> 静的ファイル名
+    def rewrite_relative_queries(html: str, fname: str) -> str:
+        stem = fname.removesuffix(".html")
+        # 盆栽詳細のタブ（?tab=xxx）
+        base_stem = (
+            stem.split("_")[0] + "_" + stem.split("_")[1] if stem.startswith("bonsai_") else stem
+        )
+        for tab in DETAIL_TAB_KEYS_ORDERED:
+            target = f"{base_stem}.html" if tab == "overview" else f"{base_stem}_{tab}.html"
+            html = html.replace(f'href="?tab={tab}"', f'href="{target}"')
+        # ホームの表示切替・期間切替
+        for query, target in [
+            ("?view=card", "home.html"),
+            ("?view=species", "home_species.html"),
+            ("?view=tag", "home_tag.html"),
+            ("?range=month", "home.html"),
+            ("?range=week", "home_week.html"),
+            ("?category=tips", "articles_tips.html"),
+            ("?", "articles.html" if stem.startswith("articles") else f"{stem}.html"),
+        ]:
+            html = html.replace(f'href="{query}"', f'href="{target}"')
+        # 残りの相対クエリリンク（フィルタ結果など）は無効化する
+        html = re.sub(r'href="\?[^"]*"', 'href="#"', html)
+        return html
+
     # リンク書き換え
     def rewrite(html: str) -> str:
         # 静的 CSS（ハッシュ付き含む）-> app.css
@@ -311,7 +475,9 @@ def main() -> None:
         return html
 
     for fname, html in rendered.items():
-        (OUT_DIR / fname).write_text(rewrite(html), encoding="utf-8")
+        (OUT_DIR / fname).write_text(
+            rewrite_relative_queries(rewrite(html), fname), encoding="utf-8"
+        )
 
     write_gallery(rendered, plants, all_species)
     print(f"OK: {len(rendered)} pages -> {OUT_DIR}")
@@ -326,9 +492,26 @@ def write_gallery(rendered, plants, all_species) -> None:
             return f'<li><span style="color:#9ca3af">{label}（生成スキップ）</span></li>'
         return f'<li><a href="{fname}">{label}</a></li>'
 
+    tab_labels = {
+        "overview": "概要",
+        "logs": "作業履歴",
+        "schedules": "スケジュール",
+        "media": "メディア",
+        "repotting": "植え替え履歴",
+        "compare": "成長比較",
+    }
     plant_links = "\n".join(
         link(f"bonsai_{i}.html", f"盆栽詳細 — {p.name}") for i, p in enumerate(plants, start=1)
     )
+    # 1 本目の盆栽で 6 タブすべてを確認できるようにする
+    tab_links = "\n".join(
+        link(
+            "bonsai_1.html" if tab == "overview" else f"bonsai_1_{tab}.html",
+            f"タブ — {tab_labels[tab]}",
+        )
+        for tab in DETAIL_TAB_KEYS_ORDERED
+    )
+    tab_links += "\n" + link("bonsai_1_gallery.html", "メディア年別ギャラリー")
     species_links = "\n".join(
         link(f"species_{s.slug}.html", f"品種詳細 — {s.name}") for s in all_species[:8]
     )
@@ -388,9 +571,50 @@ def write_gallery(rendered, plants, all_species) -> None:
   </section>
 
   <section>
+    <h2>ホーム（表示・期間の切替）</h2>
+    <ul>
+      {link("home.html", "ホーム（カード表示・今月）")}
+      {link("home_species.html", "マイ盆栽 — 品種別グルーピング")}
+      {link("home_tag.html", "マイ盆栽 — タグ別グルーピング")}
+      {link("home_week.html", "やること — 今週の期間切替")}
+    </ul>
+  </section>
+
+  <section>
     <h2>盆栽詳細</h2>
     <ul>
       {plant_links}
+    </ul>
+  </section>
+
+  <section>
+    <h2>盆栽詳細の 6 タブ（黒松 太郎）</h2>
+    <ul>
+      {tab_links}
+    </ul>
+  </section>
+
+  <section>
+    <h2>スケジュール</h2>
+    <ul>
+      {link("schedules.html", "月別スケジュール（絞り込み付き）")}
+      {link("schedules_year.html", "年間スケジュール")}
+      {link("schedules_review.html", "月末レビュー")}
+    </ul>
+  </section>
+
+  <section>
+    <h2>横断・設定・ライブラリ</h2>
+    <ul>
+      {link("search.html", "グローバル検索（「松」の結果）")}
+      {link("settings.html", "設定トップ")}
+      {link("settings_profile.html", "プロフィール編集")}
+      {link("settings_notifications.html", "通知設定")}
+      {link("library.html", "ライブラリ")}
+      {link("tags.html", "タグ管理")}
+      {link("tag_form.html", "タグ作成")}
+      {link("fertilizers.html", "肥料マスタ")}
+      {link("fertilizer_form.html", "肥料登録")}
     </ul>
   </section>
 
@@ -400,12 +624,15 @@ def write_gallery(rendered, plants, all_species) -> None:
       {link("bonsai_form.html", "盆栽の新規登録")}
       {link("schedule_form.html", "スケジュールの新規作成")}
       {link("log_form.html", "作業ログの記録")}
+      {link("log_bulk_form.html", "一括ログ記録")}
     </ul>
   </section>
 
   <section>
     <h2>お役立ち記事</h2>
     <ul>
+      {link("articles.html", "お役立ちトップ（特集＋カテゴリ）")}
+      {link("articles_tips.html", "カテゴリ絞り込み — 作業TIPS")}
       {article_links}
     </ul>
   </section>

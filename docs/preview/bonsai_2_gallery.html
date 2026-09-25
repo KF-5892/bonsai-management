@@ -1,0 +1,201 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="u4nW9t1u3mCOVRDcSmzoVTTQ7eRpKpvgbHU9M2DOuEywDLR3acdc09rCyw93EYXr">
+    <title>もみじ 花子 のメディア | 盆栽管理</title>
+
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+    
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "background": "#f6faf6",
+              "on-background": "#181d1a",
+              "surface": "#f6faf6",
+              "surface-bright": "#f6faf6",
+              "surface-dim": "#d7dbd7",
+              "surface-tint": "#1b6d24",
+              "surface-variant": "#dfe3e0",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-low": "#f1f5f1",
+              "surface-container": "#ebefeb",
+              "surface-container-high": "#e5e9e5",
+              "surface-container-highest": "#dfe3e0",
+              "on-surface": "#181d1a",
+              "on-surface-variant": "#40493d",
+              "inverse-surface": "#2d312f",
+              "inverse-on-surface": "#eef2ee",
+              "primary": "#0d631b",
+              "on-primary": "#ffffff",
+              "primary-container": "#2e7d32",
+              "on-primary-container": "#cbffc2",
+              "primary-fixed": "#a3f69c",
+              "primary-fixed-dim": "#88d982",
+              "on-primary-fixed": "#002204",
+              "on-primary-fixed-variant": "#005312",
+              "inverse-primary": "#88d982",
+              "secondary": "#526350",
+              "on-secondary": "#ffffff",
+              "secondary-container": "#d2e5cd",
+              "on-secondary-container": "#566754",
+              "secondary-fixed": "#d5e8d0",
+              "secondary-fixed-dim": "#b9ccb5",
+              "on-secondary-fixed": "#101f10",
+              "on-secondary-fixed-variant": "#3b4b39",
+              "tertiary": "#923357",
+              "on-tertiary": "#ffffff",
+              "tertiary-container": "#b14b6f",
+              "on-tertiary-container": "#ffedf0",
+              "tertiary-fixed": "#ffd9e2",
+              "tertiary-fixed-dim": "#ffb1c7",
+              "on-tertiary-fixed": "#3f001c",
+              "on-tertiary-fixed-variant": "#7f2448",
+              "error": "#ba1a1a",
+              "on-error": "#ffffff",
+              "error-container": "#ffdad6",
+              "on-error-container": "#93000a",
+              "outline": "#707a6c",
+              "outline-variant": "#bfcaba"
+            },
+            fontFamily: {
+              "headline": ["Inter", "Noto Sans JP", "sans-serif"],
+              "body": ["Inter", "Noto Sans JP", "sans-serif"],
+              "label": ["Inter", "Noto Sans JP", "sans-serif"]
+            },
+            borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" }
+          }
+        }
+      }
+    </script>
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="app.css">
+
+    
+  </head>
+  <body
+    class="min-h-screen bg-background font-body text-on-background antialiased"
+    hx-headers='{"X-CSRFToken": "u4nW9t1u3mCOVRDcSmzoVTTQ7eRpKpvgbHU9M2DOuEywDLR3acdc09rCyw93EYXr"}'
+  >
+    
+<header class="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between bg-[#f6faf6]/80 px-4 backdrop-blur-md">
+  <div class="flex items-center gap-3">
+    
+      <a
+        href="settings.html"
+        class="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-secondary-fixed text-base font-bold text-on-secondary-fixed"
+        aria-label="アカウント"
+      >
+        D
+      </a>
+    
+    <a href="home.html" class="font-['Inter'] text-xl font-bold text-green-900">盆栽管理</a>
+  </div>
+
+  <div class="flex items-center gap-1">
+    
+      <a
+        href="#"
+        class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
+        aria-label="検索"
+      >
+        <span class="material-symbols-outlined text-green-800">search</span>
+      </a>
+    
+
+    
+      
+      <a
+        href="settings_notifications.html"
+        class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
+        aria-label="通知設定"
+        title="通知設定"
+      >
+        <span class="material-symbols-outlined text-green-800">notifications</span>
+      </a>
+    
+
+    
+  </div>
+</header>
+
+
+    
+    <main class="mx-auto w-full max-w-screen-md px-4 pt-20 pb-32">
+      
+
+      
+  <div class="space-y-4">
+    <header class="flex items-center justify-between gap-2">
+      <div class="min-w-0">
+        <a href="bonsai_2.html" class="text-sm font-bold text-primary">← もみじ 花子</a>
+        <h1 class="truncate text-xl font-bold text-on-surface">メディア</h1>
+        <p class="text-xs text-on-surface-variant">全 0 枚</p>
+      </div>
+      <a href="#"
+         class="shrink-0 rounded-full bg-primary px-4 py-2 text-sm font-bold text-on-primary">+ 追加</a>
+    </header>
+
+    
+      <p class="rounded-xl bg-surface-container-low p-4 text-center text-sm text-on-surface-variant">
+        まだ写真がありません。成長の記録を残しましょう。
+      </p>
+    
+  </div>
+
+    </main>
+
+    
+
+  <nav
+    class="fixed inset-x-0 bottom-0 z-50 flex h-20 items-center justify-around rounded-t-3xl bg-[#f6faf6]/80 shadow-[0_-4px_16px_rgba(24,29,26,0.08)] backdrop-blur-md"
+    aria-label="メインナビゲーション"
+  >
+    <a
+      href="home.html"
+      class="flex flex-col items-center justify-center px-4 py-1 transition-transform active:scale-90 scale-95 rounded-full bg-[#a3f69c] text-green-900"
+      aria-current="page"
+    >
+      <span class="material-symbols-outlined" aria-hidden="true" style="font-variation-settings: 'FILL' 1;">home</span>
+      <span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">ホーム</span>
+    </a>
+    <a
+      href="schedules.html"
+      class="flex flex-col items-center justify-center px-4 py-1 transition-transform active:scale-90 text-slate-500 hover:opacity-80"
+      
+    >
+      <span class="material-symbols-outlined" aria-hidden="true" >calendar_month</span>
+      <span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">スケジュール</span>
+    </a>
+    <a
+      href="logs.html"
+      class="flex flex-col items-center justify-center px-4 py-1 transition-transform active:scale-90 text-slate-500 hover:opacity-80"
+      
+    >
+      <span class="material-symbols-outlined" aria-hidden="true" >edit_note</span>
+      <span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">ログ記録</span>
+    </a>
+    <a
+      href="articles.html"
+      class="flex flex-col items-center justify-center px-4 py-1 transition-transform active:scale-90 text-slate-500 hover:opacity-80"
+      
+    >
+      <span class="material-symbols-outlined" aria-hidden="true" >auto_stories</span>
+      <span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">お役立ち</span>
+    </a>
+  </nav>
+
+
+
+    
+  </body>
+</html>

@@ -28,6 +28,16 @@ class ArticleStatus(models.TextChoices):
     PUBLISHED = "published", _("公開")
 
 
+class ArticleCategory(models.TextChoices):
+    """お役立ちのサブカテゴリ（docs/サイトマップ.md §1「お役立ち」）。"""
+
+    TIPS = "tips", _("作業TIPS")
+    SPECIES_GUIDE = "species_guide", _("品種ガイド")
+    PEST = "pest", _("病害虫対策")
+    GALLERY = "gallery", _("ギャラリー")
+    OTHER = "other", _("その他")
+
+
 class HelpArticle(models.Model):
     """お役立ち記事本体。"""
 
@@ -45,6 +55,17 @@ class HelpArticle(models.Model):
         _("カバー画像"),
         upload_to="articles/cover/%Y/%m/",
         blank=True,
+    )
+    category = models.CharField(
+        _("カテゴリ"),
+        max_length=24,
+        choices=ArticleCategory.choices,
+        default=ArticleCategory.TIPS,
+    )
+    is_featured = models.BooleanField(
+        _("特集"),
+        default=False,
+        help_text=_("お役立ちトップの特集バナーに表示する"),
     )
     status = models.CharField(
         _("公開ステータス"),
@@ -76,6 +97,7 @@ class HelpArticle(models.Model):
         indexes = (
             models.Index(fields=("status",), name="article_status_idx"),
             models.Index(fields=("slug",), name="article_slug_idx"),
+            models.Index(fields=("category",), name="article_category_idx"),
         )
 
     def __str__(self) -> str:

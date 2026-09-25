@@ -5,15 +5,51 @@
 {% block content %}
   <div class="space-y-6">
     {# ----- 今月のやること（実装独自機能。Stitch トーンで再スタイル） ----- #}
-    <section>
+    <section id="todos">
       <header class="mb-3 flex items-end justify-between">
-        <h1 class="text-xl font-bold text-on-surface">
-          {{ year_month|date:"Y年n月" }}のやること
-        </h1>
-        <a href="{% url 'schedules:list' %}" class="text-sm font-bold text-primary hover:opacity-80">
-          すべて見る
-        </a>
+        <div>
+          <h1 class="text-xl font-bold text-on-surface">
+            {% if range_mode == "month" %}{{ year_month|date:"Y年n月" }}のやること
+            {% elif range_mode == "week" %}今週のやること
+            {% else %}{{ range_start|date:"n/j" }}〜{{ range_end|date:"n/j" }}のやること{% endif %}
+          </h1>
+          <p class="mt-0.5 text-xs font-medium text-on-surface-variant">
+            {{ todo_total }}件中 {{ todo_done }}件完了
+          </p>
+        </div>
+        <span class="flex shrink-0 items-center gap-3">
+          <a href="{% url 'schedules:export' %}{% if range_mode != 'month' %}?from={{ range_start|date:'Y-m-d' }}&amp;to={{ range_end|date:'Y-m-d' }}{% endif %}"
+             class="text-sm font-bold text-primary hover:opacity-80">共有</a>
+          <a href="{% url 'schedules:list' %}" class="text-sm font-bold text-primary hover:opacity-80">
+            すべて見る
+          </a>
+        </span>
       </header>
+
+      {# 期間切替（今月 / 今週 / カスタム期間） #}
+      <div class="mb-3 flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+        <a href="?range=month{% if q %}&amp;q={{ q|urlencode }}{% endif %}{% if status_filter %}&amp;status={{ status_filter }}{% endif %}"
+           class="flex-none rounded-full px-4 py-2 text-sm font-bold {% if range_mode == 'month' %}bg-primary text-on-primary shadow-sm{% else %}bg-surface-container-high text-on-surface-variant{% endif %}">今月</a>
+        <a href="?range=week{% if q %}&amp;q={{ q|urlencode }}{% endif %}{% if status_filter %}&amp;status={{ status_filter }}{% endif %}"
+           class="flex-none rounded-full px-4 py-2 text-sm font-bold {% if range_mode == 'week' %}bg-primary text-on-primary shadow-sm{% else %}bg-surface-container-high text-on-surface-variant{% endif %}">今週</a>
+        <details class="flex-none" {% if range_mode == "custom" %}open{% endif %}>
+          <summary class="cursor-pointer list-none rounded-full px-4 py-2 text-sm font-bold {% if range_mode == 'custom' %}bg-primary text-on-primary shadow-sm{% else %}bg-surface-container-high text-on-surface-variant{% endif %}">
+            カスタム期間
+          </summary>
+          <form method="get" class="mt-2 flex flex-wrap items-end gap-2 rounded-xl bg-surface-container-lowest p-3">
+            <input type="hidden" name="range" value="custom">
+            <label class="text-xs font-bold text-on-surface-variant">開始
+              <input type="date" name="from" value="{{ range_start|date:'Y-m-d' }}"
+                     class="mt-1 block rounded-md border border-outline-variant px-2 py-1.5 text-sm">
+            </label>
+            <label class="text-xs font-bold text-on-surface-variant">終了
+              <input type="date" name="to" value="{{ range_end|date:'Y-m-d' }}"
+                     class="mt-1 block rounded-md border border-outline-variant px-2 py-1.5 text-sm">
+            </label>
+            <button type="submit" class="rounded-full bg-primary px-4 py-2 text-sm font-bold text-on-primary">表示</button>
+          </form>
+        </details>
+      </div>
 
       {% if todos %}
         <ul class="space-y-2">
@@ -57,12 +93,55 @@
             </li>
           {% endfor %}
         </ul>
+        {% if hidden_todo_count %}
+          <a href="?todos=all{% if range_mode != 'month' %}&amp;range={{ range_mode }}{% endif %}{% if range_start and range_mode == 'custom' %}&amp;from={{ range_start|date:'Y-m-d' }}&amp;to={{ range_end|date:'Y-m-d' }}{% endif %}{% if view_mode != 'card' %}&amp;view={{ view_mode }}{% endif %}#todos"
+             class="mt-2 block rounded-xl bg-surface-container-low px-4 py-3 text-center text-sm font-bold text-primary">
+            残り {{ hidden_todo_count }} 件を表示
+          </a>
+        {% endif %}
       {% else %}
         <p class="rounded-xl bg-surface-container-low p-4 text-center text-sm text-on-surface-variant">
-          今月のやることはまだありません。
+          この期間のやることはまだありません。
         </p>
       {% endif %}
     </section>
+
+    {# ----- 最近の活動 ----- #}
+    {% if recent_activities %}
+      <section>
+        <header class="mb-3 flex items-end justify-between">
+          <h2 class="text-xl font-bold text-on-surface">最近の活動</h2>
+          <a href="{% url 'logs:list' %}" class="text-sm font-bold text-primary hover:opacity-80">すべて見る</a>
+        </header>
+        <ul class="space-y-2">
+          {% for log in recent_activities %}
+            <li>
+              <a href="{% url 'logs:detail' pk=log.pk %}"
+                 class="flex items-center gap-3 rounded-xl bg-surface-container-lowest p-3">
+                <span class="h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-surface-container-low">
+                  {% if log.photo %}
+                    <img src="{{ log.photo.url }}" alt="" class="h-full w-full object-cover">
+                  {% else %}
+                    <span class="flex h-full w-full items-center justify-center">
+                      <span class="material-symbols-outlined text-outline-variant" aria-hidden="true">edit_note</span>
+                    </span>
+                  {% endif %}
+                </span>
+                <span class="min-w-0 flex-1">
+                  <span class="block truncate text-xs font-medium text-on-surface-variant">
+                    {{ log.bonsai.name }}・{{ log.performed_at|date:"n/j" }}
+                  </span>
+                  <span class="block truncate font-bold text-on-surface">{{ log.get_task_type_display }}</span>
+                  {% if log.notes %}
+                    <span class="block truncate text-xs text-on-surface-variant">{{ log.notes }}</span>
+                  {% endif %}
+                </span>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endif %}
 
     {# ----- マイ盆栽 ----- #}
     <section>
@@ -108,53 +187,34 @@
         </div>
 
         {# 盆栽カード（非対称レイアウト + 左端アクセントバー + 状態バッジ） #}
+        {# 表示切替（カード / 品種別 / タグ別） #}
+        <div class="mt-3 flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+          {% for mode, label in view_modes %}
+            <a href="?view={{ mode }}{% if q %}&amp;q={{ q|urlencode }}{% endif %}{% if status_filter %}&amp;status={{ status_filter }}{% endif %}{% if range_mode != 'month' %}&amp;range={{ range_mode }}{% endif %}"
+               class="flex-none rounded-full px-4 py-1.5 text-xs font-bold {% if view_mode == mode %}bg-secondary-container text-on-secondary-container{% else %}bg-surface-container-high text-on-surface-variant{% endif %}">
+              {{ label }}
+            </a>
+          {% endfor %}
+        </div>
+
         {% if plants %}
-          <div class="mt-2 space-y-4">
-            {% for plant in plants %}
-              <a href="{% url 'bonsai:detail' pk=plant.pk %}"
-                 class="relative flex overflow-hidden rounded-xl bg-surface-container-lowest">
-                <div class="absolute left-0 top-0 h-full w-1 {% if plant.health_status == 'good' %}bg-green-600{% elif plant.health_status == 'watch' %}bg-tertiary{% else %}bg-error{% endif %}"></div>
-                <div class="aspect-square w-1/3 max-w-[120px] bg-surface-container-low">
-                  {% if plant.cover_media and plant.cover_media.image_thumbnail %}
-                    <img src="{{ plant.cover_media.image_thumbnail.url }}"
-                         alt="{{ plant.name }}"
-                         class="h-full w-full object-cover">
-                  {% else %}
-                    <div class="flex h-full w-full items-center justify-center">
-                      <span class="material-symbols-outlined text-4xl text-outline-variant" aria-hidden="true">potted_plant</span>
-                    </div>
-                  {% endif %}
-                </div>
-                <div class="flex flex-1 flex-col justify-between p-4">
-                  <div>
-                    <div class="flex items-start justify-between gap-2">
-                      <h3 class="truncate text-lg font-bold text-on-surface">{{ plant.name }}</h3>
-                      {% if plant.health_status == 'good' %}
-                        <span class="flex shrink-0 items-center gap-1 rounded bg-[#E8F5E9] px-2 py-0.5 text-[10px] font-bold text-[#2E7D32]">
-                          <span class="material-symbols-outlined text-xs" aria-hidden="true">check</span>良好
-                        </span>
-                      {% elif plant.health_status == 'watch' %}
-                        <span class="flex shrink-0 items-center gap-1 rounded bg-[#FCE4EC] px-2 py-0.5 text-[10px] font-bold text-[#BA1A1A]">
-                          <span class="material-symbols-outlined text-xs" aria-hidden="true">warning</span>要注意
-                        </span>
-                      {% else %}
-                        <span class="flex shrink-0 items-center gap-1 rounded bg-[#FFEBEE] px-2 py-0.5 text-[10px] font-bold text-[#BA1A1A]">
-                          <span class="material-symbols-outlined text-xs" aria-hidden="true">cancel</span>不調
-                        </span>
-                      {% endif %}
-                    </div>
-                    <p class="mt-0.5 text-sm text-on-surface-variant">
-                      品種：{% if plant.species %}{{ plant.species.name }}{% else %}未設定{% endif %}
-                    </p>
+          <div class="mt-2 space-y-6">
+            {% for group_name, group_plants in plant_groups %}
+              <div>
+                {% if group_name %}
+                  <div class="mb-2 flex items-center justify-between">
+                    <h3 class="text-sm font-bold text-on-surface-variant">{{ group_name }}（{{ group_plants|length }}）</h3>
+                    {# 品種別 / タグ別のグループをそのまま一括記録の対象にする（多鉢運用） #}
+                    <a href="{% url 'logs:bulk_create' %}?{% for p in group_plants %}bonsai={{ p.pk }}{% if not forloop.last %}&amp;{% endif %}{% endfor %}"
+                       class="text-xs font-bold text-primary">この{{ group_plants|length }}鉢に一括記録</a>
                   </div>
-                  {% if plant.next_task %}
-                    <div class="mt-4 flex items-center gap-2 font-bold {% if plant.health_status == 'watch' %}text-tertiary{% elif plant.health_status == 'poor' %}text-error{% else %}text-primary{% endif %}">
-                      <span class="material-symbols-outlined text-lg" aria-hidden="true">{{ plant.next_task.icon }}</span>
-                      <span class="truncate text-xs uppercase tracking-wider">次の作業：{{ plant.next_task.label }}</span>
-                    </div>
-                  {% endif %}
+                {% endif %}
+                <div class="space-y-4">
+                  {% for plant in group_plants %}
+                    {% include "_partials/plant_card.html" %}
+                  {% endfor %}
                 </div>
-              </a>
+              </div>
             {% endfor %}
           </div>
         {% else %}

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}ライブラリ | 盆栽管理{% endblock %}
+
+{% block content %}
+  <div class="space-y-6">
+    <header>
+      <h1 class="text-xl font-bold text-on-surface">ライブラリ</h1>
+      <p class="mt-1 text-sm text-on-surface-variant">タグ・肥料・品種などのマスタをまとめて管理します。</p>
+    </header>
+
+    <div class="grid grid-cols-2 gap-3">
+      <a href="{% url 'bonsai:tag_list' %}" class="rounded-xl bg-surface-container-lowest p-4 hover:bg-surface-container-low">
+        <span class="material-symbols-outlined text-primary" aria-hidden="true">sell</span>
+        <p class="mt-2 font-bold text-on-surface">タグ管理</p>
+        <p class="text-xs text-on-surface-variant">{{ tag_count }} 件</p>
+      </a>
+      <a href="{% url 'logs:fertilizer_list' %}" class="rounded-xl bg-surface-container-lowest p-4 hover:bg-surface-container-low">
+        <span class="material-symbols-outlined text-primary" aria-hidden="true">compost</span>
+        <p class="mt-2 font-bold text-on-surface">肥料マスタ</p>
+        <p class="text-xs text-on-surface-variant">{{ fertilizer_count }} 件</p>
+      </a>
+    </div>
+
+    <section>
+      <h2 class="mb-2 text-sm font-bold text-on-surface-variant">メディア（盆栽別ギャラリー）</h2>
+      {% if plants %}
+        <ul class="space-y-2">
+          {% for plant in plants %}
+            <li>
+              <a href="{% url 'bonsai:media_gallery' pk=plant.pk %}"
+                 class="flex items-center justify-between rounded-xl bg-surface-container-lowest px-4 py-3 hover:bg-surface-container-low">
+                <span class="truncate font-medium text-on-surface">{{ plant.name }}</span>
+                <span class="material-symbols-outlined text-outline" aria-hidden="true">chevron_right</span>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="rounded-xl bg-surface-container-low p-4 text-center text-sm text-on-surface-variant">
+          盆栽を登録するとギャラリーが使えます。
+        </p>
+      {% endif %}
+    </section>
+
+    <section>
+      <h2 class="mb-2 text-sm font-bold text-on-surface-variant">品種マスタ</h2>
+      {% if species_list %}
+        <div class="flex flex-wrap gap-2">
+          {% for species in species_list %}
+            <a href="{% url 'bonsai:species_detail' slug=species.slug %}"
+               class="rounded-full bg-surface-container-high px-4 py-2 text-sm font-medium text-on-surface-variant hover:bg-surface-container-highest">
+              {{ species.name }}
+            </a>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="rounded-xl bg-surface-container-low p-4 text-center text-sm text-on-surface-variant">
+          品種マスタが未登録です。
+        </p>
+      {% endif %}
+    </section>
+  </div>
+{% endblock %}

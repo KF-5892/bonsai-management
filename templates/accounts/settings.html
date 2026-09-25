@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}設定 | 盆栽管理{% endblock %}
+
+{% block content %}
+  <div class="space-y-6">
+    <h1 class="text-xl font-bold text-on-surface">設定</h1>
+
+    <section class="overflow-hidden rounded-xl bg-surface-container-lowest">
+      <div class="flex items-center gap-3 p-4">
+        <span class="flex h-12 w-12 items-center justify-center rounded-full bg-secondary-fixed text-lg font-bold text-on-secondary-fixed">
+          {{ user.email|slice:":1"|upper }}
+        </span>
+        <div class="min-w-0">
+          <p class="truncate font-bold text-on-surface">{{ user.display_name|default:user.email }}</p>
+          <p class="truncate text-sm text-on-surface-variant">{{ user.email }}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="overflow-hidden rounded-xl bg-surface-container-lowest">
+      <h2 class="border-b border-surface-container-high px-4 py-3 text-sm font-bold text-on-surface-variant">アカウント</h2>
+      <a href="{% url 'accounts:profile' %}" class="flex items-center justify-between px-4 py-4 hover:bg-surface-container-low">
+        <span class="flex items-center gap-3 font-medium text-on-surface">
+          <span class="material-symbols-outlined text-primary" aria-hidden="true">person</span>プロフィール
+        </span>
+        <span class="material-symbols-outlined text-outline" aria-hidden="true">chevron_right</span>
+      </a>
+      <a href="{% url 'accounts:notifications' %}" class="flex items-center justify-between border-t border-surface-container-high px-4 py-4 hover:bg-surface-container-low">
+        <span class="flex items-center gap-3 font-medium text-on-surface">
+          <span class="material-symbols-outlined text-primary" aria-hidden="true">notifications</span>通知設定
+        </span>
+        <span class="material-symbols-outlined text-outline" aria-hidden="true">chevron_right</span>
+      </a>
+      <a href="{% url 'accounts:library' %}" class="flex items-center justify-between border-t border-surface-container-high px-4 py-4 hover:bg-surface-container-low">
+        <span class="flex items-center gap-3 font-medium text-on-surface">
+          <span class="material-symbols-outlined text-primary" aria-hidden="true">inventory_2</span>ライブラリ
+        </span>
+        <span class="material-symbols-outlined text-outline" aria-hidden="true">chevron_right</span>
+      </a>
+    </section>
+
+    <section class="overflow-hidden rounded-xl bg-surface-container-lowest">
+      <h2 class="border-b border-surface-container-high px-4 py-3 text-sm font-bold text-on-surface-variant">アプリ設定</h2>
+      <div class="flex items-center justify-between px-4 py-4">
+        <span class="font-medium text-on-surface">タイムゾーン</span>
+        <span class="text-sm text-on-surface-variant">{{ user.time_zone }}</span>
+      </div>
+      <div class="flex items-center justify-between border-t border-surface-container-high px-4 py-4">
+        <span class="font-medium text-on-surface">言語</span>
+        <span class="text-sm text-on-surface-variant">{{ user.language }}</span>
+      </div>
+    </section>
+
+    <section class="overflow-hidden rounded-xl bg-surface-container-lowest">
+      <a href="{% url 'account_logout' %}" class="flex items-center gap-3 px-4 py-4 font-medium text-error hover:bg-surface-container-low">
+        <span class="material-symbols-outlined" aria-hidden="true">logout</span>ログアウト
+      </a>
+    </section>
+  </div>
+{% endblock %}

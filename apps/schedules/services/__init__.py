@@ -7,15 +7,25 @@ ToDo 合成（オンデマンド計算 + 完了状態 LEFT JOIN）はここに�
 from __future__ import annotations
 
 from .todos import (
+    MonthlySummary,
     Todo,
     compose_monthly_todos,
+    compose_todos_for_range,
+    compose_yearly_summaries,
+    current_week_range,
     get_todo_completion_status,
     mark_todo_done,
+    summarize_monthly_todos,
 )
 
 __all__ = [
+    "MonthlySummary",
     "Todo",
     "compose_monthly_todos",
+    "compose_todos_for_range",
+    "compose_yearly_summaries",
+    "current_week_range",
     "get_todo_completion_status",
     "mark_todo_done",
+    "summarize_monthly_todos",
 ]

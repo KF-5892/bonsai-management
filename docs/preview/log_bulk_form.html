@@ -1,0 +1,491 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="aZll5JSWX3YXN8BZpmODgBjq6SXZ9IEfRCSyIiugolUFv2PQHcsrlRRcxafD3h6q">
+    <title>一括でログを記録 | 盆栽管理</title>
+
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+    
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "background": "#f6faf6",
+              "on-background": "#181d1a",
+              "surface": "#f6faf6",
+              "surface-bright": "#f6faf6",
+              "surface-dim": "#d7dbd7",
+              "surface-tint": "#1b6d24",
+              "surface-variant": "#dfe3e0",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-low": "#f1f5f1",
+              "surface-container": "#ebefeb",
+              "surface-container-high": "#e5e9e5",
+              "surface-container-highest": "#dfe3e0",
+              "on-surface": "#181d1a",
+              "on-surface-variant": "#40493d",
+              "inverse-surface": "#2d312f",
+              "inverse-on-surface": "#eef2ee",
+              "primary": "#0d631b",
+              "on-primary": "#ffffff",
+              "primary-container": "#2e7d32",
+              "on-primary-container": "#cbffc2",
+              "primary-fixed": "#a3f69c",
+              "primary-fixed-dim": "#88d982",
+              "on-primary-fixed": "#002204",
+              "on-primary-fixed-variant": "#005312",
+              "inverse-primary": "#88d982",
+              "secondary": "#526350",
+              "on-secondary": "#ffffff",
+              "secondary-container": "#d2e5cd",
+              "on-secondary-container": "#566754",
+              "secondary-fixed": "#d5e8d0",
+              "secondary-fixed-dim": "#b9ccb5",
+              "on-secondary-fixed": "#101f10",
+              "on-secondary-fixed-variant": "#3b4b39",
+              "tertiary": "#923357",
+              "on-tertiary": "#ffffff",
+              "tertiary-container": "#b14b6f",
+              "on-tertiary-container": "#ffedf0",
+              "tertiary-fixed": "#ffd9e2",
+              "tertiary-fixed-dim": "#ffb1c7",
+              "on-tertiary-fixed": "#3f001c",
+              "on-tertiary-fixed-variant": "#7f2448",
+              "error": "#ba1a1a",
+              "on-error": "#ffffff",
+              "error-container": "#ffdad6",
+              "on-error-container": "#93000a",
+              "outline": "#707a6c",
+              "outline-variant": "#bfcaba"
+            },
+            fontFamily: {
+              "headline": ["Inter", "Noto Sans JP", "sans-serif"],
+              "body": ["Inter", "Noto Sans JP", "sans-serif"],
+              "label": ["Inter", "Noto Sans JP", "sans-serif"]
+            },
+            borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" }
+          }
+        }
+      }
+    </script>
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="app.css">
+
+    
+  </head>
+  <body
+    class="min-h-screen bg-background font-body text-on-background antialiased"
+    hx-headers='{"X-CSRFToken": "aZll5JSWX3YXN8BZpmODgBjq6SXZ9IEfRCSyIiugolUFv2PQHcsrlRRcxafD3h6q"}'
+  >
+    
+<header class="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between bg-[#f6faf6]/80 px-4 backdrop-blur-md">
+  <div class="flex items-center gap-3">
+    
+      <a
+        href="settings.html"
+        class="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-secondary-fixed text-base font-bold text-on-secondary-fixed"
+        aria-label="アカウント"
+      >
+        D
+      </a>
+    
+    <a href="home.html" class="font-['Inter'] text-xl font-bold text-green-900">盆栽管理</a>
+  </div>
+
+  <div class="flex items-center gap-1">
+    
+      <a
+        href="#"
+        class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
+        aria-label="検索"
+      >
+        <span class="material-symbols-outlined text-green-800">search</span>
+      </a>
+    
+
+    
+      
+      <a
+        href="settings_notifications.html"
+        class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
+        aria-label="通知設定"
+        title="通知設定"
+      >
+        <span class="material-symbols-outlined text-green-800">notifications</span>
+      </a>
+    
+
+    
+  </div>
+</header>
+
+
+    
+    <main class="mx-auto w-full max-w-screen-md px-4 pt-20 pb-32">
+      
+
+      
+  <div class="space-y-4">
+    <header>
+      <a href="logs.html" class="text-sm font-bold text-primary">← 作業ログ</a>
+      <h1 class="text-xl font-bold text-on-surface">一括でログを記録</h1>
+      <p class="mt-1 text-sm text-on-surface-variant">選んだ盆栽すべてに同じ作業を記録します。</p>
+    </header>
+
+    <form method="post" class="space-y-4 rounded-xl bg-surface-container-lowest p-4"
+          x-data="{
+            count: 0,
+            refresh() { this.count = this.$root.querySelectorAll('input[name=bonsai]:checked').length },
+            setAll(checked, scope) {
+              (scope || this.$root).querySelectorAll('input[name=bonsai]').forEach(el => { el.checked = checked });
+              this.refresh();
+            }
+          }"
+          x-init="refresh()">
+      <input type="hidden" name="csrfmiddlewaretoken" value="aZll5JSWX3YXN8BZpmODgBjq6SXZ9IEfRCSyIiugolUFv2PQHcsrlRRcxafD3h6q">
+      
+
+      
+      <fieldset>
+        <div class="mb-2 flex items-center justify-between gap-2">
+          <legend class="text-sm font-medium text-on-surface-variant">
+            対象の盆栽 <span class="text-error">*</span>
+            <span class="ml-1 rounded-full bg-secondary-container px-2 py-0.5 text-xs font-bold text-on-secondary-container" x-text="count + ' / 3 選択'"></span>
+          </legend>
+          <span class="flex shrink-0 gap-2 text-xs font-bold text-primary">
+            <button type="button" @click="setAll(true)">すべて選択</button>
+            <button type="button" @click="setAll(false)">解除</button>
+          </span>
+        </div>
+        
+
+        
+          <div class="space-y-3">
+            
+              <div x-ref="group1">
+                <div class="mb-1 flex items-center justify-between">
+                  <p class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">五葉松（2）</p>
+                  <button type="button" class="text-xs font-bold text-primary"
+                          @click="setAll(true, $refs.group1)">この品種を選択</button>
+                </div>
+                <div class="grid gap-2 sm:grid-cols-2">
+                  
+                    <label for="bonsai_06ab514e-cb2a-70a4-8000-7381381d46d0"
+                           class="flex cursor-pointer items-center gap-3 rounded-lg bg-surface-container-low px-3 py-2.5 text-sm text-on-surface">
+                      <input type="checkbox" name="bonsai" value="06ab514e-cb2a-70a4-8000-7381381d46d0" id="bonsai_06ab514e-cb2a-70a4-8000-7381381d46d0"
+                             @change="refresh()"
+                             
+                             class="h-5 w-5 rounded-sm border-outline-variant text-primary focus:ring-primary">
+                      <span class="min-w-0">
+                        <span class="block truncate font-medium">もみじ 花子</span>
+                        
+                          <span class="block truncate text-xs text-on-surface-variant">
+                            ベランダ
+                          </span>
+                        
+                      </span>
+                    </label>
+                  
+                    <label for="bonsai_06ab514e-cb30-706a-8000-eba77f157319"
+                           class="flex cursor-pointer items-center gap-3 rounded-lg bg-surface-container-low px-3 py-2.5 text-sm text-on-surface">
+                      <input type="checkbox" name="bonsai" value="06ab514e-cb30-706a-8000-eba77f157319" id="bonsai_06ab514e-cb30-706a-8000-eba77f157319"
+                             @change="refresh()"
+                             
+                             class="h-5 w-5 rounded-sm border-outline-variant text-primary focus:ring-primary">
+                      <span class="min-w-0">
+                        <span class="block truncate font-medium">五葉松 次郎</span>
+                        
+                          <span class="block truncate text-xs text-on-surface-variant">
+                            棚上
+                          </span>
+                        
+                      </span>
+                    </label>
+                  
+                </div>
+              </div>
+            
+              <div x-ref="group2">
+                <div class="mb-1 flex items-center justify-between">
+                  <p class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">黒松（1）</p>
+                  <button type="button" class="text-xs font-bold text-primary"
+                          @click="setAll(true, $refs.group2)">この品種を選択</button>
+                </div>
+                <div class="grid gap-2 sm:grid-cols-2">
+                  
+                    <label for="bonsai_06ab514e-cb1e-7949-8000-b81db9a9ba21"
+                           class="flex cursor-pointer items-center gap-3 rounded-lg bg-surface-container-low px-3 py-2.5 text-sm text-on-surface">
+                      <input type="checkbox" name="bonsai" value="06ab514e-cb1e-7949-8000-b81db9a9ba21" id="bonsai_06ab514e-cb1e-7949-8000-b81db9a9ba21"
+                             @change="refresh()"
+                             
+                             class="h-5 w-5 rounded-sm border-outline-variant text-primary focus:ring-primary">
+                      <span class="min-w-0">
+                        <span class="block truncate font-medium">黒松 太郎</span>
+                        
+                          <span class="block truncate text-xs text-on-surface-variant">
+                            ベランダ
+                          </span>
+                        
+                      </span>
+                    </label>
+                  
+                </div>
+              </div>
+            
+          </div>
+        
+      </fieldset>
+
+      
+      
+        
+      
+        
+          
+<div>
+  
+    <label for="id_task_type" class="mb-1 block text-sm font-medium text-on-surface-variant">
+      作業種別 <span class="text-error">*</span>
+    </label>
+    <select name="task_type" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" id="id_task_type">
+  <option value="watering">潅水</option>
+
+  <option value="fertilizing">施肥</option>
+
+  <option value="pruning">剪定</option>
+
+  <option value="repotting">植え替え</option>
+
+  <option value="observation">観察</option>
+
+  <option value="bud_pinching">芽摘み</option>
+
+  <option value="defoliation">葉刈り</option>
+
+  <option value="leaf_misting">葉水</option>
+
+  <option value="wiring">針金かけ</option>
+
+  <option value="unwiring">針金外し</option>
+
+  <option value="pest_control">消毒</option>
+
+  <option value="jin_shari">ジン・シャリ作り</option>
+
+  <option value="air_layering">取り木</option>
+
+  <option value="cutting">挿し木</option>
+
+  <option value="other">その他</option>
+
+</select>
+  
+  
+  
+</div>
+
+        
+      
+        
+          
+<div>
+  
+    <label for="id_performed_at" class="mb-1 block text-sm font-medium text-on-surface-variant">
+      実施日時 <span class="text-error">*</span>
+    </label>
+    <input type="datetime-local" name="performed_at" value="2026-09-24T21:17" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" required id="id_performed_at">
+  
+  
+  
+</div>
+
+        
+      
+        
+          
+<div>
+  
+    <label for="id_weather" class="mb-1 block text-sm font-medium text-on-surface-variant">
+      天候
+    </label>
+    <select name="weather" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" id="id_weather">
+  <option value="" selected>未設定</option>
+
+  <option value="sunny">晴れ</option>
+
+  <option value="cloudy">曇り</option>
+
+  <option value="rainy">雨</option>
+
+  <option value="snowy">雪</option>
+
+  <option value="other">その他</option>
+
+</select>
+  
+  
+  
+</div>
+
+        
+      
+        
+          
+<div>
+  
+    <label for="id_temperature_c" class="mb-1 block text-sm font-medium text-on-surface-variant">
+      気温 (℃)
+    </label>
+    <input type="number" name="temperature_c" step="0.1" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" id="id_temperature_c">
+  
+  
+  
+</div>
+
+        
+      
+        
+          
+<div>
+  
+    <label for="id_fertilizer" class="mb-1 block text-sm font-medium text-on-surface-variant">
+      使用した肥料
+    </label>
+    <select name="fertilizer" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" id="id_fertilizer">
+  <option value="" selected>---------</option>
+
+  <option value="06ab514e-cb58-78bd-8000-8918ad302f15">標準固形肥料（共通）</option>
+
+  <option value="06ab514e-cb5e-78ed-8000-d2a0ce99d7bc">自家製油かす</option>
+
+</select>
+  
+  
+  
+</div>
+
+        
+      
+        
+          
+<div>
+  
+    <label for="id_fertilizer_amount" class="mb-1 block text-sm font-medium text-on-surface-variant">
+      肥料の量
+    </label>
+    <input type="text" name="fertilizer_amount" maxlength="40" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" id="id_fertilizer_amount">
+  
+  
+  
+</div>
+
+        
+      
+        
+          
+<div>
+  
+    <label for="id_health_evaluation" class="mb-1 block text-sm font-medium text-on-surface-variant">
+      状態評価
+    </label>
+    <select name="health_evaluation" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" id="id_health_evaluation">
+  <option value="" selected>未設定</option>
+
+  <option value="1">1: 非常に悪い</option>
+
+  <option value="2">2: 悪い</option>
+
+  <option value="3">3: 普通</option>
+
+  <option value="4">4: 良い</option>
+
+  <option value="5">5: 非常に良い</option>
+
+</select>
+  
+  
+  
+</div>
+
+        
+      
+        
+          
+<div>
+  
+    <label for="id_notes" class="mb-1 block text-sm font-medium text-on-surface-variant">
+      メモ
+    </label>
+    <textarea name="notes" cols="40" rows="3" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40 min-h-[6rem]" id="id_notes">
+</textarea>
+  
+  
+  
+</div>
+
+        
+      
+
+      <div class="flex gap-2 pt-2">
+        <button type="submit" class="rounded-full bg-primary px-6 py-2.5 font-bold text-on-primary">まとめて記録</button>
+        <a href="logs.html" class="rounded-full bg-surface-container-high px-6 py-2.5 font-bold text-on-surface-variant">キャンセル</a>
+      </div>
+    </form>
+  </div>
+
+    </main>
+
+    
+
+  <nav
+    class="fixed inset-x-0 bottom-0 z-50 flex h-20 items-center justify-around rounded-t-3xl bg-[#f6faf6]/80 shadow-[0_-4px_16px_rgba(24,29,26,0.08)] backdrop-blur-md"
+    aria-label="メインナビゲーション"
+  >
+    <a
+      href="home.html"
+      class="flex flex-col items-center justify-center px-4 py-1 transition-transform active:scale-90 text-slate-500 hover:opacity-80"
+      
+    >
+      <span class="material-symbols-outlined" aria-hidden="true" >home</span>
+      <span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">ホーム</span>
+    </a>
+    <a
+      href="schedules.html"
+      class="flex flex-col items-center justify-center px-4 py-1 transition-transform active:scale-90 text-slate-500 hover:opacity-80"
+      
+    >
+      <span class="material-symbols-outlined" aria-hidden="true" >calendar_month</span>
+      <span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">スケジュール</span>
+    </a>
+    <a
+      href="logs.html"
+      class="flex flex-col items-center justify-center px-4 py-1 transition-transform active:scale-90 scale-95 rounded-full bg-[#a3f69c] text-green-900"
+      aria-current="page"
+    >
+      <span class="material-symbols-outlined" aria-hidden="true" style="font-variation-settings: 'FILL' 1;">edit_note</span>
+      <span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">ログ記録</span>
+    </a>
+    <a
+      href="articles.html"
+      class="flex flex-col items-center justify-center px-4 py-1 transition-transform active:scale-90 text-slate-500 hover:opacity-80"
+      
+    >
+      <span class="material-symbols-outlined" aria-hidden="true" >auto_stories</span>
+      <span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">お役立ち</span>
+    </a>
+  </nav>
+
+
+
+    
+  </body>
+</html>

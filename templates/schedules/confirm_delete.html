@@ -1,20 +1,17 @@
 {% extends "base.html" %}
 
-{% block title %}スケジュール削除確認 | 盆栽管理{% endblock %}
+{% block title %}スケジュールを削除 | 盆栽管理{% endblock %}
 
 {% block content %}
-  <div class="mx-auto max-w-md space-y-4">
-    <h1 class="text-xl font-bold text-red-900">スケジュールを削除しますか？</h1>
-    <p class="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800">
-      「{{ object }}」を削除します。
-    </p>
-    <form method="post" class="flex items-center justify-between">
-      {% csrf_token %}
-      <a href="{% url 'schedules:list' %}" class="text-sm text-gray-600 hover:underline">キャンセル</a>
-      <button type="submit"
-              class="rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-red-700">
-        削除する
-      </button>
-    </form>
+  <div class="space-y-4">
+    <h1 class="text-xl font-bold text-on-surface">スケジュールを削除</h1>
+    <div class="rounded-xl bg-surface-container-lowest p-4">
+      <p class="text-sm text-on-surface">「{{ object }}」を削除します。この操作は取り消せません。</p>
+      <form method="post" class="mt-4 flex gap-2">
+        {% csrf_token %}
+        <button type="submit" class="rounded-full bg-error px-6 py-2.5 font-bold text-on-error">削除する</button>
+        <a href="{% url 'schedules:list' %}" class="rounded-full bg-surface-container-high px-6 py-2.5 font-bold text-on-surface-variant">キャンセル</a>
+      </form>
+    </div>
   </div>
 {% endblock %}

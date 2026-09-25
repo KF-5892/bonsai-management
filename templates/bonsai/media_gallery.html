@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}{{ plant.name }} のメディア | 盆栽管理{% endblock %}
+
+{% block content %}
+  <div class="space-y-4">
+    <header class="flex items-center justify-between gap-2">
+      <div class="min-w-0">
+        <a href="{% url 'bonsai:detail' pk=plant.pk %}" class="text-sm font-bold text-primary">← {{ plant.name }}</a>
+        <h1 class="truncate text-xl font-bold text-on-surface">メディア</h1>
+        <p class="text-xs text-on-surface-variant">全 {{ total_count }} 枚</p>
+      </div>
+      <a href="{% url 'bonsai:media_upload' pk=plant.pk %}"
+         class="shrink-0 rounded-full bg-primary px-4 py-2 text-sm font-bold text-on-primary">+ 追加</a>
+    </header>
+
+    {% if years %}
+      {# 年タブ（Stitch _12 準拠） #}
+      <nav class="flex gap-2 overflow-x-auto pb-1 scrollbar-hide" aria-label="年で絞り込み">
+        {% for year in years %}
+          <a href="?year={{ year }}"
+             class="flex-none rounded-full px-4 py-2 text-sm font-bold {% if year == selected_year %}bg-primary text-on-primary shadow-sm{% else %}bg-surface-container-high text-on-surface-variant{% endif %}"
+             {% if year == selected_year %}aria-current="page"{% endif %}>
+            {{ year }}年
+          </a>
+        {% endfor %}
+      </nav>
+
+      {% for month, items in media_by_month %}
+        <section>
+          <h2 class="mb-2 text-sm font-bold text-on-surface-variant">{{ month }}月</h2>
+          <div class="grid grid-cols-3 gap-2">
+            {% for item in items %}
+              <figure class="overflow-hidden rounded-lg bg-surface-container-lowest">
+                <div class="aspect-square bg-surface-container-low">
+                  {% if item.image_medium %}
+                    <img src="{{ item.image_medium.url }}"
+                         alt="{{ item.caption|default:plant.name }}"
+                         class="h-full w-full object-cover">
+                  {% endif %}
+                </div>
+                <figcaption class="space-y-1 p-2">
+                  <p class="truncate text-[10px] text-on-surface-variant">
+                    {{ item.taken_at|default:item.created_at|date:"n/j" }}
+                    {% if item.caption %}・{{ item.caption }}{% endif %}
+                  </p>
+                  <div class="flex items-center justify-between gap-1">
+                    {% if plant.cover_media_id == item.pk %}
+                      <span class="text-[10px] font-bold text-primary">カバー</span>
+                    {% else %}
+                      <form method="post" action="{% url 'bonsai:media_set_cover' pk=plant.pk media_pk=item.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="text-[10px] font-bold text-primary">カバーに設定</button>
+                      </form>
+                    {% endif %}
+                    <form method="post" action="{% url 'bonsai:media_delete' pk=plant.pk media_pk=item.pk %}"
+                          onsubmit="return confirm('この写真を削除しますか？');">
+                      {% csrf_token %}
+                      <button type="submit" class="text-[10px] font-bold text-error">削除</button>
+                    </form>
+                  </div>
+                </figcaption>
+              </figure>
+            {% endfor %}
+          </div>
+        </section>
+      {% endfor %}
+    {% else %}
+      <p class="rounded-xl bg-surface-container-low p-4 text-center text-sm text-on-surface-variant">
+        まだ写真がありません。成長の記録を残しましょう。
+      </p>
+    {% endif %}
+  </div>
+{% endblock %}

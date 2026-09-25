@@ -1,0 +1,651 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="sXdN4fj4lDpi012SQSJrFzJ5sMNvsN6f9AK0HOVoMVl0IVgJ8InfKPhRT459mmyq">
+    <title>ホーム | 盆栽管理</title>
+
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+    
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "background": "#f6faf6",
+              "on-background": "#181d1a",
+              "surface": "#f6faf6",
+              "surface-bright": "#f6faf6",
+              "surface-dim": "#d7dbd7",
+              "surface-tint": "#1b6d24",
+              "surface-variant": "#dfe3e0",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-low": "#f1f5f1",
+              "surface-container": "#ebefeb",
+              "surface-container-high": "#e5e9e5",
+              "surface-container-highest": "#dfe3e0",
+              "on-surface": "#181d1a",
+              "on-surface-variant": "#40493d",
+              "inverse-surface": "#2d312f",
+              "inverse-on-surface": "#eef2ee",
+              "primary": "#0d631b",
+              "on-primary": "#ffffff",
+              "primary-container": "#2e7d32",
+              "on-primary-container": "#cbffc2",
+              "primary-fixed": "#a3f69c",
+              "primary-fixed-dim": "#88d982",
+              "on-primary-fixed": "#002204",
+              "on-primary-fixed-variant": "#005312",
+              "inverse-primary": "#88d982",
+              "secondary": "#526350",
+              "on-secondary": "#ffffff",
+              "secondary-container": "#d2e5cd",
+              "on-secondary-container": "#566754",
+              "secondary-fixed": "#d5e8d0",
+              "secondary-fixed-dim": "#b9ccb5",
+              "on-secondary-fixed": "#101f10",
+              "on-secondary-fixed-variant": "#3b4b39",
+              "tertiary": "#923357",
+              "on-tertiary": "#ffffff",
+              "tertiary-container": "#b14b6f",
+              "on-tertiary-container": "#ffedf0",
+              "tertiary-fixed": "#ffd9e2",
+              "tertiary-fixed-dim": "#ffb1c7",
+              "on-tertiary-fixed": "#3f001c",
+              "on-tertiary-fixed-variant": "#7f2448",
+              "error": "#ba1a1a",
+              "on-error": "#ffffff",
+              "error-container": "#ffdad6",
+              "on-error-container": "#93000a",
+              "outline": "#707a6c",
+              "outline-variant": "#bfcaba"
+            },
+            fontFamily: {
+              "headline": ["Inter", "Noto Sans JP", "sans-serif"],
+              "body": ["Inter", "Noto Sans JP", "sans-serif"],
+              "label": ["Inter", "Noto Sans JP", "sans-serif"]
+            },
+            borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" }
+          }
+        }
+      }
+    </script>
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="app.css">
+
+    
+  </head>
+  <body
+    class="min-h-screen bg-background font-body text-on-background antialiased"
+    hx-headers='{"X-CSRFToken": "sXdN4fj4lDpi012SQSJrFzJ5sMNvsN6f9AK0HOVoMVl0IVgJ8InfKPhRT459mmyq"}'
+  >
+    
+<header class="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between bg-[#f6faf6]/80 px-4 backdrop-blur-md">
+  <div class="flex items-center gap-3">
+    
+      <a
+        href="settings.html"
+        class="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-secondary-fixed text-base font-bold text-on-secondary-fixed"
+        aria-label="アカウント"
+      >
+        D
+      </a>
+    
+    <a href="home.html" class="font-['Inter'] text-xl font-bold text-green-900">盆栽管理</a>
+  </div>
+
+  <div class="flex items-center gap-1">
+    
+      <a
+        href="#"
+        class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
+        aria-label="検索"
+      >
+        <span class="material-symbols-outlined text-green-800">search</span>
+      </a>
+    
+
+    
+      
+      <a
+        href="settings_notifications.html"
+        class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
+        aria-label="通知設定"
+        title="通知設定"
+      >
+        <span class="material-symbols-outlined text-green-800">notifications</span>
+      </a>
+    
+
+    
+  </div>
+</header>
+
+
+    
+    <main class="mx-auto w-full max-w-screen-md px-4 pt-20 pb-32">
+      
+
+      
+  <div class="space-y-6">
+    
+    <section id="todos">
+      <header class="mb-3 flex items-end justify-between">
+        <div>
+          <h1 class="text-xl font-bold text-on-surface">
+            2026年9月のやること
+            
+          </h1>
+          <p class="mt-0.5 text-xs font-medium text-on-surface-variant">
+            3件中 1件完了
+          </p>
+        </div>
+        <span class="flex shrink-0 items-center gap-3">
+          <a href="#"
+             class="text-sm font-bold text-primary hover:opacity-80">共有</a>
+          <a href="schedules.html" class="text-sm font-bold text-primary hover:opacity-80">
+            すべて見る
+          </a>
+        </span>
+      </header>
+
+      
+      <div class="mb-3 flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+        <a href="home.html"
+           class="flex-none rounded-full px-4 py-2 text-sm font-bold bg-primary text-on-primary shadow-sm">今月</a>
+        <a href="home_week.html"
+           class="flex-none rounded-full px-4 py-2 text-sm font-bold bg-surface-container-high text-on-surface-variant">今週</a>
+        <details class="flex-none" >
+          <summary class="cursor-pointer list-none rounded-full px-4 py-2 text-sm font-bold bg-surface-container-high text-on-surface-variant">
+            カスタム期間
+          </summary>
+          <form method="get" class="mt-2 flex flex-wrap items-end gap-2 rounded-xl bg-surface-container-lowest p-3">
+            <input type="hidden" name="range" value="custom">
+            <label class="text-xs font-bold text-on-surface-variant">開始
+              <input type="date" name="from" value=""
+                     class="mt-1 block rounded-md border border-outline-variant px-2 py-1.5 text-sm">
+            </label>
+            <label class="text-xs font-bold text-on-surface-variant">終了
+              <input type="date" name="to" value=""
+                     class="mt-1 block rounded-md border border-outline-variant px-2 py-1.5 text-sm">
+            </label>
+            <button type="submit" class="rounded-full bg-primary px-4 py-2 text-sm font-bold text-on-primary">表示</button>
+          </form>
+        </details>
+      </div>
+
+      
+        <ul class="space-y-2">
+          
+            <li class="rounded-xl bg-surface-container-lowest p-4">
+              <div class="flex items-start justify-between gap-3">
+                <div class="min-w-0 flex-1">
+                  <p class="text-xs font-medium text-on-surface-variant">
+                    全体
+                    
+                    
+                  </p>
+                  <p class="font-bold text-on-surface">秋肥と樹形整理</p>
+                  
+                    <p class="mt-1 text-sm text-on-surface-variant line-clamp-2">暑さが和らぐ下旬から秋肥を再開。冬越しの体力を養う。針金かけや軽い剪定の適期でもあるが、強剪定は避ける。</p>
+                  
+                </div>
+                <div class="shrink-0 text-right">
+                  
+                    <form method="post"
+                          action="#">
+                      <input type="hidden" name="csrfmiddlewaretoken" value="sXdN4fj4lDpi012SQSJrFzJ5sMNvsN6f9AK0HOVoMVl0IVgJ8InfKPhRT459mmyq">
+                      <input type="hidden" name="year" value="2026">
+                      <input type="hidden" name="month" value="9">
+                      
+                      <input type="hidden" name="task_type" value="施肥">
+                      <button type="submit"
+                              class="rounded-full bg-primary px-4 py-1.5 text-xs font-bold text-on-primary shadow-sm transition-transform active:scale-95">
+                        記録する
+                      </button>
+                    </form>
+                  
+                </div>
+              </div>
+            </li>
+          
+            <li class="rounded-xl bg-surface-container-lowest p-4">
+              <div class="flex items-start justify-between gap-3">
+                <div class="min-w-0 flex-1">
+                  <p class="text-xs font-medium text-on-surface-variant">
+                    もみじ 花子
+                    ・五葉松
+                    
+                  </p>
+                  <p class="font-bold text-on-surface">もみじの置き肥</p>
+                  
+                </div>
+                <div class="shrink-0 text-right">
+                  
+                    <form method="post"
+                          action="#">
+                      <input type="hidden" name="csrfmiddlewaretoken" value="sXdN4fj4lDpi012SQSJrFzJ5sMNvsN6f9AK0HOVoMVl0IVgJ8InfKPhRT459mmyq">
+                      <input type="hidden" name="year" value="2026">
+                      <input type="hidden" name="month" value="9">
+                      
+                        <input type="hidden" name="bonsai" value="06ab514e-cb2a-70a4-8000-7381381d46d0">
+                      
+                      <input type="hidden" name="task_type" value="fertilizing">
+                      <button type="submit"
+                              class="rounded-full bg-primary px-4 py-1.5 text-xs font-bold text-on-primary shadow-sm transition-transform active:scale-95">
+                        記録する
+                      </button>
+                    </form>
+                  
+                </div>
+              </div>
+            </li>
+          
+            <li class="rounded-xl bg-surface-container-lowest p-4">
+              <div class="flex items-start justify-between gap-3">
+                <div class="min-w-0 flex-1">
+                  <p class="text-xs font-medium text-on-surface-variant">
+                    黒松 太郎
+                    ・黒松
+                    
+                  </p>
+                  <p class="font-bold text-on-surface">黒松の水やり</p>
+                  
+                    <p class="mt-1 text-sm text-on-surface-variant line-clamp-2">朝夕の2回。</p>
+                  
+                </div>
+                <div class="shrink-0 text-right">
+                  
+                    <span class="inline-flex items-center gap-1 rounded-full bg-[#E8F5E9] px-2.5 py-1 text-xs font-bold text-[#2E7D32]">
+                      <span class="material-symbols-outlined text-xs" aria-hidden="true">check</span>完了
+                    </span>
+                  
+                </div>
+              </div>
+            </li>
+          
+        </ul>
+        
+      
+    </section>
+
+    
+    
+      <section>
+        <header class="mb-3 flex items-end justify-between">
+          <h2 class="text-xl font-bold text-on-surface">最近の活動</h2>
+          <a href="logs.html" class="text-sm font-bold text-primary hover:opacity-80">すべて見る</a>
+        </header>
+        <ul class="space-y-2">
+          
+            <li>
+              <a href="log_5.html"
+                 class="flex items-center gap-3 rounded-xl bg-surface-container-lowest p-3">
+                <span class="h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-surface-container-low">
+                  
+                    <span class="flex h-full w-full items-center justify-center">
+                      <span class="material-symbols-outlined text-outline-variant" aria-hidden="true">edit_note</span>
+                    </span>
+                  
+                </span>
+                <span class="min-w-0 flex-1">
+                  <span class="block truncate text-xs font-medium text-on-surface-variant">
+                    黒松 太郎・9/23
+                  </span>
+                  <span class="block truncate font-bold text-on-surface">潅水</span>
+                  
+                    <span class="block truncate text-xs text-on-surface-variant">たっぷり灌水。</span>
+                  
+                </span>
+              </a>
+            </li>
+          
+            <li>
+              <a href="log_4.html"
+                 class="flex items-center gap-3 rounded-xl bg-surface-container-lowest p-3">
+                <span class="h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-surface-container-low">
+                  
+                    <span class="flex h-full w-full items-center justify-center">
+                      <span class="material-symbols-outlined text-outline-variant" aria-hidden="true">edit_note</span>
+                    </span>
+                  
+                </span>
+                <span class="min-w-0 flex-1">
+                  <span class="block truncate text-xs font-medium text-on-surface-variant">
+                    もみじ 花子・9/21
+                  </span>
+                  <span class="block truncate font-bold text-on-surface">施肥</span>
+                  
+                    <span class="block truncate text-xs text-on-surface-variant">置き肥を交換。</span>
+                  
+                </span>
+              </a>
+            </li>
+          
+            <li>
+              <a href="log_3.html"
+                 class="flex items-center gap-3 rounded-xl bg-surface-container-lowest p-3">
+                <span class="h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-surface-container-low">
+                  
+                    <span class="flex h-full w-full items-center justify-center">
+                      <span class="material-symbols-outlined text-outline-variant" aria-hidden="true">edit_note</span>
+                    </span>
+                  
+                </span>
+                <span class="min-w-0 flex-1">
+                  <span class="block truncate text-xs font-medium text-on-surface-variant">
+                    黒松 太郎・9/19
+                  </span>
+                  <span class="block truncate font-bold text-on-surface">芽摘み</span>
+                  
+                    <span class="block truncate text-xs text-on-surface-variant">強い芽を元から摘んだ。</span>
+                  
+                </span>
+              </a>
+            </li>
+          
+            <li>
+              <a href="log_2.html"
+                 class="flex items-center gap-3 rounded-xl bg-surface-container-lowest p-3">
+                <span class="h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-surface-container-low">
+                  
+                    <span class="flex h-full w-full items-center justify-center">
+                      <span class="material-symbols-outlined text-outline-variant" aria-hidden="true">edit_note</span>
+                    </span>
+                  
+                </span>
+                <span class="min-w-0 flex-1">
+                  <span class="block truncate text-xs font-medium text-on-surface-variant">
+                    もみじ 花子・9/16
+                  </span>
+                  <span class="block truncate font-bold text-on-surface">観察</span>
+                  
+                    <span class="block truncate text-xs text-on-surface-variant">葉先が少し茶色い。風通しを改善。</span>
+                  
+                </span>
+              </a>
+            </li>
+          
+            <li>
+              <a href="log_1.html"
+                 class="flex items-center gap-3 rounded-xl bg-surface-container-lowest p-3">
+                <span class="h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-surface-container-low">
+                  
+                    <span class="flex h-full w-full items-center justify-center">
+                      <span class="material-symbols-outlined text-outline-variant" aria-hidden="true">edit_note</span>
+                    </span>
+                  
+                </span>
+                <span class="min-w-0 flex-1">
+                  <span class="block truncate text-xs font-medium text-on-surface-variant">
+                    五葉松 次郎・9/12
+                  </span>
+                  <span class="block truncate font-bold text-on-surface">針金かけ</span>
+                  
+                    <span class="block truncate text-xs text-on-surface-variant">下枝にアルミ線をかけた。</span>
+                  
+                </span>
+              </a>
+            </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section>
+      
+        <h2 class="mb-3 text-xl font-bold text-on-surface">マイ盆栽</h2>
+
+        
+        <form method="get" class="relative w-full" role="search">
+          <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
+            <span class="material-symbols-outlined text-outline" aria-hidden="true">search</span>
+          </div>
+          <input
+            type="text"
+            name="q"
+            value=""
+            placeholder="盆栽を検索..."
+            aria-label="盆栽を検索"
+            class="block w-full rounded-2xl border-none bg-surface-container-low py-4 pl-12 pr-4 font-medium text-on-surface placeholder-on-surface-variant/60 focus:ring-2 focus:ring-primary"
+          >
+          
+        </form>
+
+        
+        <div class="mt-4 flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+          <a href="home_species.html"
+             class="flex-none rounded-full px-6 py-2.5 font-bold bg-primary text-on-primary shadow-sm">
+            全て
+          </a>
+          <a href="#"
+             class="flex flex-none items-center gap-1 rounded-full px-6 py-2.5 font-bold bg-surface-container-high text-on-surface-variant">
+            <span class="material-symbols-outlined text-lg" aria-hidden="true">check_circle</span> 良好
+          </a>
+          <a href="#"
+             class="flex flex-none items-center gap-1 rounded-full px-6 py-2.5 font-bold bg-surface-container-high text-on-surface-variant">
+            <span class="material-symbols-outlined text-lg" aria-hidden="true">warning</span> 要注意
+          </a>
+          <a href="#"
+             class="flex flex-none items-center gap-1 rounded-full px-6 py-2.5 font-bold bg-surface-container-high text-on-surface-variant">
+            <span class="material-symbols-outlined text-lg" aria-hidden="true">cancel</span> 不調
+          </a>
+        </div>
+
+        
+        
+        <div class="mt-3 flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+          
+            <a href="home.html"
+               class="flex-none rounded-full px-4 py-1.5 text-xs font-bold bg-surface-container-high text-on-surface-variant">
+              カード
+            </a>
+          
+            <a href="home_species.html"
+               class="flex-none rounded-full px-4 py-1.5 text-xs font-bold bg-secondary-container text-on-secondary-container">
+              品種別
+            </a>
+          
+            <a href="home_tag.html"
+               class="flex-none rounded-full px-4 py-1.5 text-xs font-bold bg-surface-container-high text-on-surface-variant">
+              タグ別
+            </a>
+          
+        </div>
+
+        
+          <div class="mt-2 space-y-6">
+            
+              <div>
+                
+                  <div class="mb-2 flex items-center justify-between">
+                    <h3 class="text-sm font-bold text-on-surface-variant">五葉松（2）</h3>
+                    
+                    <a href="log_bulk_form.html"
+                       class="text-xs font-bold text-primary">この2鉢に一括記録</a>
+                  </div>
+                
+                <div class="space-y-4">
+                  
+                    
+  <a href="bonsai_3.html"
+     class="relative flex overflow-hidden rounded-xl bg-surface-container-lowest">
+    <div class="absolute left-0 top-0 h-full w-1 bg-green-600"></div>
+    <div class="aspect-square w-1/3 max-w-[120px] bg-surface-container-low">
+      
+        <div class="flex h-full w-full items-center justify-center">
+          <span class="material-symbols-outlined text-4xl text-outline-variant" aria-hidden="true">potted_plant</span>
+        </div>
+      
+    </div>
+    <div class="flex flex-1 flex-col justify-between p-4">
+      <div>
+        <div class="flex items-start justify-between gap-2">
+          <h3 class="truncate text-lg font-bold text-on-surface">五葉松 次郎</h3>
+          
+            <span class="flex shrink-0 items-center gap-1 rounded bg-[#E8F5E9] px-2 py-0.5 text-[10px] font-bold text-[#2E7D32]">
+              <span class="material-symbols-outlined text-xs" aria-hidden="true">check</span>良好
+            </span>
+          
+        </div>
+        <p class="mt-0.5 text-sm text-on-surface-variant">
+          品種：五葉松
+        </p>
+      </div>
+      
+    </div>
+  </a>
+
+                  
+                    
+  <a href="bonsai_2.html"
+     class="relative flex overflow-hidden rounded-xl bg-surface-container-lowest">
+    <div class="absolute left-0 top-0 h-full w-1 bg-tertiary"></div>
+    <div class="aspect-square w-1/3 max-w-[120px] bg-surface-container-low">
+      
+        <div class="flex h-full w-full items-center justify-center">
+          <span class="material-symbols-outlined text-4xl text-outline-variant" aria-hidden="true">potted_plant</span>
+        </div>
+      
+    </div>
+    <div class="flex flex-1 flex-col justify-between p-4">
+      <div>
+        <div class="flex items-start justify-between gap-2">
+          <h3 class="truncate text-lg font-bold text-on-surface">もみじ 花子</h3>
+          
+            <span class="flex shrink-0 items-center gap-1 rounded bg-[#FCE4EC] px-2 py-0.5 text-[10px] font-bold text-[#BA1A1A]">
+              <span class="material-symbols-outlined text-xs" aria-hidden="true">warning</span>要注意
+            </span>
+          
+        </div>
+        <p class="mt-0.5 text-sm text-on-surface-variant">
+          品種：五葉松
+        </p>
+      </div>
+      
+        <div class="mt-4 flex items-center gap-2 font-bold text-tertiary">
+          <span class="material-symbols-outlined text-lg" aria-hidden="true">compost</span>
+          <span class="truncate text-xs uppercase tracking-wider">次の作業：施肥</span>
+        </div>
+      
+    </div>
+  </a>
+
+                  
+                </div>
+              </div>
+            
+              <div>
+                
+                  <div class="mb-2 flex items-center justify-between">
+                    <h3 class="text-sm font-bold text-on-surface-variant">黒松（1）</h3>
+                    
+                    <a href="log_bulk_form.html"
+                       class="text-xs font-bold text-primary">この1鉢に一括記録</a>
+                  </div>
+                
+                <div class="space-y-4">
+                  
+                    
+  <a href="bonsai_1.html"
+     class="relative flex overflow-hidden rounded-xl bg-surface-container-lowest">
+    <div class="absolute left-0 top-0 h-full w-1 bg-green-600"></div>
+    <div class="aspect-square w-1/3 max-w-[120px] bg-surface-container-low">
+      
+        <img src="/media/bonsai/thumb/2026/09/demo_thumb_GgmP5zw.jpg"
+             alt="黒松 太郎"
+             class="h-full w-full object-cover">
+      
+    </div>
+    <div class="flex flex-1 flex-col justify-between p-4">
+      <div>
+        <div class="flex items-start justify-between gap-2">
+          <h3 class="truncate text-lg font-bold text-on-surface">黒松 太郎</h3>
+          
+            <span class="flex shrink-0 items-center gap-1 rounded bg-[#E8F5E9] px-2 py-0.5 text-[10px] font-bold text-[#2E7D32]">
+              <span class="material-symbols-outlined text-xs" aria-hidden="true">check</span>良好
+            </span>
+          
+        </div>
+        <p class="mt-0.5 text-sm text-on-surface-variant">
+          品種：黒松
+        </p>
+      </div>
+      
+    </div>
+  </a>
+
+                  
+                </div>
+              </div>
+            
+          </div>
+        
+      
+    </section>
+  </div>
+
+  
+  
+    <a href="bonsai_form.html"
+       aria-label="盆栽を登録"
+       class="fixed bottom-24 right-6 z-40 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-container text-on-primary shadow-xl transition-transform active:scale-95">
+      <span class="material-symbols-outlined text-3xl" aria-hidden="true">add</span>
+    </a>
+  
+
+    </main>
+
+    
+
+  <nav
+    class="fixed inset-x-0 bottom-0 z-50 flex h-20 items-center justify-around rounded-t-3xl bg-[#f6faf6]/80 shadow-[0_-4px_16px_rgba(24,29,26,0.08)] backdrop-blur-md"
+    aria-label="メインナビゲーション"
+  >
+    <a
+      href="home.html"
+      class="flex flex-col items-center justify-center px-4 py-1 transition-transform active:scale-90 scale-95 rounded-full bg-[#a3f69c] text-green-900"
+      aria-current="page"
+    >
+      <span class="material-symbols-outlined" aria-hidden="true" style="font-variation-settings: 'FILL' 1;">home</span>
+      <span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">ホーム</span>
+    </a>
+    <a
+      href="schedules.html"
+      class="flex flex-col items-center justify-center px-4 py-1 transition-transform active:scale-90 text-slate-500 hover:opacity-80"
+      
+    >
+      <span class="material-symbols-outlined" aria-hidden="true" >calendar_month</span>
+      <span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">スケジュール</span>
+    </a>
+    <a
+      href="logs.html"
+      class="flex flex-col items-center justify-center px-4 py-1 transition-transform active:scale-90 text-slate-500 hover:opacity-80"
+      
+    >
+      <span class="material-symbols-outlined" aria-hidden="true" >edit_note</span>
+      <span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">ログ記録</span>
+    </a>
+    <a
+      href="articles.html"
+      class="flex flex-col items-center justify-center px-4 py-1 transition-transform active:scale-90 text-slate-500 hover:opacity-80"
+      
+    >
+      <span class="material-symbols-outlined" aria-hidden="true" >auto_stories</span>
+      <span class="font-['Inter'] text-[10px] font-bold uppercase tracking-wider">お役立ち</span>
+    </a>
+  </nav>
+
+
+
+    
+  </body>
+</html>

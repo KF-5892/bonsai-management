@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}検索 | 盆栽管理{% endblock %}
+
+{% block content %}
+  <div class="space-y-4">
+    <h1 class="text-xl font-bold text-on-surface">検索</h1>
+
+    <form method="get" class="relative w-full" role="search">
+      <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
+        <span class="material-symbols-outlined text-outline" aria-hidden="true">search</span>
+      </div>
+      <input type="search" name="q" value="{{ q }}" autofocus
+             placeholder="盆栽・ログ・記事を検索..."
+             aria-label="横断検索"
+             class="block w-full rounded-2xl border-none bg-surface-container-low py-4 pl-12 pr-4 font-medium text-on-surface placeholder-on-surface-variant/60 focus:ring-2 focus:ring-primary">
+    </form>
+
+    {% if has_query %}
+      <p class="text-sm text-on-surface-variant">「{{ q }}」の検索結果 {{ total_count }} 件</p>
+
+      {% if plants %}
+        <section>
+          <h2 class="mb-2 text-sm font-bold text-on-surface-variant">盆栽</h2>
+          <ul class="space-y-2">
+            {% for plant in plants %}
+              <li>
+                <a href="{% url 'bonsai:detail' pk=plant.pk %}"
+                   class="flex items-center justify-between rounded-xl bg-surface-container-lowest px-4 py-3">
+                  <span class="min-w-0">
+                    <span class="block truncate font-bold text-on-surface">{{ plant.name }}</span>
+                    <span class="block truncate text-xs text-on-surface-variant">
+                      {% if plant.species %}{{ plant.species.name }}{% else %}品種未設定{% endif %}
+                    </span>
+                  </span>
+                  <span class="material-symbols-outlined text-outline" aria-hidden="true">chevron_right</span>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </section>
+      {% endif %}
+
+      {% if logs %}
+        <section>
+          <h2 class="mb-2 text-sm font-bold text-on-surface-variant">作業ログ</h2>
+          <ul class="space-y-2">
+            {% for log in logs %}
+              <li>
+                <a href="{% url 'logs:detail' pk=log.pk %}" class="block rounded-xl bg-surface-container-lowest px-4 py-3">
+                  <span class="block text-xs text-on-surface-variant">{{ log.bonsai.name }}・{{ log.performed_at|date:"Y/m/d" }}</span>
+                  <span class="block font-bold text-on-surface">{{ log.get_task_type_display }}</span>
+                  {% if log.notes %}<span class="block truncate text-xs text-on-surface-variant">{{ log.notes }}</span>{% endif %}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </section>
+      {% endif %}
+
+      {% if articles %}
+        <section>
+          <h2 class="mb-2 text-sm font-bold text-on-surface-variant">お役立ち記事</h2>
+          <ul class="space-y-2">
+            {% for article in articles %}
+              <li>
+                <a href="{% url 'articles:detail' slug=article.slug %}" class="block rounded-xl bg-surface-container-lowest px-4 py-3">
+                  <span class="block font-bold text-on-surface">{{ article.title }}</span>
+                  {% if article.summary %}<span class="block truncate text-xs text-on-surface-variant">{{ article.summary }}</span>{% endif %}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </section>
+      {% endif %}
+
+      {% if species_list %}
+        <section>
+          <h2 class="mb-2 text-sm font-bold text-on-surface-variant">品種</h2>
+          <div class="flex flex-wrap gap-2">
+            {% for species in species_list %}
+              <a href="{% url 'bonsai:species_detail' slug=species.slug %}"
+                 class="rounded-full bg-surface-container-high px-4 py-2 text-sm font-medium text-on-surface-variant">
+                {{ species.name }}
+              </a>
+            {% endfor %}
+          </div>
+        </section>
+      {% endif %}
+
+      {% if not total_count %}
+        <p class="rounded-xl bg-surface-container-low p-4 text-center text-sm text-on-surface-variant">
+          一致する結果がありませんでした。
+        </p>
+      {% endif %}
+    {% else %}
+      <p class="rounded-xl bg-surface-container-low p-4 text-center text-sm text-on-surface-variant">
+        盆栽名・メモ・作業ログ・記事タイトルを横断して検索できます。
+      </p>
+    {% endif %}
+  </div>
+{% endblock %}

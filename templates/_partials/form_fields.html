@@ -1,0 +1,13 @@
+{# 汎用フォームフィールド描画。``form`` を渡して使う（ラベル・ヘルプ・エラー付き） #}
+{% if form.non_field_errors %}
+  <div class="rounded-lg bg-error-container px-3 py-2 text-sm text-on-error-container" role="alert">
+    {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+  </div>
+{% endif %}
+{% for field in form %}
+  {% if field.is_hidden %}
+    {{ field }}
+  {% else %}
+    {% include "_partials/form_field.html" with field=field %}
+  {% endif %}
+{% endfor %}

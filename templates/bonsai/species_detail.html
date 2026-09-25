@@ -4,52 +4,68 @@
 
 {% block content %}
   <div class="space-y-4">
-    <header>
-      <h1 class="text-xl font-bold text-emerald-900">{{ species.name }}</h1>
-      <p class="text-sm text-gray-600">
+    <header class="rounded-xl bg-surface-container-lowest p-4">
+      <p class="text-xs font-bold uppercase tracking-wider text-primary">品種ガイド</p>
+      <h1 class="text-xl font-bold text-on-surface">{{ species.name }}</h1>
+      <p class="mt-0.5 text-sm text-on-surface-variant">
         {{ species.get_category_display }}
         {% if species.scientific_name %}・<i>{{ species.scientific_name }}</i>{% endif %}
       </p>
+      {% if species.description %}
+        <p class="mt-3 whitespace-pre-line text-sm text-on-surface">{{ species.description }}</p>
+      {% endif %}
     </header>
 
-    {% if species.description %}
-      <section class="rounded-lg border border-emerald-100 bg-white p-4 shadow-sm">
-        <p class="whitespace-pre-line text-sm text-gray-800">{{ species.description }}</p>
-      </section>
-    {% endif %}
-
-    <section class="rounded-lg border border-emerald-100 bg-white p-4 shadow-sm">
-      <h2 class="mb-2 text-sm font-semibold text-emerald-800">月別作業カレンダー</h2>
+    <section class="rounded-xl bg-surface-container-lowest p-4">
+      <h2 class="mb-3 text-sm font-bold text-on-surface-variant">月別作業カレンダー</h2>
       {% if tasks_by_month %}
-        <ul class="divide-y divide-emerald-50">
+        <ol class="space-y-3">
           {% for month, tasks in tasks_by_month %}
-            <li class="py-2">
-              <p class="text-sm font-semibold text-emerald-900">{{ month }}月</p>
-              <ul class="mt-1 space-y-1 text-sm text-gray-700">
+            <li class="flex gap-3 {% if month == current_month %}rounded-lg bg-primary-fixed/30 p-2 -mx-2{% endif %}">
+              <span class="w-10 shrink-0 text-sm font-bold {% if month == current_month %}text-primary{% else %}text-on-surface-variant{% endif %}">
+                {{ month }}月
+              </span>
+              <ul class="min-w-0 flex-1 space-y-1.5">
                 {% for task in tasks %}
-                  <li>
-                    {% if task.period %}<span class="text-xs text-emerald-600">[{{ task.period }}]</span>{% endif %}
-                    {{ task.task_type }}: {{ task.description }}
+                  <li class="text-sm text-on-surface">
+                    <span class="mr-1 rounded-full bg-secondary-container px-2 py-0.5 text-xs font-bold text-on-secondary-container">{{ task.label }}</span>
+                    {% if task.period %}<span class="text-xs text-on-surface-variant">{{ task.period }}</span>{% endif %}
+                    <span class="block text-on-surface-variant">{{ task.description }}</span>
                   </li>
                 {% endfor %}
               </ul>
             </li>
           {% endfor %}
-        </ul>
+        </ol>
       {% else %}
-        <p class="text-sm text-gray-500">登録された作業はありません。</p>
+        <p class="text-sm text-on-surface-variant">登録された作業はありません。</p>
       {% endif %}
     </section>
 
+    {% if my_plants %}
+      <section class="rounded-xl bg-surface-container-lowest p-4">
+        <h2 class="mb-2 text-sm font-bold text-on-surface-variant">この品種の自分の盆栽</h2>
+        <ul class="space-y-2">
+          {% for plant in my_plants %}
+            <li>
+              <a href="{% url 'bonsai:detail' pk=plant.pk %}"
+                 class="flex items-center justify-between rounded-lg bg-surface-container-low px-3 py-2">
+                <span class="truncate font-medium text-on-surface">{{ plant.name }}</span>
+                <span class="material-symbols-outlined text-outline" aria-hidden="true">chevron_right</span>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endif %}
+
     {% if related_articles %}
-      <section class="rounded-lg border border-emerald-100 bg-white p-4 shadow-sm">
-        <h2 class="mb-2 text-sm font-semibold text-emerald-800">関連お役立ち記事</h2>
-        <ul class="divide-y divide-emerald-50">
+      <section class="rounded-xl bg-surface-container-lowest p-4">
+        <h2 class="mb-2 text-sm font-bold text-on-surface-variant">関連お役立ち記事</h2>
+        <ul class="divide-y divide-surface-container-high">
           {% for art in related_articles %}
             <li class="py-2 text-sm">
-              <a href="{% url 'articles:detail' slug=art.slug %}" class="text-emerald-700 hover:underline">
-                {{ art.title }}
-              </a>
+              <a href="{% url 'articles:detail' slug=art.slug %}" class="font-medium text-primary">{{ art.title }}</a>
             </li>
           {% endfor %}
         </ul>

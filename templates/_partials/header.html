@@ -2,9 +2,8 @@
 <header class="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between bg-[#f6faf6]/80 px-4 backdrop-blur-md">
   <div class="flex items-center gap-3">
     {% if user.is_authenticated %}
-      {# Phase 2 でアカウント設定画面へリンク予定。現状はログアウトへ暫定リンク #}
       <a
-        href="{% url 'account_logout' %}"
+        href="{% url 'accounts:settings' %}"
         class="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-secondary-fixed text-base font-bold text-on-secondary-fixed"
         aria-label="アカウント"
       >
@@ -15,15 +14,27 @@
   </div>
 
   <div class="flex items-center gap-1">
-    {# Phase 3: 通知機能を実装予定 #}
-    <button
-      type="button"
-      class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
-      aria-label="通知"
-      title="通知（Phase 3 で実装予定）"
-    >
-      <span class="material-symbols-outlined text-green-800">notifications</span>
-    </button>
+    {% if user.is_authenticated %}
+      <a
+        href="{% url 'search' %}"
+        class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
+        aria-label="検索"
+      >
+        <span class="material-symbols-outlined text-green-800">search</span>
+      </a>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+      {# 通知の配信は Phase 3。押しても何も起きないボタンにはせず、通知設定へ案内する #}
+      <a
+        href="{% url 'accounts:notifications' %}"
+        class="rounded-full p-2 transition-colors duration-200 hover:bg-green-50"
+        aria-label="通知設定"
+        title="通知設定"
+      >
+        <span class="material-symbols-outlined text-green-800">notifications</span>
+      </a>
+    {% endif %}
 
     {% if not user.is_authenticated %}
       <a

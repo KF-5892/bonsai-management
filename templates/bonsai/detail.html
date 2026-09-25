@@ -4,79 +4,288 @@
 
 {% block content %}
   <div class="space-y-4">
-    <header class="flex items-start justify-between gap-2">
-      <div>
-        <h1 class="text-xl font-bold text-emerald-900">{{ plant.name }}</h1>
-        <p class="text-sm text-gray-600">
-          {% if plant.species %}
-            <a href="{% url 'bonsai:species_detail' slug=plant.species.slug %}" class="text-emerald-700 hover:underline">
-              {{ plant.species.name }}
-            </a>
-          {% else %}品種未設定{% endif %}
-          ・状態: {{ plant.get_health_status_display }}
-        </p>
-      </div>
-      <div class="flex gap-2">
-        <a href="{% url 'bonsai:edit' pk=plant.pk %}"
-           class="rounded-md border border-emerald-300 px-3 py-1 text-sm text-emerald-700 hover:bg-emerald-50">
-          編集
-        </a>
-        <a href="{% url 'bonsai:delete' pk=plant.pk %}"
-           class="rounded-md border border-red-300 px-3 py-1 text-sm text-red-700 hover:bg-red-50">
-          削除
-        </a>
+    {# ----- ヘッダー ----- #}
+    <header class="overflow-hidden rounded-xl bg-surface-container-lowest">
+      <div class="flex">
+        <div class="aspect-square w-1/3 max-w-[140px] bg-surface-container-low">
+          {% if plant.cover_media and plant.cover_media.image_medium %}
+            <img src="{{ plant.cover_media.image_medium.url }}" alt="{{ plant.name }}" class="h-full w-full object-cover">
+          {% else %}
+            <div class="flex h-full w-full items-center justify-center">
+              <span class="material-symbols-outlined text-4xl text-outline-variant" aria-hidden="true">potted_plant</span>
+            </div>
+          {% endif %}
+        </div>
+        <div class="flex flex-1 flex-col justify-between p-4">
+          <div>
+            <h1 class="text-xl font-bold text-on-surface">{{ plant.name }}</h1>
+            <p class="mt-0.5 text-sm text-on-surface-variant">
+              {% if plant.species %}
+                <a href="{% url 'bonsai:species_detail' slug=plant.species.slug %}" class="font-medium text-primary hover:underline">
+                  {{ plant.species.name }}
+                </a>
+              {% else %}品種未設定{% endif %}
+              ・{{ plant.get_health_status_display }}
+            </p>
+            {% if plant.tags.all %}
+              <div class="mt-2 flex flex-wrap gap-1">
+                {% for tag in plant.tags.all %}
+                  <span class="rounded-full bg-surface-container-high px-2 py-0.5 text-[10px] font-bold text-on-surface-variant">
+                    {{ tag.name }}
+                  </span>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+          <div class="mt-3 text-sm font-bold">
+            <a href="{% url 'bonsai:edit' pk=plant.pk %}" class="text-primary">編集</a>
+          </div>
+        </div>
       </div>
     </header>
 
-    {% if plant.notes %}
-      <section class="rounded-lg border border-emerald-100 bg-white p-4 shadow-sm">
-        <h2 class="mb-2 text-sm font-semibold text-emerald-800">メモ</h2>
-        <p class="whitespace-pre-line text-sm text-gray-800">{{ plant.notes }}</p>
+    {# ----- クイック記録（潅水など高頻度作業をフォームなしで 1 タップ） ----- #}
+    <section aria-label="クイック記録" class="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+      {% for value, label, icon in quick_tasks %}
+        <form method="post" action="{% url 'logs:quick_create' %}" class="flex-none">
+          {% csrf_token %}
+          <input type="hidden" name="bonsai" value="{{ plant.pk }}">
+          <input type="hidden" name="task_type" value="{{ value }}">
+          <input type="hidden" name="next" value="{{ request.get_full_path }}">
+          <button type="submit"
+                  class="flex items-center gap-1 rounded-full bg-secondary-container px-4 py-2 text-sm font-bold text-on-secondary-container transition-transform active:scale-95">
+            <span class="material-symbols-outlined text-lg" aria-hidden="true">{{ icon }}</span>{{ label }}を記録
+          </button>
+        </form>
+      {% endfor %}
+      <a href="{% url 'logs:create' %}?bonsai={{ plant.pk }}"
+         class="flex flex-none items-center gap-1 rounded-full bg-surface-container-high px-4 py-2 text-sm font-bold text-on-surface-variant">
+        <span class="material-symbols-outlined text-lg" aria-hidden="true">edit_note</span>詳しく記録
+      </a>
+    </section>
+
+    {# ----- タブ ----- #}
+    <nav class="flex gap-2 overflow-x-auto pb-1 scrollbar-hide" aria-label="盆栽詳細タブ">
+      {% for key, label in tabs %}
+        <a href="?tab={{ key }}"
+           class="flex-none rounded-full px-4 py-2 text-sm font-bold {% if tab == key %}bg-primary text-on-primary shadow-sm{% else %}bg-surface-container-high text-on-surface-variant{% endif %}"
+           {% if tab == key %}aria-current="page"{% endif %}>
+          {{ label }}
+        </a>
+      {% endfor %}
+    </nav>
+
+    {# ----- 概要 ----- #}
+    {% if tab == "overview" %}
+      <section class="rounded-xl bg-surface-container-lowest p-4">
+        <h2 class="mb-3 text-sm font-bold text-on-surface-variant">{{ year_month|date:"Y年n月" }}のやること</h2>
+        {% if plant_todos %}
+          <ul class="space-y-2">
+            {% for todo in plant_todos %}
+              <li class="rounded-lg bg-surface-container-low p-3">
+                <p class="text-xs text-on-surface-variant">
+                  {% if todo.period %}{{ todo.period }}{% endif %}
+                </p>
+                <p class="font-bold text-on-surface">{{ todo.title }}</p>
+                {% if todo.completion and todo.completion.status == "done" %}
+                  <span class="mt-1 inline-flex items-center gap-1 rounded-full bg-[#E8F5E9] px-2 py-0.5 text-[10px] font-bold text-[#2E7D32]">完了</span>
+                {% else %}
+                  <a href="{% url 'logs:create' %}?bonsai={{ plant.pk }}&amp;task_type={{ todo.task_type }}&amp;source_type={{ todo.source_type }}&amp;source_ref={{ todo.source_ref|urlencode }}&amp;year_month={{ year_month|date:'Y-m' }}"
+                     class="mt-2 inline-block rounded-full bg-primary px-4 py-1.5 text-xs font-bold text-on-primary">記録する</a>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-sm text-on-surface-variant">今月のやることはありません。</p>
+        {% endif %}
+      </section>
+
+      <section class="rounded-xl bg-surface-container-lowest p-4">
+        <h2 class="mb-2 text-sm font-bold text-on-surface-variant">基本情報</h2>
+        <dl class="space-y-2 text-sm">
+          <div class="flex justify-between"><dt class="text-on-surface-variant">入手日</dt>
+            <dd class="text-on-surface">{{ plant.acquired_at|date:"Y/m/d"|default:"未設定" }}</dd></div>
+          <div class="flex justify-between"><dt class="text-on-surface-variant">健康状態</dt>
+            <dd class="text-on-surface">{{ plant.get_health_status_display }}</dd></div>
+          <div class="flex justify-between"><dt class="text-on-surface-variant">写真</dt>
+            <dd class="text-on-surface">{{ media_count }} 枚</dd></div>
+        </dl>
+        {% if plant.notes %}
+          <p class="mt-3 whitespace-pre-line border-t border-surface-container-high pt-3 text-sm text-on-surface">{{ plant.notes }}</p>
+        {% endif %}
+      </section>
+
+    {# ----- 作業履歴 ----- #}
+    {% elif tab == "logs" %}
+      <section class="rounded-xl bg-surface-container-lowest p-4">
+        <header class="mb-2 flex items-center justify-between">
+          <h2 class="text-sm font-bold text-on-surface-variant">作業履歴（{{ log_count }} 件）</h2>
+          <a href="{% url 'logs:create' %}?bonsai={{ plant.pk }}" class="text-sm font-bold text-primary">+ 記録</a>
+        </header>
+        {% if recent_logs %}
+          <ul class="divide-y divide-surface-container-high">
+            {% for log in recent_logs %}
+              <li class="py-2">
+                <a href="{% url 'logs:detail' pk=log.pk %}" class="block">
+                  <span class="font-medium text-on-surface">{{ log.get_task_type_display }}</span>
+                  <span class="text-sm text-on-surface-variant"> ・ {{ log.performed_at|date:"Y/m/d H:i" }}</span>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+          {% if log_count > 10 %}
+            <a href="{% url 'logs:list' %}?bonsai={{ plant.pk }}" class="mt-3 inline-block text-sm font-bold text-primary">
+              この盆栽のログをすべて見る →
+            </a>
+          {% endif %}
+        {% else %}
+          <p class="text-sm text-on-surface-variant">まだログがありません。上のボタンから 1 タップで記録できます。</p>
+        {% endif %}
+      </section>
+
+    {# ----- スケジュール ----- #}
+    {% elif tab == "schedules" %}
+      <section class="rounded-xl bg-surface-container-lowest p-4">
+        <header class="mb-2 flex items-center justify-between">
+          <h2 class="text-sm font-bold text-on-surface-variant">登録中のスケジュール</h2>
+          <a href="{% url 'schedules:create' %}?bonsai={{ plant.pk }}" class="text-sm font-bold text-primary">+ 追加</a>
+        </header>
+        {% if schedules %}
+          <ul class="divide-y divide-surface-container-high">
+            {% for sched in schedules %}
+              <li class="flex items-center justify-between py-2">
+                <span>
+                  <span class="font-medium text-on-surface">{{ sched.title|default:sched.get_task_type_display }}</span>
+                  <span class="text-sm text-on-surface-variant">
+                    ・{{ sched.get_repeat_type_display }}{% if sched.next_run_at %}・次回 {{ sched.next_run_at|date:"Y/m/d" }}{% endif %}
+                  </span>
+                </span>
+                <a href="{% url 'schedules:edit' pk=sched.pk %}" class="shrink-0 text-sm font-bold text-primary">編集</a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-sm text-on-surface-variant">まだスケジュールがありません。</p>
+        {% endif %}
+      </section>
+
+    {# ----- メディア ----- #}
+    {% elif tab == "media" %}
+      <section class="rounded-xl bg-surface-container-lowest p-4">
+        <header class="mb-3 flex items-center justify-between">
+          <h2 class="text-sm font-bold text-on-surface-variant">メディア（{{ media_count }} 枚）</h2>
+          <a href="{% url 'bonsai:media_gallery' pk=plant.pk %}" class="text-sm font-bold text-primary">年別で見る</a>
+        </header>
+        {% if media %}
+          <div class="grid grid-cols-3 gap-2">
+            {% for item in media %}
+              <a href="{% url 'bonsai:media_gallery' pk=plant.pk %}" class="aspect-square overflow-hidden rounded-lg bg-surface-container-low">
+                {% if item.image_thumbnail %}
+                  <img src="{{ item.image_thumbnail.url }}" alt="{{ item.caption|default:plant.name }}" class="h-full w-full object-cover">
+                {% endif %}
+              </a>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="text-sm text-on-surface-variant">まだ写真がありません。</p>
+        {% endif %}
+        <a href="{% url 'bonsai:media_upload' pk=plant.pk %}"
+           class="mt-3 inline-block rounded-full bg-primary px-4 py-2 text-sm font-bold text-on-primary">+ 写真を追加</a>
+      </section>
+
+    {# ----- 植え替え履歴 ----- #}
+    {% elif tab == "repotting" %}
+      <section class="rounded-xl bg-surface-container-lowest p-4">
+        <h2 class="mb-3 text-sm font-bold text-on-surface-variant">植え替え履歴</h2>
+        <dl class="space-y-2 text-sm">
+          <div class="flex justify-between"><dt class="text-on-surface-variant">最終植え替え</dt>
+            <dd class="font-bold text-on-surface">
+              {% if last_repot %}{{ last_repot.performed_at|date:"Y/m/d" }}{% else %}記録なし{% endif %}
+            </dd></div>
+          <div class="flex justify-between"><dt class="text-on-surface-variant">次回の目安</dt>
+            <dd class="font-bold text-primary">
+              {% if next_repot_estimate %}{{ next_repot_estimate|date:"Y年n月" }}頃{% else %}—{% endif %}
+            </dd></div>
+        </dl>
+        {% if repot_logs %}
+          <ul class="mt-4 space-y-3 border-l-2 border-primary-fixed pl-4">
+            {% for log in repot_logs %}
+              <li>
+                <a href="{% url 'logs:detail' pk=log.pk %}" class="block">
+                  <p class="text-xs text-on-surface-variant">{{ log.performed_at|date:"Y/m/d" }}</p>
+                  <p class="text-sm text-on-surface">{{ log.notes|default:"植え替えを実施"|truncatechars:60 }}</p>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="mt-3 text-sm text-on-surface-variant">植え替えの記録がありません。</p>
+        {% endif %}
+        <a href="{% url 'logs:create' %}?bonsai={{ plant.pk }}&amp;task_type=repotting"
+           class="mt-4 inline-block rounded-full bg-primary px-4 py-2 text-sm font-bold text-on-primary">+ 植え替えを記録</a>
+      </section>
+
+    {# ----- 成長比較 ----- #}
+    {% elif tab == "compare" %}
+      <section class="rounded-xl bg-surface-container-lowest p-4">
+        <h2 class="mb-3 text-sm font-bold text-on-surface-variant">成長比較（Before / After）</h2>
+        {% if compare_before and compare_after %}
+          <div class="grid grid-cols-2 gap-2">
+            <figure>
+              <div class="aspect-square overflow-hidden rounded-lg bg-surface-container-low">
+                {% if compare_before.image_medium %}
+                  <img src="{{ compare_before.image_medium.url }}" alt="Before" class="h-full w-full object-cover">
+                {% endif %}
+              </div>
+              <figcaption class="mt-1 text-xs text-on-surface-variant">
+                Before・{{ compare_before.taken_at|default:compare_before.created_at|date:"Y/m/d" }}
+              </figcaption>
+            </figure>
+            <figure>
+              <div class="aspect-square overflow-hidden rounded-lg bg-surface-container-low">
+                {% if compare_after.image_medium %}
+                  <img src="{{ compare_after.image_medium.url }}" alt="After" class="h-full w-full object-cover">
+                {% endif %}
+              </div>
+              <figcaption class="mt-1 text-xs text-on-surface-variant">
+                After・{{ compare_after.taken_at|default:compare_after.created_at|date:"Y/m/d" }}
+              </figcaption>
+            </figure>
+          </div>
+
+          <form method="get" class="mt-4 space-y-2">
+            <input type="hidden" name="tab" value="compare">
+            <div class="grid grid-cols-2 gap-2">
+              <label class="block text-xs font-bold text-on-surface-variant">Before
+                <select name="before" class="mt-1 w-full rounded-md border border-outline-variant bg-surface-container-lowest px-2 py-2 text-sm">
+                  {% for item in compare_candidates %}
+                    <option value="{{ item.pk }}" {% if item.pk == compare_before.pk %}selected{% endif %}>
+                      {{ item.taken_at|default:item.created_at|date:"Y/m/d" }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </label>
+              <label class="block text-xs font-bold text-on-surface-variant">After
+                <select name="after" class="mt-1 w-full rounded-md border border-outline-variant bg-surface-container-lowest px-2 py-2 text-sm">
+                  {% for item in compare_candidates %}
+                    <option value="{{ item.pk }}" {% if item.pk == compare_after.pk %}selected{% endif %}>
+                      {{ item.taken_at|default:item.created_at|date:"Y/m/d" }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </label>
+            </div>
+            <button type="submit" class="rounded-full bg-primary px-4 py-2 text-sm font-bold text-on-primary">比較する</button>
+          </form>
+        {% else %}
+          <p class="text-sm text-on-surface-variant">
+            比較には写真が 2 枚以上必要です。
+          </p>
+          <a href="{% url 'bonsai:media_upload' pk=plant.pk %}"
+             class="mt-3 inline-block rounded-full bg-primary px-4 py-2 text-sm font-bold text-on-primary">+ 写真を追加</a>
+        {% endif %}
       </section>
     {% endif %}
-
-    <section class="rounded-lg border border-emerald-100 bg-white p-4 shadow-sm">
-      <header class="mb-2 flex items-center justify-between">
-        <h2 class="text-sm font-semibold text-emerald-800">最近の作業ログ</h2>
-        <a href="{% url 'logs:create' %}?bonsai={{ plant.pk }}"
-           class="text-xs text-emerald-700 hover:underline">+ 記録</a>
-      </header>
-      {% if recent_logs %}
-        <ul class="divide-y divide-emerald-50">
-          {% for log in recent_logs %}
-            <li class="py-2 text-sm">
-              <a href="{% url 'logs:detail' pk=log.pk %}" class="block hover:bg-emerald-50">
-                <span class="font-medium text-emerald-900">{{ log.get_task_type_display }}</span>
-                <span class="text-gray-500"> ・ {{ log.performed_at|date:"Y/m/d H:i" }}</span>
-              </a>
-            </li>
-          {% endfor %}
-        </ul>
-      {% else %}
-        <p class="text-sm text-gray-500">まだログがありません。</p>
-      {% endif %}
-    </section>
-
-    <section class="rounded-lg border border-emerald-100 bg-white p-4 shadow-sm">
-      <header class="mb-2 flex items-center justify-between">
-        <h2 class="text-sm font-semibold text-emerald-800">登録中のスケジュール</h2>
-        <a href="{% url 'schedules:create' %}" class="text-xs text-emerald-700 hover:underline">+ 追加</a>
-      </header>
-      {% if schedules %}
-        <ul class="divide-y divide-emerald-50">
-          {% for sched in schedules %}
-            <li class="py-2 text-sm">
-              <span class="font-medium text-emerald-900">{{ sched.title|default:sched.get_task_type_display }}</span>
-              <span class="text-gray-500">
-                ・{{ sched.get_repeat_type_display }}
-                {% if sched.next_run_at %}・次回 {{ sched.next_run_at|date:"Y/m/d" }}{% endif %}
-              </span>
-            </li>
-          {% endfor %}
-        </ul>
-      {% else %}
-        <p class="text-sm text-gray-500">まだスケジュールがありません。</p>
-      {% endif %}
-    </section>
   </div>
 {% endblock %}

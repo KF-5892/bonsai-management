@@ -86,6 +86,10 @@ def generate_variants(
     medium_edge = variants.get("medium", 1080)
     thumb_edge = variants.get("thumbnail", 320)
 
+    # アップロード直後のファイル（InMemoryUploadedFile 等）を閉じると、後続の
+    # `save()` でファイル本体を書き出せなくなる。こちらで開いた場合のみ閉じ、
+    # 元から開いていた場合は先頭に巻き戻すだけに留める。
+    was_closed = image_field_file.closed
     try:
         image_field_file.open("rb")
         with Image.open(image_field_file) as raw:
@@ -96,7 +100,10 @@ def generate_variants(
         return None, None
     finally:
         with contextlib.suppress(Exception):
-            image_field_file.close()
+            if was_closed:
+                image_field_file.close()
+            else:
+                image_field_file.seek(0)
 
     base_name = os.path.basename(getattr(image_field_file, "name", "image.jpg"))
 
