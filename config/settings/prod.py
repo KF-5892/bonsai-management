@@ -9,8 +9,14 @@ from .base import env
 DEBUG = False
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS")
 
+# 独自ドメイン・PaaS のドメインからの POST を CSRF 検証で通すため、スキーム付きで列挙する
+# 例: https://bonsai.example.com,https://bonsai-management.onrender.com
+CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[])
+
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 SECURE_SSL_REDIRECT = True
+# PaaS 内部からの死活監視は http で来るため、ヘルスチェックだけはリダイレクトしない
+SECURE_REDIRECT_EXEMPT = [r"^healthz/$"]
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 SECURE_HSTS_SECONDS = 31536000
@@ -19,7 +25,10 @@ SECURE_HSTS_PRELOAD = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_REFERRER_POLICY = "same-origin"
 
-# Supabase Storage（S3互換）経由のメディア配信
+# Supabase Storage（S3互換）経由のメディア配信。
+# 静的ファイルの保存先（staticfiles）は base.py の WhiteNoise のまま変えない。
+# Docker ビルド時の collectstatic は USE_S3_STORAGE=False で走るため、ここで staticfiles まで
+# 切り替えるとビルド時と実行時でストレージが食い違い、マニフェスト不在で全ページが 500 になる。
 if env("USE_S3_STORAGE", default=True, cast=bool):
     AWS_ACCESS_KEY_ID = env("AWS_ACCESS_KEY_ID")
     AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY")
@@ -28,14 +37,7 @@ if env("USE_S3_STORAGE", default=True, cast=bool):
     AWS_S3_REGION_NAME = env("AWS_S3_REGION_NAME", default="ap-northeast-1")
     AWS_S3_FILE_OVERWRITE = False
     AWS_DEFAULT_ACL = None
-    STORAGES = {
-        "default": {
-            "BACKEND": "storages.backends.s3.S3Storage",
-        },
-        "staticfiles": {
-            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-        },
-    }
+    STORAGES["default"] = {"BACKEND": "storages.backends.s3.S3Storage"}  # noqa: F405
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = env("EMAIL_HOST", default="")
@@ -54,3 +56,19 @@ if sentry_dsn:
         send_default_pii=False,
         environment=env("DJANGO_ENV", default="production"),
     )
+
+# ログは標準出力へ（Render などの PaaS はコンテナの stdout を収集する）
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "default": {"format": "%(asctime)s %(levelname)s %(name)s: %(message)s"},
+    },
+    "handlers": {
+        "console": {"class": "logging.StreamHandler", "formatter": "default"},
+    },
+    "root": {"handlers": ["console"], "level": env("DJANGO_LOG_LEVEL", default="INFO")},
+    "loggers": {
+        "django.request": {"handlers": ["console"], "level": "WARNING", "propagate": False},
+    },
+}

@@ -1,0 +1,57 @@
+# Render Blueprint（https://render.com/docs/blueprint-spec）
+# Render ダッシュボードの「New > Blueprint」でこのリポジトリを指定すると、
+# 以下の Web Service が作成される。sync: false の値はダッシュボードで入力する。
+services:
+  - type: web
+    name: bonsai-management
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    region: singapore          # 日本から最寄り
+    plan: starter              # 検証だけなら free（スリープあり）に変更可
+    healthCheckPath: /healthz/
+    autoDeploy: true           # main への push で自動デプロイ
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: config.settings.prod
+      - key: DJANGO_DEBUG
+        value: "False"
+      - key: DJANGO_ENV
+        value: production
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DJANGO_ALLOWED_HOSTS     # 例: bonsai.example.com,bonsai-management.onrender.com
+        sync: false
+      - key: CSRF_TRUSTED_ORIGINS     # 例: https://bonsai.example.com,https://bonsai-management.onrender.com
+        sync: false
+      - key: DATABASE_URL             # Supabase > Project Settings > Database（Session pooler の URI）
+        sync: false
+      - key: USE_S3_STORAGE
+        value: "True"
+      - key: AWS_ACCESS_KEY_ID        # Supabase Storage > S3 Access Keys
+        sync: false
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false
+      - key: AWS_STORAGE_BUCKET_NAME  # 例: bonsai-media
+        sync: false
+      - key: AWS_S3_ENDPOINT_URL      # 例: https://<project-ref>.supabase.co/storage/v1/s3
+        sync: false
+      - key: AWS_S3_REGION_NAME       # 例: ap-northeast-1
+        sync: false
+      - key: SENTRY_DSN
+        sync: false
+      - key: EMAIL_HOST
+        sync: false
+      - key: EMAIL_PORT
+        value: "587"
+      - key: EMAIL_HOST_USER
+        sync: false
+      - key: EMAIL_HOST_PASSWORD
+        sync: false
+      - key: DEFAULT_FROM_EMAIL
+        sync: false
+      - key: GOOGLE_OAUTH_CLIENT_ID
+        sync: false
+      - key: GOOGLE_OAUTH_CLIENT_SECRET
+        sync: false
+      - key: WEB_CONCURRENCY
+        value: "2"

@@ -55,3 +55,6 @@ htmlcov/
 
 # Docker volumes
 postgres-data/
+
+# フロントエンドのビルド依存（ビルド成果物 static/css/tailwind.css と static/js/*.min.js はコミットする）
+node_modules/
