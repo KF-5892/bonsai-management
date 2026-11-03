@@ -1,0 +1,4 @@
+/* Tailwind のエントリポイント。`npm run build` で static/css/tailwind.css に出力する */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

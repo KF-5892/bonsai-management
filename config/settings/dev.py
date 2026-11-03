@@ -6,6 +6,14 @@ from .base import env
 DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
+# 開発・テストでは静的ファイルをそのまま配信する（ハッシュ付き URL とマニフェストは本番のみ）。
+# テストランナーは DEBUG=False で動くため、WhiteNoise のマニフェスト版のままだと
+# collectstatic を実行していない環境で {% static %} が ValueError になる。
+STORAGES = {
+    **STORAGES,  # noqa: F405
+    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+}
+
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 INTERNAL_IPS = ["127.0.0.1"]
