@@ -77,3 +77,30 @@ jobs:
       - name: Run mypy (services layer only — Phase 1)
         run: uv run mypy apps --exclude 'migrations|tests'
         continue-on-error: true
+
+  assets:
+    # ビルド済み静的資産（static/css/tailwind.css, static/js/*.min.js）がソースと一致しているか
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npm run build
+      - name: Built assets must be committed
+        run: git diff --exit-code -- static/
+
+  docker:
+    # 本番イメージがビルドできること（push はしない）
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

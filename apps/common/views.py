@@ -9,7 +9,10 @@ from __future__ import annotations
 from typing import Any
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import DatabaseError, connection
 from django.db.models import Q
+from django.http import HttpRequest, HttpResponse
+from django.views.decorators.http import require_GET
 from django.views.generic import TemplateView
 
 from apps.articles.models import ArticleStatus, HelpArticle
@@ -17,6 +20,22 @@ from apps.bonsai.models import BonsaiPlant, BonsaiSpecies
 from apps.logs.models import CareLog
 
 RESULT_LIMIT = 20
+
+
+@require_GET
+def healthz(request: HttpRequest) -> HttpResponse:
+    """PaaS の死活監視用エンドポイント（ログイン不要）。
+
+    アプリが起動しているだけでなく DB へ到達できるかまで確認し、
+    到達できなければ 503 を返してダッシュボード側で異常に気づけるようにする。
+    """
+    del request
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+    except DatabaseError:
+        return HttpResponse("db unavailable", status=503, content_type="text/plain")
+    return HttpResponse("ok", content_type="text/plain")
 
 
 class GlobalSearchView(LoginRequiredMixin, TemplateView):

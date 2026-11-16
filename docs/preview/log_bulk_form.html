@@ -4,77 +4,13 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="aZll5JSWX3YXN8BZpmODgBjq6SXZ9IEfRCSyIiugolUFv2PQHcsrlRRcxafD3h6q">
+    <meta name="csrf-token" content="9fwijJsAq81mQ122SJINin4HS27uKS8suK4TTPbkwiAyXNmAalg0pejudEuJj6qH">
     <title>一括でログを記録 | 盆栽管理</title>
 
     
-    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
-    
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              "background": "#f6faf6",
-              "on-background": "#181d1a",
-              "surface": "#f6faf6",
-              "surface-bright": "#f6faf6",
-              "surface-dim": "#d7dbd7",
-              "surface-tint": "#1b6d24",
-              "surface-variant": "#dfe3e0",
-              "surface-container-lowest": "#ffffff",
-              "surface-container-low": "#f1f5f1",
-              "surface-container": "#ebefeb",
-              "surface-container-high": "#e5e9e5",
-              "surface-container-highest": "#dfe3e0",
-              "on-surface": "#181d1a",
-              "on-surface-variant": "#40493d",
-              "inverse-surface": "#2d312f",
-              "inverse-on-surface": "#eef2ee",
-              "primary": "#0d631b",
-              "on-primary": "#ffffff",
-              "primary-container": "#2e7d32",
-              "on-primary-container": "#cbffc2",
-              "primary-fixed": "#a3f69c",
-              "primary-fixed-dim": "#88d982",
-              "on-primary-fixed": "#002204",
-              "on-primary-fixed-variant": "#005312",
-              "inverse-primary": "#88d982",
-              "secondary": "#526350",
-              "on-secondary": "#ffffff",
-              "secondary-container": "#d2e5cd",
-              "on-secondary-container": "#566754",
-              "secondary-fixed": "#d5e8d0",
-              "secondary-fixed-dim": "#b9ccb5",
-              "on-secondary-fixed": "#101f10",
-              "on-secondary-fixed-variant": "#3b4b39",
-              "tertiary": "#923357",
-              "on-tertiary": "#ffffff",
-              "tertiary-container": "#b14b6f",
-              "on-tertiary-container": "#ffedf0",
-              "tertiary-fixed": "#ffd9e2",
-              "tertiary-fixed-dim": "#ffb1c7",
-              "on-tertiary-fixed": "#3f001c",
-              "on-tertiary-fixed-variant": "#7f2448",
-              "error": "#ba1a1a",
-              "on-error": "#ffffff",
-              "error-container": "#ffdad6",
-              "on-error-container": "#93000a",
-              "outline": "#707a6c",
-              "outline-variant": "#bfcaba"
-            },
-            fontFamily: {
-              "headline": ["Inter", "Noto Sans JP", "sans-serif"],
-              "body": ["Inter", "Noto Sans JP", "sans-serif"],
-              "label": ["Inter", "Noto Sans JP", "sans-serif"]
-            },
-            borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" }
-          }
-        }
-      }
-    </script>
-    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="tailwind.css">
+    <script src="htmx.min.js"></script>
+    <script defer src="alpine.min.js"></script>
 
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
@@ -84,7 +20,7 @@
   </head>
   <body
     class="min-h-screen bg-background font-body text-on-background antialiased"
-    hx-headers='{"X-CSRFToken": "aZll5JSWX3YXN8BZpmODgBjq6SXZ9IEfRCSyIiugolUFv2PQHcsrlRRcxafD3h6q"}'
+    hx-headers='{"X-CSRFToken": "9fwijJsAq81mQ122SJINin4HS27uKS8suK4TTPbkwiAyXNmAalg0pejudEuJj6qH"}'
   >
     
 <header class="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between bg-[#f6faf6]/80 px-4 backdrop-blur-md">
@@ -151,7 +87,7 @@
             }
           }"
           x-init="refresh()">
-      <input type="hidden" name="csrfmiddlewaretoken" value="aZll5JSWX3YXN8BZpmODgBjq6SXZ9IEfRCSyIiugolUFv2PQHcsrlRRcxafD3h6q">
+      <input type="hidden" name="csrfmiddlewaretoken" value="9fwijJsAq81mQ122SJINin4HS27uKS8suK4TTPbkwiAyXNmAalg0pejudEuJj6qH">
       
 
       
@@ -179,9 +115,9 @@
                 </div>
                 <div class="grid gap-2 sm:grid-cols-2">
                   
-                    <label for="bonsai_06ab514e-cb2a-70a4-8000-7381381d46d0"
+                    <label for="bonsai_06ae9472-267b-7bc2-8000-a731d5ca4353"
                            class="flex cursor-pointer items-center gap-3 rounded-lg bg-surface-container-low px-3 py-2.5 text-sm text-on-surface">
-                      <input type="checkbox" name="bonsai" value="06ab514e-cb2a-70a4-8000-7381381d46d0" id="bonsai_06ab514e-cb2a-70a4-8000-7381381d46d0"
+                      <input type="checkbox" name="bonsai" value="06ae9472-267b-7bc2-8000-a731d5ca4353" id="bonsai_06ae9472-267b-7bc2-8000-a731d5ca4353"
                              @change="refresh()"
                              
                              class="h-5 w-5 rounded-sm border-outline-variant text-primary focus:ring-primary">
@@ -195,9 +131,9 @@
                       </span>
                     </label>
                   
-                    <label for="bonsai_06ab514e-cb30-706a-8000-eba77f157319"
+                    <label for="bonsai_06ae9472-2684-740f-8000-b8fa60100e2c"
                            class="flex cursor-pointer items-center gap-3 rounded-lg bg-surface-container-low px-3 py-2.5 text-sm text-on-surface">
-                      <input type="checkbox" name="bonsai" value="06ab514e-cb30-706a-8000-eba77f157319" id="bonsai_06ab514e-cb30-706a-8000-eba77f157319"
+                      <input type="checkbox" name="bonsai" value="06ae9472-2684-740f-8000-b8fa60100e2c" id="bonsai_06ae9472-2684-740f-8000-b8fa60100e2c"
                              @change="refresh()"
                              
                              class="h-5 w-5 rounded-sm border-outline-variant text-primary focus:ring-primary">
@@ -222,9 +158,9 @@
                 </div>
                 <div class="grid gap-2 sm:grid-cols-2">
                   
-                    <label for="bonsai_06ab514e-cb1e-7949-8000-b81db9a9ba21"
+                    <label for="bonsai_06ae9472-2673-732d-8000-fa7414817e56"
                            class="flex cursor-pointer items-center gap-3 rounded-lg bg-surface-container-low px-3 py-2.5 text-sm text-on-surface">
-                      <input type="checkbox" name="bonsai" value="06ab514e-cb1e-7949-8000-b81db9a9ba21" id="bonsai_06ab514e-cb1e-7949-8000-b81db9a9ba21"
+                      <input type="checkbox" name="bonsai" value="06ae9472-2673-732d-8000-fa7414817e56" id="bonsai_06ae9472-2673-732d-8000-fa7414817e56"
                              @change="refresh()"
                              
                              class="h-5 w-5 rounded-sm border-outline-variant text-primary focus:ring-primary">
@@ -302,7 +238,7 @@
     <label for="id_performed_at" class="mb-1 block text-sm font-medium text-on-surface-variant">
       実施日時 <span class="text-error">*</span>
     </label>
-    <input type="datetime-local" name="performed_at" value="2026-09-24T21:17" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" required id="id_performed_at">
+    <input type="datetime-local" name="performed_at" value="2026-11-03T11:29" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" required id="id_performed_at">
   
   
   
@@ -363,9 +299,9 @@
     <select name="fertilizer" class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40" id="id_fertilizer">
   <option value="" selected>---------</option>
 
-  <option value="06ab514e-cb58-78bd-8000-8918ad302f15">標準固形肥料（共通）</option>
+  <option value="06ae9472-26c4-7f35-8000-7bf5bdadb92b">標準固形肥料（共通）</option>
 
-  <option value="06ab514e-cb5e-78ed-8000-d2a0ce99d7bc">自家製油かす</option>
+  <option value="06ae9472-26cd-77d5-8000-07d0c3865085">自家製油かす</option>
 
 </select>
   

@@ -8,8 +8,8 @@ GitHub Pages で「実装の見た目」をログイン不要・サーバー不�
 注意:
 - これは静的スナップショットであり、フォーム送信・HTMX・検索などの
   動的機能は動作しない（閲覧専用）。
-- Tailwind / HTMX / Alpine / Material Symbols は CDN 参照のまま残すため、
-  閲覧者のブラウザ側でスタイルが適用される。
+- Tailwind / htmx / Alpine はビルド済みファイルを同梱する。Material Symbols と
+  Web フォントは Google Fonts 参照のため、オンライン環境で正しく表示される。
 
 実行: ``uv run python tools/export_static_preview.py``
 """
@@ -430,8 +430,11 @@ def main() -> None:
 
     full_map = {**pages, **public_pages, "/accounts/logout/": "#"}
 
-    # CSS をコピー
-    shutil.copyfile(BASE_DIR / "static" / "css" / "app.css", OUT_DIR / "app.css")
+    # CSS / JS をコピー（Tailwind はビルド済みファイルを配信する）
+    for rel in ("css/app.css", "css/tailwind.css", "js/alpine.min.js", "js/htmx.min.js"):
+        src = BASE_DIR / "static" / rel
+        if src.exists():
+            shutil.copyfile(src, OUT_DIR / src.name)
 
     # 相対クエリリンク（?tab=logs 等）-> 静的ファイル名
     def rewrite_relative_queries(html: str, fname: str) -> str:
@@ -460,8 +463,9 @@ def main() -> None:
 
     # リンク書き換え
     def rewrite(html: str) -> str:
-        # 静的 CSS（ハッシュ付き含む）-> app.css
-        html = re.sub(r"/static/css/app(\.[0-9a-f]+)?\.css", "app.css", html)
+        # 静的 CSS / JS（ハッシュ付き含む）-> 同名ファイル
+        html = re.sub(r"/static/css/(app|tailwind)(\.[0-9a-f]+)?\.css", r"\1.css", html)
+        html = re.sub(r"/static/js/(alpine|htmx)\.min(\.[0-9a-f]+)?\.js", r"\1.min.js", html)
         # 既知パス -> 静的ファイル名（長いパス優先）
         for path in sorted(full_map, key=len, reverse=True):
             fname = full_map[path]
