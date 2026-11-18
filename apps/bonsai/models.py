@@ -77,6 +77,16 @@ class BonsaiSpecies(models.Model):
              "description": "新芽の先端を 2 枚残してつまむ"},
             ...
         ]
+
+    `viewing_seasons` は見ごろ（開花・紅葉・実）を旬単位の範囲で持つ。値は
+    関東〜九州の平野部の基準値で、地域差は ``apps.common.regions`` の
+    気候区分ごとのずれで補正する:
+        [
+            {"kind": "flower", "start_month": 1, "start_period": "下旬",
+             "end_month": 3, "end_period": "上旬", "shift": "winter",
+             "description": "花と香りを楽しむ"},
+            ...
+        ]
     """
 
     id = models.CharField(
@@ -119,6 +129,18 @@ class BonsaiSpecies(models.Model):
         help_text=_(
             "月別の標準作業を JSON 配列で保持する。"
             "例: [{month: 5, period: '上旬', task_type: 'bud_pinching', description: '...'}]"
+        ),
+    )
+    viewing_seasons = models.JSONField(
+        _("見ごろ"),
+        default=list,
+        blank=True,
+        help_text=_(
+            "見ごろ（開花・紅葉・実）を旬単位の範囲で保持する。関東〜九州の平野部が基準。"
+            "例: [{kind: 'flower', start_month: 1, start_period: '下旬', "
+            "end_month: 3, end_period: '上旬', shift: 'winter', description: '...'}]。"
+            "kind は flower / foliage / fruit、shift は spring / autumn / winter / none"
+            "（省略時は flower なら spring、それ以外は autumn）。"
         ),
     )
     cover_image = models.ImageField(

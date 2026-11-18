@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}薬剤マスタ | 盆栽管理{% endblock %}
+
+{% block content %}
+  <div class="space-y-4">
+    <header class="flex items-center justify-between">
+      <h1 class="text-xl font-bold text-on-surface">薬剤マスタ</h1>
+      <a href="{% url 'logs:pesticide_create' %}"
+         class="rounded-full bg-primary px-4 py-2 text-sm font-bold text-on-primary">+ 追加</a>
+    </header>
+
+    {% if pesticides %}
+      <ul class="space-y-2">
+        {% for pesticide in pesticides %}
+          <li class="rounded-xl bg-surface-container-lowest p-4">
+            <div class="flex items-start justify-between gap-2">
+              <div class="min-w-0">
+                <p class="truncate font-bold text-on-surface">{{ pesticide.name }}</p>
+                <p class="mt-0.5 text-xs text-on-surface-variant">
+                  {{ pesticide.get_category_display }}
+                  {% if pesticide.formulation %}・{{ pesticide.get_formulation_display }}{% endif %}
+                  {% if pesticide.is_common %}・共通マスタ{% endif %}
+                </p>
+                {% if pesticide.default_dilution %}
+                  <p class="mt-1 text-sm font-medium text-primary">希釈倍率: {{ pesticide.default_dilution }}</p>
+                {% endif %}
+                {% if pesticide.note %}
+                  <p class="mt-1 text-sm text-on-surface-variant line-clamp-2">{{ pesticide.note }}</p>
+                {% endif %}
+              </div>
+              {% if not pesticide.is_common %}
+                <span class="flex shrink-0 gap-3">
+                  <a href="{% url 'logs:pesticide_edit' pk=pesticide.pk %}" class="text-sm font-bold text-primary">編集</a>
+                  <a href="{% url 'logs:pesticide_delete' pk=pesticide.pk %}" class="text-sm font-bold text-error">削除</a>
+                </span>
+              {% endif %}
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="rounded-xl bg-surface-container-low p-4 text-center text-sm text-on-surface-variant">
+        薬剤がまだ登録されていません。手持ちの薬剤を登録すると、消毒の記録で選べるようになります。
+      </p>
+    {% endif %}
+  </div>
+{% endblock %}

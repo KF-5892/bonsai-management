@@ -23,7 +23,7 @@ def test_datetime_local_initial_uses_iso_format(user):
 def test_care_log_form_accepts_datetime_local_value(user, bonsai_species):
     plant = BonsaiPlant.objects.create(user=user, species=bonsai_species, name="黒松 太郎")
     form = CareLogForm(
-        data={"bonsai": plant.pk, "task_type": "watering", "performed_at": "2026-04-10T09:30"},
+        data={"bonsai": plant.pk, "task_type": ["watering"], "performed_at": "2026-04-10T09:30"},
         user=user,
     )
     assert form.is_valid(), form.errors

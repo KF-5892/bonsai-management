@@ -2,3 +2,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Alpine の初期化が終わるまで x-cloak 付き要素を隠す（閉じた状態のちらつき防止） */
+[x-cloak] {
+  display: none !important;
+}

@@ -9,23 +9,31 @@ from __future__ import annotations
 from .todos import (
     MonthlySummary,
     Todo,
+    ViewingSeason,
     compose_monthly_todos,
     compose_todos_for_range,
+    compose_viewing_seasons,
     compose_yearly_summaries,
     current_week_range,
+    format_jun_range,
     get_todo_completion_status,
     mark_todo_done,
+    shifted_viewing_range,
     summarize_monthly_todos,
 )
 
 __all__ = [
     "MonthlySummary",
     "Todo",
+    "ViewingSeason",
     "compose_monthly_todos",
     "compose_todos_for_range",
+    "compose_viewing_seasons",
     "compose_yearly_summaries",
     "current_week_range",
+    "format_jun_range",
     "get_todo_completion_status",
     "mark_todo_done",
+    "shifted_viewing_range",
     "summarize_monthly_todos",
 ]

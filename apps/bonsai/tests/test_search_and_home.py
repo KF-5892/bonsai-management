@@ -134,10 +134,23 @@ def test_home_group_by_species_and_tag(client, user):
     assert len(res.context["plant_groups"]) == 1
 
 
-def test_home_shows_recent_activities(client, user, bonsai_species):
+def test_home_does_not_show_recent_activities(client, user, bonsai_species):
+    """最近の活動はホームに出さない（記録一覧で見る）。"""
     plant = BonsaiPlant.objects.create(user=user, species=bonsai_species, name="黒松 太郎")
     CareLog.objects.create(user=user, bonsai=plant, task_type="watering", notes="水やり")
     client.force_login(user)
     res = client.get(reverse("bonsai:home"))
-    assert len(res.context["recent_activities"]) == 1
-    assert "最近の活動" in res.content.decode()
+    assert "recent_activities" not in res.context
+    assert "最近の活動" not in res.content.decode()
+
+
+def test_home_filters_keep_scroll_position(client, user, bonsai_species):
+    """絞り込みリンクはアンカーで飛ばさず、スクロール位置の復元スクリプトを持つ。"""
+    BonsaiPlant.objects.create(user=user, species=bonsai_species, name="黒松 太郎")
+    client.force_login(user)
+    res = client.get(reverse("bonsai:home"), {"viewing": "all"})
+    html = res.content.decode()
+    assert "home.scroll" in html
+    assert "#viewing" not in res.context["viewing_owned_url"]
+    # マイ盆栽の絞り込みでも見ごろの切替を保つ
+    assert "?status=good&amp;viewing=all" in html

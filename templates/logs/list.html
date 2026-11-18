@@ -93,7 +93,7 @@
                   {{ log.bonsai.name }}・{{ log.performed_at|date:"Y/m/d H:i" }}
                 </span>
                 <span class="block font-bold text-on-surface">
-                  {% if log.task_type == "other" and log.task_type_other %}{{ log.task_type_other }}{% else %}{{ log.get_task_type_display }}{% endif %}
+                  {{ log.task_label }}
                 </span>
                 {% if log.notes %}
                   <span class="mt-0.5 block text-sm text-on-surface-variant line-clamp-2">{{ log.notes }}</span>

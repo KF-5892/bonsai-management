@@ -10,7 +10,8 @@
     </header>
 
     <form method="post" enctype="multipart/form-data"
-          x-data="{ task: '{{ form.task_type.value|default:'observation' }}' }"
+          x-data="{ tasks: [] }"
+          x-init="tasks = Array.from($root.querySelectorAll('input[name=task_type]:checked')).map(el => el.value)"
           class="space-y-4 rounded-xl bg-surface-container-lowest p-4">
       {% csrf_token %}
 
@@ -26,27 +27,47 @@
       {% if year_month %}<input type="hidden" name="year_month" value="{{ year_month }}">{% endif %}
 
       {% for field in form %}
-        {# task_type の値変化を Alpine.js (x-model) で拾い、依存フィールドは template x-if で描画する #}
+        {# 作業種別は複数選択。選択の変化を Alpine.js (x-model) で拾い、依存フィールドは template x-if で描画する #}
         {% if field.name == "task_type" %}
           <div>
-            <label for="{{ field.id_for_label }}" class="mb-1 block text-sm font-medium text-on-surface-variant">
+            <p class="mb-1 block text-sm font-medium text-on-surface-variant" id="{{ field.auto_id }}_label">
               {{ field.label }} <span class="text-error">*</span>
-            </label>
-            <select name="{{ field.name }}" id="{{ field.id_for_label }}" x-model="task"
-                    class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2.5 text-sm text-on-surface focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40">
+            </p>
+            <div class="grid grid-cols-2 gap-2" role="group" aria-labelledby="{{ field.auto_id }}_label">
               {% for value, label in field.field.choices %}
-                <option value="{{ value }}" {% if field.value|stringformat:"s" == value|stringformat:"s" %}selected{% endif %}>{{ label }}</option>
+                <label for="{{ field.auto_id }}_{{ forloop.counter0 }}"
+                       class="flex cursor-pointer items-center gap-3 rounded-lg bg-surface-container-low px-3 py-2.5 text-sm text-on-surface">
+                  <input type="checkbox" name="{{ field.html_name }}" value="{{ value }}"
+                         id="{{ field.auto_id }}_{{ forloop.counter0 }}" x-model="tasks"
+                         {% if value in field.value %}checked{% endif %}
+                         class="h-5 w-5 rounded-sm border-outline-variant text-primary focus:ring-primary">
+                  <span>{{ label }}</span>
+                </label>
               {% endfor %}
-            </select>
+            </div>
+            {% if field.help_text %}<p class="mt-1 text-xs text-on-surface-variant">{{ field.help_text }}</p>{% endif %}
             {% for error in field.errors %}<p class="mt-1 text-xs text-error">{{ error }}</p>{% endfor %}
           </div>
         {% elif field.name == "fertilizer" or field.name == "fertilizer_amount" %}
           {# x-show だと非表示でも値が送信されるため、x-if で DOM ごと外す #}
-          <template x-if="task === 'fertilizing'">
+          <template x-if="tasks.includes('fertilizing')">
+            {% include "_partials/form_field.html" with field=field %}
+          </template>
+        {% elif field.name == "pesticides" %}
+          <template x-if="tasks.includes('pest_control')">
+            <div>
+              {% include "_partials/form_field.html" with field=field %}
+              <p class="mt-1 text-xs">
+                <a href="{% url 'logs:pesticide_list' %}" class="font-bold text-primary">薬剤マスタで登録・編集 →</a>
+              </p>
+            </div>
+          </template>
+        {% elif field.name == "pest_control_purposes" or field.name == "pesticide_dilution" or field.name == "spreader_used" or field.name == "pest_target" %}
+          <template x-if="tasks.includes('pest_control')">
             {% include "_partials/form_field.html" with field=field %}
           </template>
         {% elif field.name == "task_type_other" %}
-          <template x-if="task === 'other'">
+          <template x-if="tasks.includes('other')">
             {% include "_partials/form_field.html" with field=field %}
           </template>
         {% else %}

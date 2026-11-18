@@ -5,13 +5,28 @@
 {% block content %}
   <div class="space-y-6">
     {# ----- 今月のやること（実装独自機能。Stitch トーンで再スタイル） ----- #}
-    <section id="todos">
-      <header class="mb-3 flex items-end justify-between">
+    {# 見出しのトグルで一覧をしまえる。開閉状態は端末ごとに localStorage へ保存する #}
+    <section id="todos"
+             x-data="{
+               open: (() => { try { return localStorage.getItem('home.todosOpen') !== '0' } catch (e) { return true } })(),
+               toggle() {
+                 this.open = !this.open
+                 try { localStorage.setItem('home.todosOpen', this.open ? '1' : '0') } catch (e) {}
+               }
+             }">
+      <header class="flex items-end justify-between" :class="open ? 'mb-3' : ''">
         <div>
           <h1 class="text-xl font-bold text-on-surface">
-            {% if range_mode == "month" %}{{ year_month|date:"Y年n月" }}のやること
-            {% elif range_mode == "week" %}今週のやること
-            {% else %}{{ range_start|date:"n/j" }}〜{{ range_end|date:"n/j" }}のやること{% endif %}
+            <button type="button" @click="toggle()" :aria-expanded="open" aria-controls="todos-body"
+                    class="-ml-1 flex items-center gap-0.5 rounded-md pr-1 text-left">
+              <span class="material-symbols-outlined transition-transform" :class="open ? '' : '-rotate-90'"
+                    aria-hidden="true">expand_more</span>
+              <span>
+                {% if range_mode == "month" %}{{ year_month|date:"Y年n月" }}のやること
+                {% elif range_mode == "week" %}今週のやること
+                {% else %}{{ range_start|date:"n/j" }}〜{{ range_end|date:"n/j" }}のやること{% endif %}
+              </span>
+            </button>
           </h1>
           <p class="mt-0.5 text-xs font-medium text-on-surface-variant">
             {{ todo_total }}件中 {{ todo_done }}件完了
@@ -26,11 +41,12 @@
         </span>
       </header>
 
+      <div id="todos-body" x-show="open" x-cloak>
       {# 期間切替（今月 / 今週 / カスタム期間） #}
       <div class="mb-3 flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
-        <a href="?range=month{% if q %}&amp;q={{ q|urlencode }}{% endif %}{% if status_filter %}&amp;status={{ status_filter }}{% endif %}"
+        <a href="?range=month{% if q %}&amp;q={{ q|urlencode }}{% endif %}{% if status_filter %}&amp;status={{ status_filter }}{% endif %}{% if viewing_scope == 'all' %}&amp;viewing=all{% endif %}"
            class="flex-none rounded-full px-4 py-2 text-sm font-bold {% if range_mode == 'month' %}bg-primary text-on-primary shadow-sm{% else %}bg-surface-container-high text-on-surface-variant{% endif %}">今月</a>
-        <a href="?range=week{% if q %}&amp;q={{ q|urlencode }}{% endif %}{% if status_filter %}&amp;status={{ status_filter }}{% endif %}"
+        <a href="?range=week{% if q %}&amp;q={{ q|urlencode }}{% endif %}{% if status_filter %}&amp;status={{ status_filter }}{% endif %}{% if viewing_scope == 'all' %}&amp;viewing=all{% endif %}"
            class="flex-none rounded-full px-4 py-2 text-sm font-bold {% if range_mode == 'week' %}bg-primary text-on-primary shadow-sm{% else %}bg-surface-container-high text-on-surface-variant{% endif %}">今週</a>
         <details class="flex-none" {% if range_mode == "custom" %}open{% endif %}>
           <summary class="cursor-pointer list-none rounded-full px-4 py-2 text-sm font-bold {% if range_mode == 'custom' %}bg-primary text-on-primary shadow-sm{% else %}bg-surface-container-high text-on-surface-variant{% endif %}">
@@ -38,6 +54,7 @@
           </summary>
           <form method="get" class="mt-2 flex flex-wrap items-end gap-2 rounded-xl bg-surface-container-lowest p-3">
             <input type="hidden" name="range" value="custom">
+            {% if viewing_scope == "all" %}<input type="hidden" name="viewing" value="all">{% endif %}
             <label class="text-xs font-bold text-on-surface-variant">開始
               <input type="date" name="from" value="{{ range_start|date:'Y-m-d' }}"
                      class="mt-1 block rounded-md border border-outline-variant px-2 py-1.5 text-sm">
@@ -94,7 +111,7 @@
           {% endfor %}
         </ul>
         {% if hidden_todo_count %}
-          <a href="?todos=all{% if range_mode != 'month' %}&amp;range={{ range_mode }}{% endif %}{% if range_start and range_mode == 'custom' %}&amp;from={{ range_start|date:'Y-m-d' }}&amp;to={{ range_end|date:'Y-m-d' }}{% endif %}{% if view_mode != 'card' %}&amp;view={{ view_mode }}{% endif %}#todos"
+          <a href="?todos=all{% if range_mode != 'month' %}&amp;range={{ range_mode }}{% endif %}{% if range_start and range_mode == 'custom' %}&amp;from={{ range_start|date:'Y-m-d' }}&amp;to={{ range_end|date:'Y-m-d' }}{% endif %}{% if view_mode != 'card' %}&amp;view={{ view_mode }}{% endif %}{% if viewing_scope == 'all' %}&amp;viewing=all{% endif %}"
              class="mt-2 block rounded-xl bg-surface-container-low px-4 py-3 text-center text-sm font-bold text-primary">
             残り {{ hidden_todo_count }} 件を表示
           </a>
@@ -104,44 +121,73 @@
           この期間のやることはまだありません。
         </p>
       {% endif %}
+      </div>
     </section>
 
-    {# ----- 最近の活動 ----- #}
-    {% if recent_activities %}
-      <section>
-        <header class="mb-3 flex items-end justify-between">
-          <h2 class="text-xl font-bold text-on-surface">最近の活動</h2>
-          <a href="{% url 'logs:list' %}" class="text-sm font-bold text-primary hover:opacity-80">すべて見る</a>
-        </header>
+    {# ----- 見ごろ（開花・紅葉など。作業ではないので「やること」とは分ける） ----- #}
+    <section id="viewing">
+      <header class="mb-3">
+        <h2 class="text-xl font-bold text-on-surface">{{ year_month|date:"n月" }}の見ごろ</h2>
+        <p class="mt-0.5 text-xs font-medium text-on-surface-variant">
+          {% if viewing_scope == "all" %}すべての品種{% else %}保有している品種{% endif %}・{{ viewing_seasons|length }}件
+        </p>
+        <p class="mt-0.5 text-xs text-on-surface-variant">
+          {% if viewing_region_set %}
+            {{ viewing_zone_label }}の目安です。
+          {% else %}
+            関東〜九州の平野部を基準にした目安です。
+          {% endif %}
+          <a href="{% url 'accounts:profile' %}" class="font-bold text-primary hover:opacity-80">地域を{% if viewing_region_set %}変更{% else %}設定{% endif %}</a>
+        </p>
+      </header>
+
+      {# 対象品種の切替（保有品種のみ / すべての品種） #}
+      <div class="mb-3 flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+        <a href="{{ viewing_owned_url }}" {% if viewing_scope == "owned" %}aria-current="true"{% endif %}
+           class="flex-none rounded-full px-4 py-2 text-sm font-bold {% if viewing_scope == 'owned' %}bg-primary text-on-primary shadow-sm{% else %}bg-surface-container-high text-on-surface-variant{% endif %}">保有品種のみ</a>
+        <a href="{{ viewing_all_url }}" {% if viewing_scope == "all" %}aria-current="true"{% endif %}
+           class="flex-none rounded-full px-4 py-2 text-sm font-bold {% if viewing_scope == 'all' %}bg-primary text-on-primary shadow-sm{% else %}bg-surface-container-high text-on-surface-variant{% endif %}">すべての品種</a>
+      </div>
+
+      {% if viewing_seasons %}
         <ul class="space-y-2">
-          {% for log in recent_activities %}
-            <li>
-              <a href="{% url 'logs:detail' pk=log.pk %}"
-                 class="flex items-center gap-3 rounded-xl bg-surface-container-lowest p-3">
-                <span class="h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-surface-container-low">
-                  {% if log.photo %}
-                    <img src="{{ log.photo.url }}" alt="" class="h-full w-full object-cover">
-                  {% else %}
-                    <span class="flex h-full w-full items-center justify-center">
-                      <span class="material-symbols-outlined text-outline-variant" aria-hidden="true">edit_note</span>
-                    </span>
-                  {% endif %}
-                </span>
-                <span class="min-w-0 flex-1">
-                  <span class="block truncate text-xs font-medium text-on-surface-variant">
-                    {{ log.bonsai.name }}・{{ log.performed_at|date:"n/j" }}
-                  </span>
-                  <span class="block truncate font-bold text-on-surface">{{ log.get_task_type_display }}</span>
-                  {% if log.notes %}
-                    <span class="block truncate text-xs text-on-surface-variant">{{ log.notes }}</span>
-                  {% endif %}
-                </span>
-              </a>
+          {% for season in viewing_seasons %}
+            <li class="flex items-start gap-3 rounded-xl bg-surface-container-lowest p-4">
+              <span class="material-symbols-outlined mt-0.5 shrink-0 text-primary" aria-hidden="true">local_florist</span>
+              <div class="min-w-0 flex-1">
+                <p class="text-xs font-medium text-on-surface-variant">
+                  {{ season.kind_label }}・{{ season.period_label }}{% if not season.is_owned %}・未保有{% endif %}
+                </p>
+                <p class="font-bold text-on-surface">
+                  <a href="{% url 'bonsai:species_detail' slug=season.species_slug %}" class="hover:underline">{{ season.species_name }}</a>
+                </p>
+                {% if season.description %}
+                  <p class="mt-1 text-sm text-on-surface-variant">{{ season.description }}</p>
+                {% endif %}
+                {% if season.plants %}
+                  <p class="mt-2 flex flex-wrap gap-1.5">
+                    {% for plant in season.plants %}
+                      <a href="{% url 'bonsai:detail' pk=plant.pk %}"
+                         class="rounded-full bg-surface-container-high px-2.5 py-1 text-xs font-bold text-on-surface-variant">{{ plant.name }}</a>
+                    {% endfor %}
+                  </p>
+                {% endif %}
+              </div>
             </li>
           {% endfor %}
         </ul>
-      </section>
-    {% endif %}
+      {% else %}
+        <p class="rounded-xl bg-surface-container-low p-4 text-center text-sm text-on-surface-variant">
+          {% if not viewing_supported %}
+            沖縄は本州基準の見ごろでは表せないため、目安を表示していません。
+          {% elif viewing_scope == "all" %}
+            今月見ごろを迎える品種はありません。
+          {% else %}
+            保有している品種で、今月見ごろを迎えるものはありません。
+          {% endif %}
+        </p>
+      {% endif %}
+    </section>
 
     {# ----- マイ盆栽 ----- #}
     <section>
@@ -164,23 +210,24 @@
           {% if status_filter %}
             <input type="hidden" name="status" value="{{ status_filter }}">
           {% endif %}
+          {% if viewing_scope == "all" %}<input type="hidden" name="viewing" value="all">{% endif %}
         </form>
 
         {# フィルタチップ（横スクロール） #}
         <div class="mt-4 flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
-          <a href="?{% if q %}q={{ q|urlencode }}{% endif %}"
+          <a href="?{% if q %}q={{ q|urlencode }}{% endif %}{% if viewing_scope == 'all' %}&amp;viewing=all{% endif %}"
              class="flex-none rounded-full px-6 py-2.5 font-bold {% if not status_filter %}bg-primary text-on-primary shadow-sm{% else %}bg-surface-container-high text-on-surface-variant{% endif %}">
             全て
           </a>
-          <a href="?status=good{% if q %}&amp;q={{ q|urlencode }}{% endif %}"
+          <a href="?status=good{% if q %}&amp;q={{ q|urlencode }}{% endif %}{% if viewing_scope == 'all' %}&amp;viewing=all{% endif %}"
              class="flex flex-none items-center gap-1 rounded-full px-6 py-2.5 font-bold {% if status_filter == 'good' %}bg-primary text-on-primary shadow-sm{% else %}bg-surface-container-high text-on-surface-variant{% endif %}">
             <span class="material-symbols-outlined text-lg" aria-hidden="true">check_circle</span> 良好
           </a>
-          <a href="?status=watch{% if q %}&amp;q={{ q|urlencode }}{% endif %}"
+          <a href="?status=watch{% if q %}&amp;q={{ q|urlencode }}{% endif %}{% if viewing_scope == 'all' %}&amp;viewing=all{% endif %}"
              class="flex flex-none items-center gap-1 rounded-full px-6 py-2.5 font-bold {% if status_filter == 'watch' %}bg-primary text-on-primary shadow-sm{% else %}bg-surface-container-high text-on-surface-variant{% endif %}">
             <span class="material-symbols-outlined text-lg" aria-hidden="true">warning</span> 要注意
           </a>
-          <a href="?status=poor{% if q %}&amp;q={{ q|urlencode }}{% endif %}"
+          <a href="?status=poor{% if q %}&amp;q={{ q|urlencode }}{% endif %}{% if viewing_scope == 'all' %}&amp;viewing=all{% endif %}"
              class="flex flex-none items-center gap-1 rounded-full px-6 py-2.5 font-bold {% if status_filter == 'poor' %}bg-primary text-on-primary shadow-sm{% else %}bg-surface-container-high text-on-surface-variant{% endif %}">
             <span class="material-symbols-outlined text-lg" aria-hidden="true">cancel</span> 不調
           </a>
@@ -190,7 +237,7 @@
         {# 表示切替（カード / 品種別 / タグ別） #}
         <div class="mt-3 flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
           {% for mode, label in view_modes %}
-            <a href="?view={{ mode }}{% if q %}&amp;q={{ q|urlencode }}{% endif %}{% if status_filter %}&amp;status={{ status_filter }}{% endif %}{% if range_mode != 'month' %}&amp;range={{ range_mode }}{% endif %}"
+            <a href="?view={{ mode }}{% if q %}&amp;q={{ q|urlencode }}{% endif %}{% if status_filter %}&amp;status={{ status_filter }}{% endif %}{% if range_mode != 'month' %}&amp;range={{ range_mode }}{% endif %}{% if viewing_scope == 'all' %}&amp;viewing=all{% endif %}"
                class="flex-none rounded-full px-4 py-1.5 text-xs font-bold {% if view_mode == mode %}bg-secondary-container text-on-secondary-container{% else %}bg-surface-container-high text-on-surface-variant{% endif %}">
               {{ label }}
             </a>
@@ -269,4 +316,39 @@
       <span class="material-symbols-outlined text-3xl" aria-hidden="true">add</span>
     </a>
   {% endif %}
+{% endblock %}
+
+{% block extra_js %}
+  {# 絞り込み（期間・見ごろ・検索・状態・表示切替）で再読み込みしても、見ていた位置を保つ #}
+  <script>
+    (() => {
+      const KEY = "home.scroll";
+      const remember = () => {
+        try {
+          sessionStorage.setItem(KEY, JSON.stringify({ y: window.scrollY, at: Date.now() }));
+        } catch (e) {}
+      };
+      // このページ内の絞り込み = 「?」で始まるリンクと、送信先を持たない GET フォーム
+      document.addEventListener("click", (event) => {
+        const link = event.target.closest("a[href]");
+        if (link && link.getAttribute("href").startsWith("?")) remember();
+      });
+      document.addEventListener("submit", (event) => {
+        const form = event.target;
+        if (form.method === "get" && !form.getAttribute("action")) remember();
+      });
+
+      let saved = null;
+      try {
+        saved = JSON.parse(sessionStorage.getItem(KEY) || "null");
+        sessionStorage.removeItem(KEY);
+      } catch (e) {}
+      // 直前の絞り込み操作から来たときだけ復元する（別ページから戻った場合は先頭のまま）
+      if (!saved || Date.now() - saved.at > 10000) return;
+      if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+      const restore = () => window.scrollTo(0, saved.y);
+      restore();
+      window.addEventListener("load", restore, { once: true });
+    })();
+  </script>
 {% endblock %}

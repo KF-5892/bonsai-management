@@ -27,6 +27,19 @@ urlpatterns = [
         views.FertilizerDeleteView.as_view(),
         name="fertilizer_delete",
     ),
+    # 薬剤マスタ
+    path("pesticides/", views.PesticideListView.as_view(), name="pesticide_list"),
+    path("pesticides/new/", views.PesticideCreateView.as_view(), name="pesticide_create"),
+    path(
+        "pesticides/<str:pk>/edit/",
+        views.PesticideUpdateView.as_view(),
+        name="pesticide_edit",
+    ),
+    path(
+        "pesticides/<str:pk>/delete/",
+        views.PesticideDeleteView.as_view(),
+        name="pesticide_delete",
+    ),
     path("<str:pk>/", views.CareLogDetailView.as_view(), name="detail"),
     path("<str:pk>/edit/", views.CareLogUpdateView.as_view(), name="edit"),
     path("<str:pk>/delete/", views.CareLogDeleteView.as_view(), name="delete"),

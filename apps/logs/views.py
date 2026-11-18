@@ -36,8 +36,8 @@ from django.views.generic import (
 from apps.bonsai.models import BonsaiPlant, TaskType
 from apps.schedules.services.todos import mark_todo_done
 
-from .forms import BulkCareLogForm, CareLogForm, FertilizerMasterForm
-from .models import CareLog, Fertilizer
+from .forms import BulkCareLogForm, CareLogForm, FertilizerMasterForm, PesticideMasterForm
+from .models import CareLog, Fertilizer, Pesticide, with_task_type
 
 
 def _read_log_filters(request: HttpRequest) -> dict[str, str]:
@@ -56,6 +56,7 @@ def _filtered_logs(user: Any, filters: dict[str, str]) -> QuerySet[CareLog]:
     qs = (
         CareLog.objects.filter(user=user)
         .select_related("bonsai", "fertilizer")
+        .prefetch_related("extra_tasks", "pesticides")
         .order_by("-performed_at")
     )
     if filters["q"]:
@@ -63,7 +64,7 @@ def _filtered_logs(user: Any, filters: dict[str, str]) -> QuerySet[CareLog]:
     if filters["bonsai"]:
         qs = qs.filter(bonsai_id=filters["bonsai"])
     if filters["task_type"] in TaskType.values:
-        qs = qs.filter(task_type=filters["task_type"])
+        qs = with_task_type(qs, filters["task_type"])
     date_from = parse_date(filters["from"]) if filters["from"] else None
     date_to = parse_date(filters["to"]) if filters["to"] else None
     if date_from:
@@ -138,22 +139,30 @@ class CareLogExportView(LoginRequiredMixin, View):
                 "肥料の量",
                 "状態評価",
                 "メモ",
+                "消毒の目的",
+                "薬剤",
+                "希釈倍率",
+                "展着剤",
+                "対象の病害虫",
             ]
         )
-        for log in logs.iterator():
+        for log in logs.iterator(chunk_size=500):
             writer.writerow(
                 [
                     timezone.localtime(log.performed_at).strftime("%Y-%m-%d %H:%M"),
                     log.bonsai.name,
-                    log.get_task_type_display()
-                    if log.task_type != TaskType.OTHER or not log.task_type_other
-                    else log.task_type_other,
+                    log.task_label,
                     log.get_weather_display() if log.weather else "",
                     "" if log.temperature_c is None else str(log.temperature_c),
                     log.fertilizer.name if log.fertilizer else "",
                     log.fertilizer_amount,
                     log.get_health_evaluation_display() if log.health_evaluation else "",
                     log.notes,
+                    log.pest_control_purpose_label,
+                    log.pesticide_names,
+                    log.pesticide_dilution,
+                    "使用" if log.spreader_used else "",
+                    log.pest_target,
                 ]
             )
         return response
@@ -272,7 +281,11 @@ class CareLogDetailView(LoginRequiredMixin, DetailView):
     context_object_name = "log"
 
     def get_queryset(self) -> QuerySet[CareLog]:
-        return CareLog.objects.filter(user=self.request.user).select_related("bonsai", "fertilizer")
+        return (
+            CareLog.objects.filter(user=self.request.user)
+            .select_related("bonsai", "fertilizer")
+            .prefetch_related("extra_tasks", "pesticides")
+        )
 
 
 class CareLogUpdateView(LoginRequiredMixin, UpdateView):
@@ -422,4 +435,63 @@ class FertilizerDeleteView(LoginRequiredMixin, DeleteView):
         name = self.object.name if self.object else ""
         response = super().form_valid(form)
         messages.success(self.request, f"肥料「{name}」を削除しました。")
+        return response
+
+
+# ---------------------------------------------------------------------------
+# 薬剤マスタ CRUD（ライブラリ配下）
+# ---------------------------------------------------------------------------
+class PesticideListView(LoginRequiredMixin, ListView):
+    """薬剤マスタ一覧（共通マスタ + 自分の登録）。"""
+
+    model = Pesticide
+    template_name = "logs/pesticide_list.html"
+    context_object_name = "pesticides"
+
+    def get_queryset(self) -> QuerySet[Pesticide]:
+        return Pesticide.objects.visible_to(self.request.user).order_by("user_id", "name")
+
+
+class PesticideCreateView(LoginRequiredMixin, CreateView):
+    model = Pesticide
+    form_class = PesticideMasterForm
+    template_name = "logs/pesticide_form.html"
+    success_url = reverse_lazy("logs:pesticide_list")
+
+    def form_valid(self, form: PesticideMasterForm) -> HttpResponse:
+        form.instance.user = self.request.user
+        response = super().form_valid(form)
+        messages.success(self.request, f"薬剤「{self.object.name}」を登録しました。")
+        return response
+
+
+class PesticideUpdateView(LoginRequiredMixin, UpdateView):
+    model = Pesticide
+    form_class = PesticideMasterForm
+    template_name = "logs/pesticide_form.html"
+    success_url = reverse_lazy("logs:pesticide_list")
+
+    def get_queryset(self) -> QuerySet[Pesticide]:
+        # 共通マスタは編集させない（Admin 管理）
+        return Pesticide.objects.personal(self.request.user)
+
+    def form_valid(self, form: PesticideMasterForm) -> HttpResponse:
+        response = super().form_valid(form)
+        messages.success(self.request, f"薬剤「{self.object.name}」を更新しました。")
+        return response
+
+
+class PesticideDeleteView(LoginRequiredMixin, DeleteView):
+    model = Pesticide
+    template_name = "logs/pesticide_confirm_delete.html"
+    success_url = reverse_lazy("logs:pesticide_list")
+    context_object_name = "pesticide"
+
+    def get_queryset(self) -> QuerySet[Pesticide]:
+        return Pesticide.objects.personal(self.request.user)
+
+    def form_valid(self, form: Any) -> HttpResponse:
+        name = self.object.name if self.object else ""
+        response = super().form_valid(form)
+        messages.success(self.request, f"薬剤「{name}」を削除しました。")
         return response

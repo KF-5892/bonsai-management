@@ -9,7 +9,19 @@ from .models import User
 class UserAdmin(DjangoUserAdmin):
     fieldsets = (
         (None, {"fields": ("email", "password")}),
-        (_("プロフィール"), {"fields": ("display_name", "role", "language", "time_zone")}),
+        (
+            _("プロフィール"),
+            {
+                "fields": (
+                    "display_name",
+                    "role",
+                    "language",
+                    "time_zone",
+                    "region",
+                    "climate_adjust",
+                )
+            },
+        ),
         (
             _("通知設定"),
             {"fields": ("notification_enabled", "notify_start_time", "notify_end_time")},

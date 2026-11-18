@@ -6,7 +6,7 @@
   <div class="space-y-6">
     <header>
       <h1 class="text-xl font-bold text-on-surface">ライブラリ</h1>
-      <p class="mt-1 text-sm text-on-surface-variant">タグ・肥料・品種などのマスタをまとめて管理します。</p>
+      <p class="mt-1 text-sm text-on-surface-variant">タグ・肥料・薬剤・品種などのマスタをまとめて管理します。</p>
     </header>
 
     <div class="grid grid-cols-2 gap-3">
@@ -19,6 +19,11 @@
         <span class="material-symbols-outlined text-primary" aria-hidden="true">compost</span>
         <p class="mt-2 font-bold text-on-surface">肥料マスタ</p>
         <p class="text-xs text-on-surface-variant">{{ fertilizer_count }} 件</p>
+      </a>
+      <a href="{% url 'logs:pesticide_list' %}" class="rounded-xl bg-surface-container-lowest p-4 hover:bg-surface-container-low">
+        <span class="material-symbols-outlined text-primary" aria-hidden="true">pest_control</span>
+        <p class="mt-2 font-bold text-on-surface">薬剤マスタ</p>
+        <p class="text-xs text-on-surface-variant">{{ pesticide_count }} 件</p>
       </a>
     </div>
 
