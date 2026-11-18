@@ -28,11 +28,17 @@ from django.views.generic import (
     UpdateView,
 )
 
-from apps.logs.models import CareLog
+from apps.common.regions import is_viewing_supported, zone_for_region
+from apps.logs.models import with_task_type
 from apps.schedules.services.todos import (
+    DEFAULT_VIEWING_KIND_LABEL,
+    VIEWING_KIND_LABELS,
     compose_monthly_todos,
     compose_todos_for_range,
+    compose_viewing_seasons,
     current_week_range,
+    format_jun_range,
+    shifted_viewing_range,
 )
 
 from .forms import BonsaiMediaForm, BonsaiPlantForm, TagForm
@@ -148,7 +154,8 @@ class HomeView(LoginRequiredMixin, TemplateView):
 
     - 「やること」: ``compose_monthly_todos`` / ``compose_todos_for_range``
       の結果（``?range=month|week|custom`` で期間を切替）
-    - 「最近の活動」: 直近の作業ログ（写真付きタイムライン）
+    - 「見ごろ」: ``compose_viewing_seasons`` の結果（``?viewing=owned|all`` で
+      保有品種のみ / すべての品種を切替。既定は保有品種のみ）
     - 「マイ盆栽」: ``BonsaiPlant.objects.filter(user=request.user)``
       に名前検索（``?q=``）と健康状態絞り込み（``?status=``）を適用し、
       ``?view=card|species|tag`` で表示をグルーピングする
@@ -163,6 +170,7 @@ class HomeView(LoginRequiredMixin, TemplateView):
         ctx["year_month"] = year_month
 
         ctx.update(self._todo_context(today, year_month))
+        ctx.update(self._viewing_context(year_month))
 
         base_qs = (
             BonsaiPlant.objects.filter(user=self.request.user)
@@ -212,14 +220,37 @@ class HomeView(LoginRequiredMixin, TemplateView):
         ctx["plants"] = plants
         ctx["q"] = q
         ctx["status_filter"] = status
-
-        # 最近の活動（写真付きタイムライン）
-        ctx["recent_activities"] = (
-            CareLog.objects.filter(user=self.request.user)
-            .select_related("bonsai")
-            .order_by("-performed_at")[:5]
-        )
         return ctx
+
+    def _viewing_context(self, year_month: date) -> dict[str, Any]:
+        """当月の「見ごろ」と、対象品種の切替リンクを組み立てる。"""
+        scope = self.request.GET.get("viewing", "owned")
+        if scope not in {"owned", "all"}:
+            scope = "owned"
+
+        def scope_url(value: str) -> str:
+            # ほかの絞り込み（期間・検索など）は保ったまま viewing だけ差し替える
+            params = self.request.GET.copy()
+            params.pop("viewing", None)
+            if value != "owned":
+                params["viewing"] = value
+            return f"?{params.urlencode()}"
+
+        user = self.request.user
+        region = getattr(user, "region", "")
+        zone = zone_for_region(region)
+        return {
+            "viewing_scope": scope,
+            "viewing_seasons": compose_viewing_seasons(
+                user, year_month, owned_only=scope == "owned"
+            ),
+            # 見ごろは地域（気候区分）で補正する。未設定なら基準値のまま
+            "viewing_region_set": bool(region),
+            "viewing_zone_label": zone.label,
+            "viewing_supported": is_viewing_supported(zone),
+            "viewing_owned_url": scope_url("owned"),
+            "viewing_all_url": scope_url("all"),
+        }
 
     def _todo_context(self, today: date, year_month: date) -> dict[str, Any]:
         """期間切替（今月 / 今週 / カスタム）に応じた ToDo を組み立てる。"""
@@ -313,7 +344,9 @@ class BonsaiPlantDetailView(LoginRequiredMixin, DetailView):
             if todo.bonsai_id == plant.id
         ]
 
-        ctx["recent_logs"] = plant.logs.select_related("fertilizer").all()[:10]
+        ctx["recent_logs"] = (
+            plant.logs.select_related("fertilizer").prefetch_related("extra_tasks").all()[:10]
+        )
         ctx["log_count"] = plant.logs.count()
         ctx["quick_tasks"] = QUICK_TASKS
         ctx["schedules"] = plant.schedules.filter(is_active=True)
@@ -321,7 +354,7 @@ class BonsaiPlantDetailView(LoginRequiredMixin, DetailView):
         ctx["media_count"] = plant.media.count()
 
         # 植え替え履歴タブ
-        repot_logs = list(plant.logs.filter(task_type=TaskType.REPOTTING)[:20])
+        repot_logs = list(with_task_type(plant.logs.all(), TaskType.REPOTTING)[:20])
         ctx["repot_logs"] = repot_logs
         last_repot = repot_logs[0] if repot_logs else None
         ctx["last_repot"] = last_repot
@@ -415,6 +448,21 @@ class BonsaiSpeciesDetailView(DetailView):
                 label = task_type or "作業"
             tasks_by_month.setdefault(m, []).append({**task, "label": label})
         ctx["tasks_by_month"] = sorted(tasks_by_month.items())
+        # 見ごろ（基準値のまま。地域補正はホームの「見ごろ」で行う）
+        viewing = []
+        for entry in species.viewing_seasons or []:
+            base = shifted_viewing_range(entry)
+            if base is None:
+                continue
+            kind = str(entry.get("kind") or "")
+            viewing.append(
+                {
+                    "kind_label": VIEWING_KIND_LABELS.get(kind, DEFAULT_VIEWING_KIND_LABEL),
+                    "period_label": format_jun_range(*base),
+                    "description": entry.get("description", ""),
+                }
+            )
+        ctx["viewing_seasons"] = viewing
         ctx["current_month"] = timezone.localdate().month
         # 関連記事
         from apps.articles.models import ArticleStatus, HelpArticle

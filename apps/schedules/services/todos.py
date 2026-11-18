@@ -6,6 +6,11 @@
 2. ユーザー個別スケジュール (``CareSchedule``)
 3. 月次共通アドバイス (``MonthlyAdvice``)
 
+「見ごろ」（開花・紅葉・実の色付き）は作業ではないので ToDo には含めない。
+品種マスタの ``viewing_seasons``（旬単位の範囲、関東〜九州の平野部基準）を
+``compose_viewing_seasons`` がユーザーの地域に合わせて補正して返す。
+``monthly_tasks`` に残っている ``observation`` も同じ理由で ToDo から除く。
+
 完了状態は ``CareScheduleCompletion`` に別管理されており、
 ``(source_type, source_ref, year_month)`` のキーで LEFT JOIN する。
 
@@ -21,7 +26,14 @@ from typing import TYPE_CHECKING, Any
 from django.db.models import Q
 from django.utils import timezone
 
-from apps.bonsai.models import BonsaiPlant
+from apps.bonsai.models import BonsaiPlant, BonsaiSpecies
+from apps.common.regions import (
+    ClimateZone,
+    ViewingShift,
+    is_viewing_supported,
+    viewing_offset,
+    zone_for_region,
+)
 
 from ..models import (
     CareSchedule,
@@ -66,9 +78,59 @@ class Todo:
         return asdict(self)
 
 
+@dataclass(slots=True)
+class ViewingSeason:
+    """品種ごとの「見ごろ」1 件分（開花期・紅葉期など）。
+
+    ToDo と違って完了状態を持たない。期間はユーザーの地域に合わせて補正済みの
+    旬（``start_index``〜``end_index``、0 = 1 月上旬 … 35 = 12 月下旬）で、
+    年をまたぐ場合は ``end_index`` が ``start_index`` より小さくなる。
+    ``plants`` はその品種でユーザーが保有している盆栽で、空なら未保有の品種。
+    """
+
+    species_id: str
+    species_slug: str
+    species_name: str
+    kind: str
+    kind_label: str
+    start_index: int
+    end_index: int
+    period_label: str
+    description: str
+    plants: list[BonsaiPlant] = field(default_factory=list)
+
+    @property
+    def is_owned(self) -> bool:
+        return bool(self.plants)
+
+
+# 品種マスタの monthly_tasks のうち「見ごろ」扱いで ToDo から除く task_type
+VIEWING_TASK_TYPE = TaskType.OBSERVATION.value
+
+# 1 年を 36 旬に分ける（各月の上旬・中旬・下旬）
+JUN_PER_YEAR = 36
+JUN_LABELS = ("上旬", "中旬", "下旬")
+VIEWING_KIND_LABELS = {"flower": "花", "foliage": "紅葉", "fruit": "実"}
+DEFAULT_VIEWING_KIND_LABEL = "見ごろ"
+
+
 # ---------------------------------------------------------------------------
 # 内部ヘルパー
 # ---------------------------------------------------------------------------
+def _is_viewing_task(task: dict[str, Any]) -> bool:
+    return str(task.get("task_type") or "") == VIEWING_TASK_TYPE
+
+
+def _task_month(task: Any) -> int | None:
+    """monthly_tasks の 1 要素から対象月を取り出す（不正な要素は ``None``）。"""
+    if not isinstance(task, dict):
+        return None
+    try:
+        return int(str(task.get("month")))
+    except ValueError:
+        return None
+
+
 def _completion_to_dict(c: CareScheduleCompletion) -> dict[str, Any]:
     return {
         "status": c.status,
@@ -148,13 +210,10 @@ def compose_monthly_todos(user: AbstractBaseUser, year_month: date) -> list[Todo
             continue
         monthly_tasks = species.monthly_tasks or []
         for index, task in enumerate(monthly_tasks):
-            if not isinstance(task, dict):
+            if _task_month(task) != month:
                 continue
-            try:
-                task_month = int(task.get("month"))
-            except (TypeError, ValueError):
-                continue
-            if task_month != month:
+            # 見ごろは作業ではないので ToDo に含めない（compose_viewing_seasons が返す）
+            if _is_viewing_task(task):
                 continue
 
             task_type = str(task.get("task_type", "other") or "other")
@@ -475,3 +534,128 @@ def current_week_range(today: date) -> tuple[date, date]:
     """``today`` を含む週（月曜〜日曜）の範囲を返す。"""
     monday = today - timedelta(days=today.weekday())
     return monday, monday + timedelta(days=6)
+
+
+# ---------------------------------------------------------------------------
+# 見ごろ（開花・紅葉・実の色付きなど）
+# ---------------------------------------------------------------------------
+def _jun_index(month: Any, period: Any) -> int | None:
+    """月と旬（上旬 / 中旬 / 下旬）を 0〜35 の通し番号にする。不正な値は ``None``。"""
+    try:
+        month_number = int(str(month))
+    except ValueError:
+        return None
+    if not 1 <= month_number <= 12 or period not in JUN_LABELS:
+        return None
+    return (month_number - 1) * 3 + JUN_LABELS.index(period)
+
+
+def _jun_label(index: int) -> str:
+    return f"{index // 3 + 1}月{JUN_LABELS[index % 3]}"
+
+
+def format_jun_range(start_index: int, end_index: int) -> str:
+    """旬の範囲を「1月下旬〜3月上旬」の形にする（1 旬だけなら「4月中旬」）。"""
+    if start_index == end_index:
+        return _jun_label(start_index)
+    return f"{_jun_label(start_index)}〜{_jun_label(end_index)}"
+
+
+def _default_shift(kind: str) -> str:
+    """shift 省略時の型。花は寒い地域ほど遅く、紅葉・実は早い。"""
+    return ViewingShift.SPRING if kind == "flower" else ViewingShift.AUTUMN
+
+
+def shifted_viewing_range(
+    entry: Any,
+    zone: ClimateZone = ClimateZone.STANDARD,
+    adjust: int = 0,
+) -> tuple[int, int] | None:
+    """``viewing_seasons`` の 1 要素を、気候区分に合わせてずらした旬の範囲にする。
+
+    :return: ``(start_index, end_index)``。年をまたぐと end < start になる。
+        要素が不正なら ``None``。
+    """
+    if not isinstance(entry, dict):
+        return None
+    start = _jun_index(entry.get("start_month"), entry.get("start_period"))
+    end = _jun_index(entry.get("end_month"), entry.get("end_period"))
+    if start is None or end is None:
+        return None
+    length = (end - start) % JUN_PER_YEAR
+    kind = str(entry.get("kind") or "")
+    shift = str(entry.get("shift") or _default_shift(kind))
+    shifted_start = (start + viewing_offset(zone, shift, adjust)) % JUN_PER_YEAR
+    return shifted_start, (shifted_start + length) % JUN_PER_YEAR
+
+
+def compose_viewing_seasons(
+    user: AbstractBaseUser,
+    year_month: date,
+    *,
+    owned_only: bool = True,
+) -> list[ViewingSeason]:
+    """指定月に見ごろを迎える品種を返す。
+
+    品種マスタの基準値（関東〜九州の平野部）を、ユーザーの地域
+    （``User.region`` / ``User.climate_adjust``）の気候区分に合わせて旬単位で
+    ずらしてから、指定月と重なるものを選ぶ。沖縄は本州基準のずらしでは
+    表せないため空を返す。
+
+    :param owned_only: ``True`` ならユーザーが保有している品種だけ、
+        ``False`` なら品種マスタ全体（保有分を先頭に並べる）。
+    :return: 保有 → 未保有、月内で早く始まる順、品種名の順。
+    """
+    zone = zone_for_region(getattr(user, "region", ""))
+    if not is_viewing_supported(zone):
+        return []
+    adjust = int(getattr(user, "climate_adjust", 0) or 0)
+    month_first = (year_month.month - 1) * 3
+
+    plants_by_species: dict[str, list[BonsaiPlant]] = {}
+    for plant in BonsaiPlant.objects.filter(user=user, species__isnull=False).order_by("name"):
+        if plant.species_id is not None:
+            plants_by_species.setdefault(plant.species_id, []).append(plant)
+
+    if owned_only:
+        species_qs = BonsaiSpecies.objects.filter(id__in=plants_by_species.keys())
+    else:
+        species_qs = BonsaiSpecies.objects.all()
+
+    found: list[tuple[int, ViewingSeason]] = []
+    for species in species_qs:
+        for entry in species.viewing_seasons or []:
+            shifted = shifted_viewing_range(entry, zone, adjust)
+            if shifted is None:
+                continue
+            start, end = shifted
+            length = (end - start) % JUN_PER_YEAR
+            # 当月の上旬・中旬・下旬のうち、見ごろに入る最初の旬（無ければ対象外）
+            in_month = [
+                position
+                for position in range(3)
+                if (month_first + position - start) % JUN_PER_YEAR <= length
+            ]
+            if not in_month:
+                continue
+            kind = str(entry.get("kind") or "")
+            found.append(
+                (
+                    in_month[0],
+                    ViewingSeason(
+                        species_id=species.id,
+                        species_slug=species.slug,
+                        species_name=species.name,
+                        kind=kind,
+                        kind_label=VIEWING_KIND_LABELS.get(kind, DEFAULT_VIEWING_KIND_LABEL),
+                        start_index=start,
+                        end_index=end,
+                        period_label=format_jun_range(start, end),
+                        description=str(entry.get("description", "") or ""),
+                        plants=plants_by_species.get(species.id, []),
+                    ),
+                )
+            )
+
+    found.sort(key=lambda item: (not item[1].is_owned, item[0], item[1].species_name))
+    return [season for _position, season in found]

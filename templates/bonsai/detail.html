@@ -128,7 +128,7 @@
             {% for log in recent_logs %}
               <li class="py-2">
                 <a href="{% url 'logs:detail' pk=log.pk %}" class="block">
-                  <span class="font-medium text-on-surface">{{ log.get_task_type_display }}</span>
+                  <span class="font-medium text-on-surface">{{ log.task_label }}</span>
                   <span class="text-sm text-on-surface-variant"> ・ {{ log.performed_at|date:"Y/m/d H:i" }}</span>
                 </a>
               </li>

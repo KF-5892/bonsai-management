@@ -61,6 +61,7 @@ class GlobalSearchView(LoginRequiredMixin, TemplateView):
             CareLog.objects.filter(user=user)
             .filter(Q(notes__icontains=query) | Q(bonsai__name__icontains=query))
             .select_related("bonsai")
+            .prefetch_related("extra_tasks")
             .order_by("-performed_at")[:RESULT_LIMIT]
         )
         articles = list(

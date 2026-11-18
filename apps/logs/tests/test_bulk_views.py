@@ -67,3 +67,23 @@ def test_bulk_optional_choices_default_to_unset(client, user, bonsai_species):
     log = CareLog.objects.get(user=user)
     assert log.weather == ""
     assert log.health_evaluation is None
+
+
+def test_bulk_create_accepts_multiple_task_types(client, user, bonsai_species):
+    plants = [
+        BonsaiPlant.objects.create(user=user, species=bonsai_species, name=name)
+        for name in ("一郎", "二郎")
+    ]
+    client.force_login(user)
+    res = client.post(
+        reverse("logs:bulk_create"),
+        {
+            "bonsai": [p.pk for p in plants],
+            "task_type": ["pest_control", "watering"],
+            "performed_at": "2026-04-10T09:00",
+        },
+    )
+    assert res.status_code == 302, getattr(res, "context", None)
+    logs = list(CareLog.objects.filter(user=user))
+    assert len(logs) == 2
+    assert {log.task_label for log in logs} == {"潅水・消毒"}

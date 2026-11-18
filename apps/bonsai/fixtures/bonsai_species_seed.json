@@ -16,6 +16,7 @@
         {"month": 11, "period": "中旬", "task_type": "defoliation", "description": "古葉抜き。前年の古い葉を手で引き抜き、内部の日当たりと風通しを確保する。"},
         {"month": 12, "period": "上旬", "task_type": "wiring", "description": "休眠期に入ったら針金かけ。樹液の動きが少なく形が決まりやすい。"}
       ],
+      "viewing_seasons": [],
       "created_at": "2026-04-30T00:00:00+09:00",
       "updated_at": "2026-04-30T00:00:00+09:00"
     }
@@ -36,6 +37,7 @@
         {"month": 10, "period": "中旬", "task_type": "fertilizing", "description": "秋肥を施し冬越しの体力を養う。"},
         {"month": 11, "period": "下旬", "task_type": "defoliation", "description": "古葉抜きで樹冠内部の通風と採光を確保する。"}
       ],
+      "viewing_seasons": [],
       "created_at": "2026-04-30T00:00:00+09:00",
       "updated_at": "2026-04-30T00:00:00+09:00"
     }
@@ -56,6 +58,7 @@
         {"month": 9, "period": "上旬", "task_type": "wiring", "description": "枝の動きをつける針金かけの適期。古枝は折れやすいので注意。"},
         {"month": 10, "period": "下旬", "task_type": "jin_shari", "description": "ジン・シャリの彫刻作業。樹液の動きが穏やかになる時期に行う。"}
       ],
+      "viewing_seasons": [],
       "created_at": "2026-04-30T00:00:00+09:00",
       "updated_at": "2026-04-30T00:00:00+09:00"
     }
@@ -75,6 +78,9 @@
         {"month": 6, "period": "中旬", "task_type": "defoliation", "description": "葉刈りで二番芽を出し、葉を小型化する。樹勢のあるものに限る。"},
         {"month": 7, "period": "上旬", "task_type": "leaf_misting", "description": "真夏は半日陰に移動。朝夕の葉水で葉焼けを防ぐ。"},
         {"month": 11, "period": "中旬", "task_type": "observation", "description": "紅葉の鑑賞期。落葉したら寒樹姿を楽しむ。"}
+      ],
+      "viewing_seasons": [
+        {"kind": "foliage", "start_month": 11, "start_period": "下旬", "end_month": 12, "end_period": "上旬", "description": "紅葉の見ごろ。落葉後は寒樹姿も楽しめる。"}
       ],
       "created_at": "2026-04-30T00:00:00+09:00",
       "updated_at": "2026-04-30T00:00:00+09:00"
@@ -96,6 +102,9 @@
         {"month": 7, "period": "中旬", "task_type": "watering", "description": "高温期は朝夕の灌水を欠かさない。水切れで枝枯れする。"},
         {"month": 12, "period": "上旬", "task_type": "pruning", "description": "落葉後の透かし剪定。寒樹姿を整え、不要枝を整理する。"}
       ],
+      "viewing_seasons": [
+        {"kind": "foliage", "start_month": 11, "start_period": "中旬", "end_month": 11, "end_period": "下旬", "description": "黄葉・紅葉の見ごろ。落葉後はほうき立ちの枝ぶりが見どころ。"}
+      ],
       "created_at": "2026-04-30T00:00:00+09:00",
       "updated_at": "2026-04-30T00:00:00+09:00"
     }
@@ -115,6 +124,9 @@
         {"month": 5, "period": "中旬", "task_type": "fertilizing", "description": "花後のお礼肥。来年の花芽形成のため油かすを置き肥。"},
         {"month": 6, "period": "下旬", "task_type": "pest_control", "description": "アブラムシ・毛虫の防除。定期的に消毒する。"},
         {"month": 9, "period": "中旬", "task_type": "pruning", "description": "込み合った枝を整理。切口には癒合剤を必ず塗る。"}
+      ],
+      "viewing_seasons": [
+        {"kind": "flower", "start_month": 3, "start_period": "下旬", "end_month": 4, "end_period": "上旬", "description": "開花から満開まで約1週間、満開から散るまで約1週間。"}
       ],
       "created_at": "2026-04-30T00:00:00+09:00",
       "updated_at": "2026-04-30T00:00:00+09:00"
@@ -136,6 +148,9 @@
         {"month": 6, "period": "中旬", "task_type": "fertilizing", "description": "花芽分化前の追肥。リン酸分の多い肥料を施す。"},
         {"month": 11, "period": "下旬", "task_type": "wiring", "description": "落葉後の針金かけ。枝が硬く折れやすいので慎重に。"}
       ],
+      "viewing_seasons": [
+        {"kind": "flower", "start_month": 1, "start_period": "下旬", "end_month": 3, "end_period": "上旬", "shift": "winter", "description": "花と香りを楽しむ。品種により早咲き・遅咲きがある。"}
+      ],
       "created_at": "2026-04-30T00:00:00+09:00",
       "updated_at": "2026-04-30T00:00:00+09:00"
     }
@@ -155,6 +170,129 @@
         {"month": 5, "period": "下旬", "task_type": "pruning", "description": "結実を確認したら摘果。1枝1〜2果に絞り、樹勢を保つ。"},
         {"month": 7, "period": "上旬", "task_type": "pest_control", "description": "黒星病・うどんこ病の防除。葉の裏まで丁寧に消毒する。"},
         {"month": 10, "period": "中旬", "task_type": "observation", "description": "実の色付き観賞期。落果や鳥害に注意する。"}
+      ],
+      "viewing_seasons": [
+        {"kind": "flower", "start_month": 4, "start_period": "中旬", "end_month": 4, "end_period": "中旬", "description": "白い花が咲く。"},
+        {"kind": "fruit", "start_month": 10, "start_period": "上旬", "end_month": 11, "end_period": "下旬", "description": "実が赤く色付く。"}
+      ],
+      "created_at": "2026-04-30T00:00:00+09:00",
+      "updated_at": "2026-04-30T00:00:00+09:00"
+    }
+  },
+  {
+    "model": "bonsai.bonsaispecies",
+    "pk": "01900000-0000-7000-8000-000000000009",
+    "fields": {
+      "slug": "fuji",
+      "name": "藤",
+      "scientific_name": "Wisteria floribunda",
+      "category": "flowering",
+      "description": "長く垂れる花房を楽しむ花物。つるが伸びるため、花後の剪定で樹形を保つ。",
+      "monthly_tasks": [],
+      "viewing_seasons": [
+        {"kind": "flower", "start_month": 4, "start_period": "中旬", "end_month": 4, "end_period": "下旬", "description": "花房が垂れ下がって咲く。"}
+      ],
+      "created_at": "2026-04-30T00:00:00+09:00",
+      "updated_at": "2026-04-30T00:00:00+09:00"
+    }
+  },
+  {
+    "model": "bonsai.bonsaispecies",
+    "pk": "01900000-0000-7000-8000-000000000010",
+    "fields": {
+      "slug": "satsuki",
+      "name": "サツキ",
+      "scientific_name": "Rhododendron indicum",
+      "category": "flowering",
+      "description": "初夏に咲く花物盆栽の代表。品種が非常に多く、花色や咲き分けを楽しむ。",
+      "monthly_tasks": [],
+      "viewing_seasons": [
+        {"kind": "flower", "start_month": 5, "start_period": "下旬", "end_month": 6, "end_period": "上旬", "description": "5月下旬から6月上旬に咲く品種が多い。"}
+      ],
+      "created_at": "2026-04-30T00:00:00+09:00",
+      "updated_at": "2026-04-30T00:00:00+09:00"
+    }
+  },
+  {
+    "model": "bonsai.bonsaispecies",
+    "pk": "01900000-0000-7000-8000-000000000011",
+    "fields": {
+      "slug": "sarusuberi",
+      "name": "サルスベリ",
+      "scientific_name": "Lagerstroemia indica",
+      "category": "flowering",
+      "description": "百日紅の名のとおり、夏から秋まで長く咲き続ける花物。なめらかな幹肌も見どころ。",
+      "monthly_tasks": [],
+      "viewing_seasons": [
+        {"kind": "flower", "start_month": 7, "start_period": "中旬", "end_month": 9, "end_period": "下旬", "shift": "none", "description": "夏から秋にかけて約100日咲き続ける。"}
+      ],
+      "created_at": "2026-04-30T00:00:00+09:00",
+      "updated_at": "2026-04-30T00:00:00+09:00"
+    }
+  },
+  {
+    "model": "bonsai.bonsaispecies",
+    "pk": "01900000-0000-7000-8000-000000000012",
+    "fields": {
+      "slug": "pyracantha",
+      "name": "ピラカンサ",
+      "scientific_name": "Pyracantha",
+      "category": "fruiting",
+      "description": "秋に赤や橙の実を枝いっぱいに付ける実物。丈夫で育てやすい。",
+      "monthly_tasks": [],
+      "viewing_seasons": [
+        {"kind": "fruit", "start_month": 10, "start_period": "上旬", "end_month": 12, "end_period": "下旬", "description": "10月ごろから実が色付く。"}
+      ],
+      "created_at": "2026-04-30T00:00:00+09:00",
+      "updated_at": "2026-04-30T00:00:00+09:00"
+    }
+  },
+  {
+    "model": "bonsai.bonsaispecies",
+    "pk": "01900000-0000-7000-8000-000000000013",
+    "fields": {
+      "slug": "sazanka",
+      "name": "山茶花",
+      "scientific_name": "Camellia sasanqua",
+      "category": "flowering",
+      "description": "晩秋から初冬に咲く花物。椿より早く咲き、花びらが1枚ずつ散る。",
+      "monthly_tasks": [],
+      "viewing_seasons": [
+        {"kind": "flower", "start_month": 11, "start_period": "上旬", "end_month": 12, "end_period": "下旬", "shift": "none", "description": "椿より早く、晩秋から初冬に咲く。"}
+      ],
+      "created_at": "2026-04-30T00:00:00+09:00",
+      "updated_at": "2026-04-30T00:00:00+09:00"
+    }
+  },
+  {
+    "model": "bonsai.bonsaispecies",
+    "pk": "01900000-0000-7000-8000-000000000014",
+    "fields": {
+      "slug": "tsubaki",
+      "name": "椿",
+      "scientific_name": "Camellia japonica",
+      "category": "flowering",
+      "description": "冬から春に咲く花物。光沢のある常緑の葉と花の対比を楽しむ。",
+      "monthly_tasks": [],
+      "viewing_seasons": [
+        {"kind": "flower", "start_month": 12, "start_period": "上旬", "end_month": 3, "end_period": "下旬", "shift": "winter", "description": "多くの品種が冬から春にかけて咲く。"}
+      ],
+      "created_at": "2026-04-30T00:00:00+09:00",
+      "updated_at": "2026-04-30T00:00:00+09:00"
+    }
+  },
+  {
+    "model": "bonsai.bonsaispecies",
+    "pk": "01900000-0000-7000-8000-000000000015",
+    "fields": {
+      "slug": "roubai",
+      "name": "蝋梅",
+      "scientific_name": "Chimonanthus praecox",
+      "category": "flowering",
+      "description": "真冬に香りのよい黄色の花を咲かせる花物。",
+      "monthly_tasks": [],
+      "viewing_seasons": [
+        {"kind": "flower", "start_month": 12, "start_period": "上旬", "end_month": 2, "end_period": "下旬", "shift": "winter", "description": "ろう細工のような黄色い花と香りを楽しむ。"}
       ],
       "created_at": "2026-04-30T00:00:00+09:00",
       "updated_at": "2026-04-30T00:00:00+09:00"

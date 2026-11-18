@@ -16,7 +16,7 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView, UpdateView
 
 from apps.bonsai.models import BonsaiPlant, BonsaiSpecies, Tag
-from apps.logs.models import Fertilizer
+from apps.logs.models import Fertilizer, Pesticide
 
 from .forms import NotificationSettingForm, ProfileForm
 from .models import User
@@ -72,6 +72,7 @@ class LibraryView(LoginRequiredMixin, TemplateView):
         user = self.request.user
         ctx["tag_count"] = Tag.objects.filter(user=user).count()
         ctx["fertilizer_count"] = Fertilizer.objects.visible_to(user).count()
+        ctx["pesticide_count"] = Pesticide.objects.visible_to(user).count()
         ctx["species_list"] = BonsaiSpecies.objects.all()[:50]
         ctx["plants"] = BonsaiPlant.objects.filter(user=user).select_related("species")
         return ctx

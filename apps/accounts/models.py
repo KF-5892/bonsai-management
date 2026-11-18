@@ -14,6 +14,8 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from apps.common.regions import ClimateAdjust, Region
+
 
 def _uuid7() -> str:
     """UUIDv7 を発行する。"""
@@ -85,6 +87,23 @@ class User(AbstractUser):
         default="Asia/Tokyo",
     )
     language = models.CharField(_("言語"), max_length=8, default="ja")
+
+    # 地域: 見ごろの時期を気候区分で補正するために使う（未設定は関東〜九州の平野部基準）
+    region = models.CharField(
+        _("お住まいの地域"),
+        max_length=16,
+        choices=Region.choices,
+        blank=True,
+        help_text=_(
+            "見ごろの時期を地域に合わせて表示します。未設定の場合は関東〜九州の平野部が基準です。"
+        ),
+    )
+    climate_adjust = models.SmallIntegerField(
+        _("見ごろの微調整"),
+        choices=ClimateAdjust.choices,
+        default=ClimateAdjust.NONE,
+        help_text=_("同じ地域でも標高などで時期がずれる場合に選びます。"),
+    )
 
     # 通知設定（Phase 3 で利用）
     notification_enabled = models.BooleanField(_("通知を有効化"), default=True)

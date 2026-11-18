@@ -16,6 +16,22 @@
       {% endif %}
     </header>
 
+    {% if viewing_seasons %}
+      <section class="rounded-xl bg-surface-container-lowest p-4">
+        <h2 class="mb-1 text-sm font-bold text-on-surface-variant">見ごろ</h2>
+        <p class="mb-3 text-xs text-on-surface-variant">関東〜九州の平野部を基準にした目安です。</p>
+        <ul class="space-y-2">
+          {% for season in viewing_seasons %}
+            <li class="text-sm text-on-surface">
+              <span class="mr-1 rounded-full bg-secondary-container px-2 py-0.5 text-xs font-bold text-on-secondary-container">{{ season.kind_label }}</span>
+              <span class="font-bold">{{ season.period_label }}</span>
+              {% if season.description %}<span class="block text-on-surface-variant">{{ season.description }}</span>{% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endif %}
+
     <section class="rounded-xl bg-surface-container-lowest p-4">
       <h2 class="mb-3 text-sm font-bold text-on-surface-variant">月別作業カレンダー</h2>
       {% if tasks_by_month %}

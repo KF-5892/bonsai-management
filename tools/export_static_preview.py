@@ -97,7 +97,16 @@ def seed_demo_data():
         HealthStatus,
         Tag,
     )
-    from apps.logs.models import CareLog, Fertilizer, FertilizerForm, HealthEvaluation, Weather
+    from apps.logs.models import (
+        CareLog,
+        Fertilizer,
+        FertilizerForm,
+        HealthEvaluation,
+        Pesticide,
+        PesticideCategory,
+        PesticideFormulation,
+        Weather,
+    )
     from apps.schedules.models import (
         CareSchedule,
         CompletionSourceType,
@@ -115,7 +124,7 @@ def seed_demo_data():
 
     species = {s.slug: s for s in BonsaiSpecies.objects.all()}
     kuro = species.get("kuromatsu")
-    momiji = species.get("momiji") or species.get("yamamomiji")
+    momiji = species.get("kaede") or species.get("momiji") or species.get("yamamomiji")
     # フォールバック: 任意の品種を割り当てる
     others = list(species.values())
 
@@ -185,6 +194,30 @@ def seed_demo_data():
         is_organic=True,
         note="春と秋に置き肥。",
     )
+
+    # 薬剤マスタ（個別）。商品名ではなく一般名の例にとどめる
+    for name, category, formulation, dilution in [
+        (
+            "殺虫剤（乳剤）の例",
+            PesticideCategory.INSECTICIDE,
+            PesticideFormulation.EMULSION,
+            "1000倍",
+        ),
+        (
+            "殺菌剤（水和剤）の例",
+            PesticideCategory.FUNGICIDE,
+            PesticideFormulation.WETTABLE_POWDER,
+            "1000倍",
+        ),
+        ("石灰硫黄合剤", PesticideCategory.DORMANT, PesticideFormulation.LIQUID, "20〜40倍"),
+    ]:
+        Pesticide.objects.create(
+            user=user,
+            name=name,
+            category=category,
+            formulation=formulation,
+            default_dilution=dilution,
+        )
 
     # 写真（成長比較・ギャラリー確認用にダミー画像を生成）
     for offset_days, caption, rgb in [

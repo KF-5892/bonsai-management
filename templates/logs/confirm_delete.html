@@ -7,7 +7,7 @@
     <h1 class="text-xl font-bold text-on-surface">ログを削除</h1>
     <div class="rounded-xl bg-surface-container-lowest p-4">
       <p class="text-sm text-on-surface">
-        「{{ object.bonsai.name }}」の {{ object.performed_at|date:"Y/m/d" }} の{{ object.get_task_type_display }}の記録を削除します。この操作は取り消せません。
+        「{{ object.bonsai.name }}」の {{ object.performed_at|date:"Y/m/d" }} の{{ object.task_label }}の記録を削除します。この操作は取り消せません。
       </p>
       <form method="post" class="mt-4 flex gap-2">
         {% csrf_token %}

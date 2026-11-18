@@ -11,7 +11,7 @@ import pytest
 from django.urls import reverse
 
 from apps.bonsai.models import BonsaiPlant, Tag
-from apps.logs.models import CareLog, Fertilizer
+from apps.logs.models import CareLog, Fertilizer, Pesticide
 from apps.schedules.models import CareSchedule, RepeatType
 
 
@@ -21,6 +21,7 @@ def test_all_get_screens(client, user, bonsai_species):
     tag = Tag.objects.create(user=user, name="ベランダ")
     plant.tags.add(tag)
     fert = Fertilizer.objects.create(user=user, name="油かす")
+    pesticide = Pesticide.objects.create(user=user, name="殺虫剤A")
     CareLog.objects.create(user=user, bonsai=plant, task_type="watering", notes="水やり")
     CareSchedule.objects.create(
         user=user,
@@ -61,6 +62,10 @@ def test_all_get_screens(client, user, bonsai_species):
         reverse("logs:fertilizer_create"),
         reverse("logs:fertilizer_edit", kwargs={"pk": fert.pk}),
         reverse("logs:fertilizer_delete", kwargs={"pk": fert.pk}),
+        reverse("logs:pesticide_list"),
+        reverse("logs:pesticide_create"),
+        reverse("logs:pesticide_edit", kwargs={"pk": pesticide.pk}),
+        reverse("logs:pesticide_delete", kwargs={"pk": pesticide.pk}),
         reverse("articles:list"),
         reverse("search") + "?q=黒松",
         reverse("accounts:settings"),

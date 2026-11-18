@@ -265,6 +265,7 @@ class MonthlyReviewView(LoginRequiredMixin, View):
                 performed_at__lt=end_dt,
             )
             .select_related("bonsai")
+            .prefetch_related("extra_tasks")
             .order_by("-performed_at")
         )
 
